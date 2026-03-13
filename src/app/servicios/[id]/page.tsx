@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { jardineriaServices, whatsappHref } from "@/app/data/services";
+import { ServiceGallery } from "./ServiceGallery";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -98,58 +98,11 @@ export default async function ServicioDetailPage({ params }: Props) {
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
           <section aria-label={`Imagenes del servicio ${service.title}`}>
-            <div className="overflow-hidden rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(247,246,241,0.95))] shadow-[0_22px_56px_rgba(31,41,55,0.09)]">
-              <div className="relative aspect-[4/3] w-full bg-[linear-gradient(145deg,#edf7ef_0%,#dce9dc_100%)]">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.45),transparent_42%)]" />
-                <div className="absolute left-5 top-5 rounded-full bg-[#101828] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white">
-                  {service.badge}
-                </div>
-                {service.images.length > 0 ? (
-                  <Image
-                    src={service.images[0]}
-                    alt={service.title}
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full w-full flex-col items-center justify-center gap-4 text-center">
-                    <span className="text-7xl">{service.icon}</span>
-                    <div>
-                      <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#4b5563]">
-                        Imagen principal del servicio
-                      </p>
-                      <p className="mt-2 text-[14px] text-[#6b7280]">
-                        Cuando cargues las fotos reales, este bloque va a lucir muchísimo mejor.
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="border-t border-white/60 bg-[#f7f7f5] px-4 py-4">
-                <div className="flex gap-3 overflow-x-auto pb-1">
-                  {service.images.length > 0 ? (
-                    service.images.map((img, index) => (
-                      <div
-                        key={img}
-                        className="relative h-20 w-28 shrink-0 overflow-hidden rounded-[16px] border border-white/70 bg-[linear-gradient(145deg,#e8eee8_0%,#dce4db_100%)] shadow-[0_8px_20px_rgba(31,41,55,0.06)]"
-                      >
-                        <Image
-                          src={img}
-                          alt={`${service.title} imagen ${index + 1}`}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    ))
-                  ) : (
-                    <div className="flex h-20 items-center text-xs text-[#6b7280]">
-                      Galeria preparada para 4/5 imagenes del servicio.
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+            <ServiceGallery
+              images={service.images}
+              title={service.title}
+              badge={service.badge}
+            />
 
             <section className="mt-8 space-y-4 rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,247,242,0.95))] p-7 shadow-[0_18px_46px_rgba(31,41,55,0.07)]">
               <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[#101828]">

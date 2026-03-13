@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { jardineriaServices, whatsappHref } from "@/app/data/services";
 
 const decoracionItems = [
@@ -246,7 +247,9 @@ export default function Home() {
 
             <section>
               <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-                {jardineriaServices.map((service, index) => (
+                {jardineriaServices
+                  .filter((service) => service.id !== "asesoramiento-diseno")
+                  .map((service, index) => (
                   <article
                     key={service.id}
                     className="group overflow-hidden rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(247,246,241,0.94))] p-3 shadow-[0_18px_46px_rgba(31,41,55,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_56px_rgba(31,41,55,0.14)]"
@@ -263,14 +266,27 @@ export default function Home() {
                       }`}
                     >
                       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.55),transparent_45%)]" />
-                      <div className="relative flex h-full w-full flex-col items-center justify-center rounded-[18px] border border-white/40 bg-white/20 p-6 text-center backdrop-blur-[2px]">
-                        <span className="mb-3 rounded-full bg-[#101828] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white">
-                          {service.badge}
-                        </span>
-                        <span className="text-6xl drop-shadow-[0_8px_18px_rgba(255,255,255,0.4)]">
-                          {service.icon}
-                        </span>
-                      </div>
+                      {service.images.length > 0 ? (
+                        <Image
+                          src={service.images[0]}
+                          alt=""
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                        />
+                      ) : (
+                        <div className="relative flex h-full w-full flex-col items-center justify-center rounded-[18px] border border-white/40 bg-white/20 p-6 text-center backdrop-blur-[2px]">
+                          <span className="mb-3 rounded-full bg-[#101828] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white">
+                            {service.badge}
+                          </span>
+                          <span className="text-6xl drop-shadow-[0_8px_18px_rgba(255,255,255,0.4)]">
+                            {service.icon}
+                          </span>
+                        </div>
+                      )}
+                      <span className="absolute left-4 top-4 rounded-full bg-[#101828] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white">
+                        {service.badge}
+                      </span>
                     </div>
 
                     <div className="px-2 pb-2">
@@ -297,12 +313,14 @@ export default function Home() {
                       </Link>
                     </div>
                   </article>
-                ))}
+                  ))}
               </div>
             </section>
 
             <section className="space-y-5">
-              {jardineriaServices.map((service, index) => (
+              {jardineriaServices
+                .filter((service) => service.id !== "asesoramiento-diseno")
+                .map((service, index) => (
                 <article
                   id={service.id}
                   key={service.id}

@@ -43,9 +43,12 @@ export const jardineriaServices: readonly JardineriaService[] = [
     description:
       "En todo proyecto de riego es necesario contar con las medidas de todo el jardin y los lugares de suministro de agua y luz. Realizamos una visita para recopilar la informacion y diseñar el riego. Sera entregado un plano en formato PDF con las medidas, el listado de materiales y el valor de la mano de obra.",
     images: [
-      "/servicios/riego-automatico-1.jpg",
-      "/servicios/riego-automatico-2.jpg",
-      "/servicios/riego-automatico-3.jpg",
+      "/riego automatico/portada.png",
+      "/riego automatico/2.png",
+      "/riego automatico/3.png",
+      "/riego automatico/4.png",
+      "/riego automatico/5.png",
+      "/riego automatico/6.png",
     ],
   },
   {
@@ -78,9 +81,14 @@ export const jardineriaServices: readonly JardineriaService[] = [
     description:
       "Trabajamos una amplia variedad de césped para diferentes condiciones de luz, ya sea sol directo, semi sombra o sombra. El valor depende del trabajo a realizar en la superficie. Para cotizar, se solicita una imagen del sector a intervenir, la cantidad de m2 y una descripción de la cantidad de luz que recibe. También realizamos visitas para recopilar esta información; el valor de dicha visita es a coordinar.",
     images: [
-      "/servicios/siembra-cesped-1.jpg",
-      "/servicios/siembra-cesped-2.jpg",
-      "/servicios/siembra-cesped-3.jpg",
+      "/siembra de cesped/portada.png",
+      "/siembra de cesped/2.png",
+      "/siembra de cesped/3.png",
+      "/siembra de cesped/4.png",
+      "/siembra de cesped/5.png",
+      "/siembra de cesped/6.png",
+      "/siembra de cesped/7.png",
+      "/siembra de cesped/8.png",
     ],
   },
   {
@@ -94,8 +102,8 @@ export const jardineriaServices: readonly JardineriaService[] = [
     description:
       "Contamos con tierra arenosa para césped, adecuada para nivelar y preparar superficies verdes. Ofrecemos el traslado y acopio del material en el lugar de trabajo, facilitando la ejecución de la obra.",
     images: [
-      "/servicios/relleno-nivelacion-1.jpg",
-      "/servicios/relleno-nivelacion-2.jpg",
+      "/relleno/portada.png",
+      "/relleno/2.png",
     ],
   },
   {
@@ -110,9 +118,11 @@ export const jardineriaServices: readonly JardineriaService[] = [
     description:
       "Diseñamos y llevamos a cabo la elaboración de canteros de principio a fin. Nos ocupamos de todos los trabajos y materiales necesarios. Para cotizar, se solicita el plano con la superficie a intervenir y la idea principal a desarrollar, además de la orientación del sol y las horas que recibe directamente. Ofrecemos la opción de realizar una visita para tomar medidas y observar con mayor detalle el lugar donde se trabajará; dicha visita tiene un valor a coordinar.",
     images: [
-      "/servicios/canteros-plantas-1.jpg",
-      "/servicios/canteros-plantas-2.jpg",
-      "/servicios/canteros-plantas-3.jpg",
+      "/canteros con plantas/portada.png",
+      "/canteros con plantas/2.png",
+      "/canteros con plantas/3.png",
+      "/canteros con plantas/4.png",
+      "/canteros con plantas/5.png",
     ],
   },
   {
@@ -126,8 +136,11 @@ export const jardineriaServices: readonly JardineriaService[] = [
     description:
       "Servicio de desmalezado para superficies de 200 m2 en adelante, ideal para recuperar terrenos antes de colocar césped, realizar siembras o mejorar la limpieza general del espacio.",
     images: [
-      "/servicios/desmalezado-1.jpg",
-      "/servicios/desmalezado-2.jpg",
+      "/desmalezado/portada.png",
+      "/desmalezado/2.png",
+      "/desmalezado/3.png",
+      "/desmalezado/4.png",
+      "/desmalezado/5.png",
     ],
   },
   {
@@ -142,8 +155,14 @@ export const jardineriaServices: readonly JardineriaService[] = [
     description:
       "Realizamos poda de plantas y árboles adaptada a cada caso, priorizando la sanidad y la forma de la especie. Para cotizar, se solicita enviar una foto de la o las plantas a intervenir, de modo de evaluar el trabajo y proponer la mejor solución.",
     images: [
-      "/servicios/poda-limpieza-1.jpg",
-      "/servicios/poda-limpieza-2.jpg",
+      "/poda de arboles y plantas/portada.png",
+      "/poda de arboles y plantas/2.png",
+      "/poda de arboles y plantas/3.png",
+      "/poda de arboles y plantas/4.png",
+      "/poda de arboles y plantas/5.png",
+      "/poda de arboles y plantas/6.png",
+      "/poda de arboles y plantas/7.png",
+      "/poda de arboles y plantas/8.png",
     ],
   },
   {
@@ -158,8 +177,11 @@ export const jardineriaServices: readonly JardineriaService[] = [
     description:
       "Realizamos colocación de cerco vivo, ya sea combinado o de una sola variedad, para dar privacidad y marco verde al jardín. Para cotizar, se solicita enviar los metros lineales a cubrir y, si es posible, imágenes de la ubicación.",
     images: [
-      "/servicios/cerco-vivo-1.jpg",
-      "/servicios/cerco-vivo-2.jpg",
+      "/colocacion de cerco vivo/portada.png",
+      "/colocacion de cerco vivo/2.png",
+      "/colocacion de cerco vivo/3.png",
+      "/colocacion de cerco vivo/4.png",
+      "/colocacion de cerco vivo/5.png",
     ],
   },
   {
