@@ -31,14 +31,17 @@ const quickLinks = [
   { href: "#contacto", label: "Contacto" },
 ] as const;
 
+const featuredServices = jardineriaServices.slice(0, 2);
+
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#f7f8f8] text-[#222222]">
+    <div className="min-h-screen overflow-x-hidden bg-[#f7f8f8] text-[#1f2937]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(circle_at_top_left,_rgba(36,101,60,0.18),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(182,160,117,0.16),_transparent_26%)]" />
       <div className="bg-[#0f5f2f] px-4 py-2 text-center text-[11px] font-semibold tracking-[0.08em] text-white uppercase">
         Enviamos a todo GBA y alrededores · Presupuestos claros y visitas programadas
       </div>
 
-      <header className="border-b border-black/10 bg-white">
+      <header className="relative z-10 border-b border-black/10 bg-white">
         <div className="mx-auto flex max-w-[1400px] items-center gap-6 px-4 py-5 lg:px-8">
           <div className="min-w-fit text-3xl font-black tracking-[0.28em] text-[#101010]">
             JARDINERIAGV
@@ -105,21 +108,28 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1400px] px-4 py-6 lg:px-8 lg:py-8">
-        <div className="mb-6 flex flex-col gap-4 text-[11px] text-black/55 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-wrap items-center gap-2 uppercase tracking-[0.08em]">
+      <main className="relative z-10 mx-auto max-w-[1400px] px-4 py-6 lg:px-8 lg:py-8">
+        {/* Hero principal comentado a pedido del cliente
+        <section className="mb-8 overflow-hidden rounded-[30px] border border-white/60 bg-[linear-gradient(135deg,rgba(255,255,255,0.94),rgba(249,247,242,0.9))] shadow-[0_24px_70px_rgba(31,41,55,0.08)]">
+          ...
+        </section>
+        */}
+
+        {/* Barra de breadcrumb y selector de orden comentada a pedido del cliente
+        <div className="mb-8 flex flex-col gap-4 rounded-[24px] border border-white/60 bg-white/80 px-5 py-4 shadow-[0_16px_40px_rgba(31,41,55,0.05)] backdrop-blur lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.12em] text-[#6b7280]">
             <span>Inicio</span>
             <span>/</span>
             <span>Jardineria</span>
             <span>/</span>
             <span>Catalogo</span>
             <span>/</span>
-            <span className="font-semibold text-black/80">Servicios y productos</span>
+            <span className="font-semibold text-[#111827]">Servicios y productos</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.12em] text-[#6b7280]">
             <span>Mostrando 1-15 de 15 resultados</span>
-            <select className="h-10 min-w-[210px] rounded-sm border border-black/10 bg-white px-3 text-[12px] text-black/70 outline-none">
+            <select className="h-11 min-w-[220px] rounded-full border border-[#d6ddd6] bg-[#f8faf8] px-4 text-[12px] font-semibold text-[#374151] outline-none">
               <option>Orden predeterminado</option>
               <option>Destacados primero</option>
               <option>Precio: menor a mayor</option>
@@ -127,157 +137,190 @@ export default function Home() {
             </select>
           </div>
         </div>
+        */}
 
         <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
-          <aside className="space-y-6">
-            <section className="bg-transparent">
-              <p className="mb-3 text-xs text-black/45">Subcategoria</p>
-              <h2 className="text-[28px] font-medium tracking-tight text-black">
+          <aside className="mt-2 space-y-6 lg:mt-4 lg:sticky lg:top-24 lg:self-start">
+            {/* Card de "Subcategoria / Jardín" comentada a pedido del cliente
+            <section className="rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(247,244,237,0.94))] p-6 shadow-[0_18px_46px_rgba(31,41,55,0.07)]">
+              <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
+                Subcategoria
+              </p>
+              <h2 className="text-[30px] font-semibold tracking-[-0.03em] text-[#101828]">
                 Jardin
               </h2>
               <a
                 href="#servicios-jardineria"
-                className="mt-2 inline-block text-[12px] text-black/55 hover:text-[#0f5f2f]"
+                className="mt-4 inline-flex rounded-full bg-[#edf4ee] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#1f5d38] transition hover:bg-[#dfece1]"
               >
-                volver al catalogo
+                Volver al catalogo
               </a>
             </section>
-
-            <section className="border-t border-black/10 pt-5">
+            */}
+            <section className="rounded-[28px] border border-white/70 bg-white/85 p-6 shadow-[0_18px_46px_rgba(31,41,55,0.05)]">
               <div className="mb-3 flex items-center justify-between">
                 <a
                   href="#servicios-jardineria"
-                  className="text-[13px] font-semibold text-black hover:text-[#0f5f2f]"
+                  className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[#101828] hover:text-[#0f5f2f]"
                 >
                   Servicios de jardineria
                 </a>
-                <span className="text-[12px] text-black/40">2</span>
+                <span className="rounded-full bg-[#eef5ee] px-2.5 py-1 text-[11px] font-bold text-[#1f5d38]">
+                  2
+                </span>
               </div>
               <div className="space-y-2 text-[15px]">
-                {jardineriaServices.slice(0, 2).map((service) => (
-                  <div
+                {featuredServices.map((service) => (
+                  <Link
                     key={service.id}
-                    className="flex items-start justify-between gap-3 rounded-sm bg-[#dedede] px-3 py-2"
+                    href={`/servicios/${service.id}`}
+                    className="group flex items-center justify-between gap-3 rounded-[18px] border border-[#e4e8df] bg-[#f8fbf8] px-4 py-3 transition hover:border-[#bfd3c1] hover:bg-white"
                   >
-                    <Link
-                      href={`/servicios/${service.id}`}
-                      className="text-black transition hover:text-[#0f5f2f]"
-                    >
+                    <span className="text-[14px] font-medium text-[#111827]">
                       {service.title}
-                    </Link>
-                    <span className="shrink-0 text-[12px] text-black/50">›</span>
-                  </div>
+                    </span>
+                    <span className="shrink-0 text-[16px] text-[#1f5d38] transition group-hover:translate-x-0.5">
+                      →
+                    </span>
+                  </Link>
                 ))}
               </div>
             </section>
 
-            <section className="border-t border-black/10 pt-5">
+            <section className="rounded-[28px] border border-white/70 bg-white/85 p-6 shadow-[0_18px_46px_rgba(31,41,55,0.05)]">
               <div className="mb-3 flex items-center justify-between">
                 <a
                   href="#decoracion"
-                  className="text-[13px] font-semibold text-black hover:text-[#0f5f2f]"
+                  className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[#101828] hover:text-[#0f5f2f]"
                 >
                   Decoracion
                 </a>
-                <span className="text-[12px] text-black/40">2</span>
+                <span className="rounded-full bg-[#f5f0e6] px-2.5 py-1 text-[11px] font-bold text-[#8a5a24]">
+                  2
+                </span>
               </div>
               <div className="space-y-2 text-[15px]">
                 {decoracionItems.map((item) => (
-                  <div
+                  <a
                     key={item.id}
-                    className="flex items-start justify-between gap-3 rounded-sm bg-[#dedede] px-3 py-2"
+                    href={`#${item.id}`}
+                    className="group flex items-center justify-between gap-3 rounded-[18px] border border-[#ebe5d7] bg-[#fcfaf6] px-4 py-3 transition hover:border-[#d5c7a7] hover:bg-white"
                   >
-                    <a
-                      href={`#${item.id}`}
-                      className="text-black transition hover:text-[#0f5f2f]"
-                    >
+                    <span className="text-[14px] font-medium text-[#111827]">
                       {item.label}
-                    </a>
-                    <span className="shrink-0 text-[12px] text-black/50">›</span>
-                  </div>
+                    </span>
+                    <span className="shrink-0 text-[16px] text-[#8a5a24] transition group-hover:translate-x-0.5">
+                      →
+                    </span>
+                  </a>
                 ))}
               </div>
             </section>
 
-            <section className="border-t border-black/10 pt-5">
+            <section className="rounded-[28px] border border-white/70 bg-white/85 p-6 shadow-[0_18px_46px_rgba(31,41,55,0.05)]">
               <div className="mb-3 flex items-center justify-between">
                 <a
                   href="#madera-plastica"
-                  className="text-[13px] font-semibold text-black hover:text-[#0f5f2f]"
+                  className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[#101828] hover:text-[#0f5f2f]"
                 >
                   Madera plastica
                 </a>
-                <span className="text-[12px] text-black/40">5</span>
+                <span className="rounded-full bg-[#eef2f6] px-2.5 py-1 text-[11px] font-bold text-[#425466]">
+                  5
+                </span>
               </div>
               <div className="space-y-2 text-[15px]">
                 {maderaPlasticaItems.map((item) => (
-                  <div
+                  <a
                     key={item.id}
-                    className="flex items-start justify-between gap-3 rounded-sm bg-[#dedede] px-3 py-2"
+                    href={`#${item.id}`}
+                    className="group flex items-center justify-between gap-3 rounded-[18px] border border-[#e2e8ef] bg-[#f7fafc] px-4 py-3 transition hover:border-[#c8d1dc] hover:bg-white"
                   >
-                    <a
-                      href={`#${item.id}`}
-                      className="text-black transition hover:text-[#0f5f2f]"
-                    >
+                    <span className="text-[14px] font-medium text-[#111827]">
                       {item.label}
-                    </a>
-                    <span className="shrink-0 text-[12px] text-black/50">›</span>
-                  </div>
+                    </span>
+                    <span className="shrink-0 text-[16px] text-[#425466] transition group-hover:translate-x-0.5">
+                      →
+                    </span>
+                  </a>
                 ))}
               </div>
             </section>
           </aside>
 
           <div className="space-y-10">
-            <section id="servicios-jardineria">
-              <div className="mb-4 flex items-end justify-between gap-4">
-                <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-black/45">
-                    Catalogo principal
-                  </p>
-                  <h2 className="text-3xl font-medium tracking-tight text-black">
-                    Servicios de jardineria
-                  </h2>
-                </div>
-                <a
-                  href={whatsappHref}
-                  className="rounded-full border border-[#0f5f2f] px-4 py-2 text-[12px] font-bold uppercase tracking-[0.08em] text-[#0f5f2f]"
-                >
-                  Consultar todos
-                </a>
+            <section
+              id="servicios-jardineria"
+              className="mb-2 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
+            >
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#2b6a3c]">
+                  Catalogo principal
+                </p>
+                <h2 className="mt-2 text-4xl font-semibold tracking-[-0.04em] text-[#101828]">
+                  Servicios de jardineria
+                </h2>
+                <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[#4b5563]">
+                  Servicios pensados para presentarse con una imagen más potente y más clara. Cada ficha tiene
+                  salida directa a su detalle.
+                </p>
               </div>
+              <a
+                href={whatsappHref}
+                className="inline-flex items-center rounded-full border border-[#1f5d38]/20 bg-white/80 px-5 py-3 text-[12px] font-bold uppercase tracking-[0.12em] text-[#1f5d38] shadow-[0_12px_28px_rgba(31,93,56,0.08)]"
+              >
+                Consultar todos
+              </a>
+            </section>
 
+            <section>
               <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-                {jardineriaServices.map((service) => (
+                {jardineriaServices.map((service, index) => (
                   <article
                     key={service.id}
-                    className="rounded-[18px] border border-black/5 bg-white p-3 shadow-[0_4px_18px_rgba(0,0,0,0.06)]"
+                    className="group overflow-hidden rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(247,246,241,0.94))] p-3 shadow-[0_18px_46px_rgba(31,41,55,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_56px_rgba(31,41,55,0.14)]"
                   >
-                    <div className="mb-4 flex min-h-[230px] items-center justify-center rounded-[14px] bg-[#f5f5f3] p-6">
-                      <div className="flex h-full w-full flex-col items-center justify-center rounded-[12px] border border-black/5 bg-[linear-gradient(180deg,#f2f2ef_0%,#e9ece6_100%)] p-6 text-center">
-                        <span className="mb-3 rounded-full bg-[#d81d1d] px-3 py-1 text-[11px] font-bold text-white">
+                    <div
+                      className={`relative mb-4 flex min-h-[250px] items-center justify-center overflow-hidden rounded-[22px] p-6 ${
+                        index % 4 === 0
+                          ? "bg-[linear-gradient(145deg,#edf7ef_0%,#d9ead8_100%)]"
+                          : index % 4 === 1
+                            ? "bg-[linear-gradient(145deg,#f7f1e7_0%,#eadcc8_100%)]"
+                            : index % 4 === 2
+                              ? "bg-[linear-gradient(145deg,#eef2f5_0%,#d7e0e8_100%)]"
+                              : "bg-[linear-gradient(145deg,#f3efe7_0%,#e4dbc8_100%)]"
+                      }`}
+                    >
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.55),transparent_45%)]" />
+                      <div className="relative flex h-full w-full flex-col items-center justify-center rounded-[18px] border border-white/40 bg-white/20 p-6 text-center backdrop-blur-[2px]">
+                        <span className="mb-3 rounded-full bg-[#101828] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white">
                           {service.badge}
                         </span>
-                        <span className="text-6xl">{service.icon}</span>
+                        <span className="text-6xl drop-shadow-[0_8px_18px_rgba(255,255,255,0.4)]">
+                          {service.icon}
+                        </span>
                       </div>
                     </div>
 
-                    <div className="px-1 pb-1 text-center">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-black/35">
+                    <div className="px-2 pb-2">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
                         {service.category}
                       </p>
-                      <h3 className="mt-2 min-h-[44px] text-[15px] font-medium uppercase text-black">
+                      <h3 className="mt-2 min-h-[52px] text-[19px] font-semibold leading-6 tracking-[-0.02em] text-[#111827]">
                         {service.title}
                       </h3>
-                      <p className="mt-3 text-[26px] font-semibold leading-none text-[#b0322f]">
+                      <p className="mt-3 text-[28px] font-semibold leading-none tracking-[-0.03em] text-[#9a4034]">
                         {service.price}
                       </p>
-                      <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-black/35">
+                      <p className="mt-2 text-[11px] leading-5 text-[#6b7280]">
+                        {service.summary}
+                      </p>
+                      <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
                         Presupuesto orientativo
                       </p>
                       <Link
                         href={`/servicios/${service.id}`}
-                        className="mt-4 inline-flex rounded-full bg-[#2b6a3c] px-5 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-white transition hover:bg-[#21532f]"
+                        className="mt-5 inline-flex items-center rounded-full bg-[#1f5d38] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(31,93,56,0.2)] transition hover:bg-[#18492c]"
                       >
                         Ver detalle
                       </Link>
@@ -288,38 +331,55 @@ export default function Home() {
             </section>
 
             <section className="space-y-5">
-              {jardineriaServices.map((service) => (
+              {jardineriaServices.map((service, index) => (
                 <article
                   id={service.id}
                   key={service.id}
-                  className="rounded-[18px] border border-black/6 bg-white p-6 shadow-[0_4px_18px_rgba(0,0,0,0.05)]"
+                  className="overflow-hidden rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,247,242,0.95))] p-6 shadow-[0_18px_46px_rgba(31,41,55,0.07)]"
                 >
-                  <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+                  <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
                     <div className="max-w-3xl">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-black/40">
+                      <div className="mb-4 flex items-center gap-3">
+                        <span
+                          className={`flex h-12 w-12 items-center justify-center rounded-2xl text-2xl ${
+                            index % 3 === 0
+                              ? "bg-[#e5f1e7]"
+                              : index % 3 === 1
+                                ? "bg-[#f5ecdf]"
+                                : "bg-[#e8eef3]"
+                          }`}
+                        >
+                          {service.icon}
+                        </span>
+                        <span className="rounded-full bg-[#eef5ee] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#1f5d38]">
+                          {service.badge}
+                        </span>
+                      </div>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
                         {service.category}
                       </p>
-                      <h3 className="mt-2 text-2xl font-medium text-black">
+                      <h3 className="mt-2 text-[30px] font-semibold leading-tight tracking-[-0.03em] text-[#101828]">
                         {service.title}
                       </h3>
-                      <p className="mt-3 text-[15px] leading-7 text-black/75">
+                      <p className="mt-4 max-w-3xl text-[15px] leading-8 text-[#4b5563]">
                         {service.description}
                       </p>
                     </div>
 
-                    <div className="min-w-[250px] rounded-[16px] bg-[#f5f5f2] p-5">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-black/40">
+                    <div className="min-w-[290px] rounded-[24px] border border-[#dfe8df] bg-[linear-gradient(180deg,#f9fbf9_0%,#eef4ef_100%)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
                         Valor de referencia
                       </p>
-                      <p className="mt-2 text-3xl font-semibold text-[#b0322f]">
+                      <p className="mt-2 text-4xl font-semibold tracking-[-0.04em] text-[#9a4034]">
                         {service.price}
                       </p>
-                      <p className="mt-3 text-sm leading-6 text-black/70">
+                      <div className="mt-4 h-px w-full bg-[#d8e2d9]" />
+                      <p className="mt-4 text-[14px] leading-7 text-[#4b5563]">
                         {service.summary}
                       </p>
                       <a
                         href={whatsappHref}
-                        className="mt-5 inline-flex rounded-full bg-[#2b6a3c] px-5 py-3 text-[12px] font-bold uppercase tracking-[0.08em] text-white transition hover:bg-[#21532f]"
+                        className="mt-6 inline-flex rounded-full bg-[#1f5d38] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(31,93,56,0.2)] transition hover:bg-[#18492c]"
                       >
                         Agendar visita
                       </a>
@@ -331,10 +391,10 @@ export default function Home() {
 
             <section id="decoracion" className="space-y-5">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-black/45">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8a5a24]">
                   Categoria complementaria
                 </p>
-                <h2 className="text-3xl font-medium tracking-tight text-black">
+                <h2 className="mt-2 text-4xl font-semibold tracking-[-0.04em] text-[#101828]">
                   Decoracion
                 </h2>
               </div>
@@ -344,20 +404,22 @@ export default function Home() {
                   <article
                     id={item.id}
                     key={item.id}
-                    className="rounded-[18px] border border-black/6 bg-white p-6 shadow-[0_4px_18px_rgba(0,0,0,0.05)]"
+                    className="rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(251,248,241,0.96))] p-6 shadow-[0_18px_46px_rgba(31,41,55,0.06)]"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-[16px] bg-[#efefe9] text-3xl">
+                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-[20px] bg-[#f5ecdf] text-3xl shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                         {item.icon}
                       </div>
                       <div>
-                        <h3 className="text-xl font-medium text-black">{item.label}</h3>
-                        <p className="mt-2 text-[15px] leading-7 text-black/75">
+                        <h3 className="text-2xl font-semibold tracking-[-0.03em] text-[#101828]">
+                          {item.label}
+                        </h3>
+                        <p className="mt-3 text-[15px] leading-8 text-[#4b5563]">
                           {item.text}
                         </p>
                         <a
                           href={whatsappHref}
-                          className="mt-4 inline-flex rounded-full border border-[#2b6a3c] px-4 py-2 text-[12px] font-bold uppercase tracking-[0.08em] text-[#2b6a3c]"
+                          className="mt-5 inline-flex rounded-full border border-[#8a5a24]/20 bg-white/80 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#8a5a24]"
                         >
                           Consultar disponibilidad
                         </a>
@@ -370,10 +432,10 @@ export default function Home() {
 
             <section id="madera-plastica" className="space-y-5">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-black/45">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#425466]">
                   Linea de productos
                 </p>
-                <h2 className="text-3xl font-medium tracking-tight text-black">
+                <h2 className="mt-2 text-4xl font-semibold tracking-[-0.04em] text-[#101828]">
                   Madera plastica
                 </h2>
               </div>
@@ -383,24 +445,24 @@ export default function Home() {
                   <article
                     id={item.id}
                     key={item.id}
-                    className="rounded-[18px] border border-black/6 bg-white p-5 shadow-[0_4px_18px_rgba(0,0,0,0.05)]"
+                    className="rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(244,247,249,0.96))] p-5 shadow-[0_18px_46px_rgba(31,41,55,0.06)]"
                   >
-                    <div className="mb-4 flex h-[180px] items-center justify-center rounded-[14px] bg-[#f5f5f2] text-6xl">
+                    <div className="mb-5 flex h-[190px] items-center justify-center rounded-[22px] bg-[linear-gradient(145deg,#eef3f7_0%,#dde6ee_100%)] text-6xl">
                       {item.icon}
                     </div>
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-black/35">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
                       Madera plastica
                     </p>
-                    <h3 className="mt-2 text-lg font-medium uppercase text-black">
+                    <h3 className="mt-2 text-[22px] font-semibold tracking-[-0.03em] text-[#101828]">
                       {item.label}
                     </h3>
-                    <p className="mt-3 text-[15px] leading-7 text-black/75">
+                    <p className="mt-3 text-[15px] leading-8 text-[#4b5563]">
                       Categoria preparada para cargar modelos, medidas, imagenes y
                       precios reales en la siguiente etapa.
                     </p>
                     <a
                       href={whatsappHref}
-                      className="mt-4 inline-flex rounded-full bg-[#2b6a3c] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-white"
+                      className="mt-5 inline-flex rounded-full bg-[#425466] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white"
                     >
                       Pedir informacion
                     </a>
@@ -411,17 +473,18 @@ export default function Home() {
 
             <section
               id="contacto"
-              className="rounded-[22px] bg-[#0f5f2f] px-6 py-8 text-white shadow-[0_10px_30px_rgba(15,95,47,0.2)]"
+              className="overflow-hidden rounded-[34px] bg-[linear-gradient(135deg,#133d28_0%,#1f5d38_55%,#356f45_100%)] px-6 py-8 text-white shadow-[0_24px_60px_rgba(15,95,47,0.28)]"
             >
+              <div className="pointer-events-none absolute" />
               <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                 <div className="max-w-2xl">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-white/70">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">
                     Contacto directo
                   </p>
-                  <h2 className="mt-2 text-3xl font-medium tracking-tight">
+                  <h2 className="mt-3 text-4xl font-semibold leading-tight tracking-[-0.04em]">
                     ¿Querés coordinar una visita o pedir presupuesto?
                   </h2>
-                  <p className="mt-3 text-[15px] leading-7 text-white/80">
+                  <p className="mt-4 text-[15px] leading-8 text-white/82">
                     Esta seccion queda lista para conectar luego con agenda de turnos,
                     formulario o WhatsApp del cliente. Por ahora dejamos el CTA directo.
                   </p>
@@ -430,13 +493,13 @@ export default function Home() {
                 <div className="flex flex-wrap gap-3">
                   <a
                     href={whatsappHref}
-                    className="rounded-full bg-white px-6 py-3 text-[12px] font-bold uppercase tracking-[0.08em] text-[#0f5f2f]"
+                    className="rounded-full bg-white px-6 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[#0f5f2f] shadow-[0_12px_28px_rgba(255,255,255,0.16)]"
                   >
                     Agendar visita
                   </a>
                   <a
                     href="#servicios-jardineria"
-                    className="rounded-full border border-white/35 px-6 py-3 text-[12px] font-bold uppercase tracking-[0.08em] text-white"
+                    className="rounded-full border border-white/35 bg-white/5 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white backdrop-blur"
                   >
                     Ver catalogo
                   </a>

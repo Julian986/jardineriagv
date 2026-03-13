@@ -39,39 +39,71 @@ export default async function ServicioDetailPage({ params }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f7f8f8] text-[#222222]">
-      <main className="mx-auto max-w-[1200px] px-4 py-8 lg:px-8 lg:py-12">
-        <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <nav className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.08em] text-black/55">
-            {breadcrumbs.map((item, index) => (
-              <span key={item.href} className="flex items-center gap-2">
-                {index > 0 && <span>/</span>}
-                <Link
-                  href={item.href}
-                  className={
-                    index === breadcrumbs.length - 1
-                      ? "font-semibold text-black/80"
-                      : "hover:text-[#0f5f2f]"
-                  }
-                >
-                  {item.label}
-                </Link>
-              </span>
-            ))}
-          </nav>
+    <div className="min-h-screen overflow-x-hidden bg-[#f7f8f8] text-[#222222]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[360px] bg-[radial-gradient(circle_at_top_left,_rgba(36,101,60,0.16),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(182,160,117,0.16),_transparent_28%)]" />
+      <main className="relative z-10 mx-auto max-w-[1200px] px-4 py-8 lg:px-8 lg:py-12">
+        <section className="mb-8 overflow-hidden rounded-[30px] border border-white/60 bg-[linear-gradient(135deg,rgba(255,255,255,0.94),rgba(249,247,242,0.9))] px-6 py-7 shadow-[0_24px_70px_rgba(31,41,55,0.08)] lg:px-8">
+          <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <nav className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.12em] text-[#6b7280]">
+              {breadcrumbs.map((item, index) => (
+                <span key={item.href} className="flex items-center gap-2">
+                  {index > 0 && <span>/</span>}
+                  <Link
+                    href={item.href}
+                    className={
+                      index === breadcrumbs.length - 1
+                        ? "font-semibold text-[#111827]"
+                        : "hover:text-[#0f5f2f]"
+                    }
+                  >
+                    {item.label}
+                  </Link>
+                </span>
+              ))}
+            </nav>
 
-          <Link
-            href="/#servicios-jardineria"
-            className="inline-flex items-center justify-center rounded-full border border-[#0f5f2f] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#0f5f2f] hover:bg-[#0f5f2f] hover:text-white"
-          >
-            ← Volver al catálogo
-          </Link>
-        </div>
+            <Link
+              href="/#servicios-jardineria"
+              className="inline-flex items-center justify-center rounded-full border border-[#1f5d38]/20 bg-white/80 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1f5d38] shadow-[0_12px_28px_rgba(31,93,56,0.08)]"
+            >
+              ← Volver al catálogo
+            </Link>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-end">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#2b6a3c]">
+                Ficha de servicio
+              </p>
+              <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight tracking-[-0.04em] text-[#101828] md:text-5xl">
+                {service.title}
+              </h1>
+              <p className="mt-4 max-w-2xl text-[15px] leading-8 text-[#4b5563]">
+                Una ficha pensada para lucir fotos reales, explicar bien el servicio y facilitar el contacto
+                directo con el cliente.
+              </p>
+            </div>
+
+            <div className="rounded-[26px] bg-[#163e28] p-5 text-white shadow-[0_18px_40px_rgba(22,62,40,0.28)]">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">
+                Valor de referencia
+              </p>
+              <p className="mt-3 text-4xl font-semibold tracking-[-0.04em]">{service.price}</p>
+              <p className="mt-3 text-[14px] leading-7 text-white/80">
+                El valor final se confirma luego del relevamiento y de las condiciones del lugar.
+              </p>
+            </div>
+          </div>
+        </section>
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
           <section aria-label={`Imagenes del servicio ${service.title}`}>
-            <div className="overflow-hidden rounded-[22px] border border-black/8 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-              <div className="relative aspect-[4/3] w-full bg-[#eceeed]">
+            <div className="overflow-hidden rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(247,246,241,0.95))] shadow-[0_22px_56px_rgba(31,41,55,0.09)]">
+              <div className="relative aspect-[4/3] w-full bg-[linear-gradient(145deg,#edf7ef_0%,#dce9dc_100%)]">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.45),transparent_42%)]" />
+                <div className="absolute left-5 top-5 rounded-full bg-[#101828] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white">
+                  {service.badge}
+                </div>
                 {service.images.length > 0 ? (
                   <Image
                     src={service.images[0]}
@@ -80,19 +112,27 @@ export default async function ServicioDetailPage({ params }: Props) {
                     className="object-cover"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center text-sm text-black/45">
-                    Imagen principal del servicio
+                  <div className="flex h-full w-full flex-col items-center justify-center gap-4 text-center">
+                    <span className="text-7xl">{service.icon}</span>
+                    <div>
+                      <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#4b5563]">
+                        Imagen principal del servicio
+                      </p>
+                      <p className="mt-2 text-[14px] text-[#6b7280]">
+                        Cuando cargues las fotos reales, este bloque va a lucir muchísimo mejor.
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
 
-              <div className="border-t border-black/5 bg-[#f7f7f5] px-4 py-3">
+              <div className="border-t border-white/60 bg-[#f7f7f5] px-4 py-4">
                 <div className="flex gap-3 overflow-x-auto pb-1">
                   {service.images.length > 0 ? (
                     service.images.map((img, index) => (
                       <div
                         key={img}
-                        className="relative h-16 w-24 shrink-0 overflow-hidden rounded-[10px] border border-black/10 bg-[#e3e5e0]"
+                        className="relative h-20 w-28 shrink-0 overflow-hidden rounded-[16px] border border-white/70 bg-[linear-gradient(145deg,#e8eee8_0%,#dce4db_100%)] shadow-[0_8px_20px_rgba(31,41,55,0.06)]"
                       >
                         <Image
                           src={img}
@@ -103,7 +143,7 @@ export default async function ServicioDetailPage({ params }: Props) {
                       </div>
                     ))
                   ) : (
-                    <div className="flex h-16 items-center text-xs text-black/45">
+                    <div className="flex h-20 items-center text-xs text-[#6b7280]">
                       Galeria preparada para 4/5 imagenes del servicio.
                     </div>
                   )}
@@ -111,14 +151,14 @@ export default async function ServicioDetailPage({ params }: Props) {
               </div>
             </div>
 
-            <section className="mt-8 space-y-4 rounded-[22px] bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.05)]">
-              <h2 className="text-xl font-semibold text-black">
+            <section className="mt-8 space-y-4 rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,247,242,0.95))] p-7 shadow-[0_18px_46px_rgba(31,41,55,0.07)]">
+              <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[#101828]">
                 Descripcion detallada
               </h2>
-              <p className="text-[15px] leading-7 text-black/75">
+              <p className="text-[15px] leading-8 text-[#4b5563]">
                 {service.description}
               </p>
-              <p className="text-[15px] leading-7 text-black/75">
+              <p className="text-[15px] leading-8 text-[#4b5563]">
                 Esta pagina de detalle esta pensada para complementar la ficha
                 rapida del catalogo, sumando imagenes, informacion mas extensa y
                 llamados a la accion claros para coordinar una visita o cerrar el
@@ -128,81 +168,69 @@ export default async function ServicioDetailPage({ params }: Props) {
           </section>
 
           <aside className="space-y-5">
-            <section className="rounded-[22px] bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
-              <div className="mb-3 flex items-center gap-2">
-                <span className="rounded-full bg-[#d81d1d] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-white">
+            <section className="rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.97),rgba(247,246,241,0.95))] p-6 shadow-[0_22px_56px_rgba(31,41,55,0.08)]">
+              <div className="mb-4 flex items-center gap-3">
+                <span className="rounded-full bg-[#101828] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white">
                   {service.badge}
                 </span>
-                <span className="text-2xl" aria-hidden="true">
+                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#e8f0e9] text-2xl" aria-hidden="true">
                   {service.icon}
                 </span>
               </div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-black/40">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
                 {service.category}
               </p>
-              <h1 className="mt-1 text-3xl font-semibold tracking-tight text-black">
+              <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-[#101828]">
                 {service.title}
-              </h1>
+              </h2>
 
               <div className="mt-4">
-                <p className="text-[13px] font-semibold text-black/60">
-                  Valor de referencia
-                </p>
-                <p className="mt-1 text-[32px] font-semibold leading-none text-[#b0322f]">
-                  {service.price}
-                </p>
-                <p className="mt-2 text-[12px] text-black/50">
-                  El valor final se confirma luego de la visita y relevamiento del
-                  espacio.
-                </p>
+                <div className="h-px w-full bg-[#dde6de]" />
+                <p className="mt-4 text-[14px] leading-7 text-[#4b5563]">{service.summary}</p>
               </div>
-
-              <p className="mt-4 text-[14px] leading-6 text-black/75">
-                {service.summary}
-              </p>
 
               <div className="mt-6 flex flex-col gap-3">
                 <Link
                   href={whatsappHref}
-                  className="inline-flex items-center justify-center rounded-full bg-[#0f5f2f] px-6 py-3 text-[12px] font-bold uppercase tracking-[0.08em] text-white transition hover:bg-[#0b4823]"
+                  className="inline-flex items-center justify-center rounded-full bg-[#1f5d38] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(31,93,56,0.2)] transition hover:bg-[#18492c]"
                 >
                   Agendar visita por WhatsApp
                 </Link>
                 <Link
                   href={whatsappHref}
-                  className="inline-flex items-center justify-center rounded-full border border-[#0f5f2f] px-6 py-3 text-[12px] font-bold uppercase tracking-[0.08em] text-[#0f5f2f]"
+                  className="inline-flex items-center justify-center rounded-full border border-[#1f5d38]/20 bg-white/80 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[#1f5d38]"
                 >
                   Pedir presupuesto detallado
                 </Link>
               </div>
 
-              <ul className="mt-6 space-y-2 text-[13px] text-black/75">
+              <ul className="mt-6 space-y-2 text-[13px] leading-6 text-[#4b5563]">
                 <li>• Ideal para clientes que quieren entender el alcance del servicio.</li>
                 <li>• Permite compartir el enlace directo por WhatsApp o redes.</li>
                 <li>• Facil de actualizar cuando cambien precios o condiciones.</li>
               </ul>
             </section>
 
-            <section className="rounded-[22px] bg-white p-6 shadow-[0_6px_20px_rgba(0,0,0,0.04)]">
-              <h2 className="text-[15px] font-semibold uppercase tracking-[0.08em] text-black">
+            <section className="rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(251,248,241,0.95))] p-6 shadow-[0_18px_46px_rgba(31,41,55,0.06)]">
+              <h2 className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#8a5a24]">
                 Metodos de pago sugeridos
               </h2>
-              <p className="mt-2 text-[13px] leading-6 text-black/75">
+              <p className="mt-3 text-[14px] leading-7 text-[#4b5563]">
                 Esta seccion queda lista para detallar medios de pago y
                 condiciones una vez que el cliente los defina.
               </p>
-              <ul className="mt-4 space-y-2 text-[13px] text-black/80">
+              <ul className="mt-4 space-y-2 text-[13px] leading-6 text-[#4b5563]">
                 <li>• Efectivo o transferencia bancaria.</li>
                 <li>• Señal para reservar visita o fecha de obra.</li>
                 <li>• Posibilidad de cuotas segun el tipo de trabajo.</li>
               </ul>
             </section>
 
-            <section className="rounded-[22px] bg-[#0f5f2f] p-6 text-white shadow-[0_8px_24px_rgba(15,95,47,0.45)]">
-              <h2 className="text-[15px] font-semibold uppercase tracking-[0.08em]">
+            <section className="rounded-[30px] bg-[linear-gradient(135deg,#133d28_0%,#1f5d38_55%,#356f45_100%)] p-6 text-white shadow-[0_22px_56px_rgba(15,95,47,0.28)]">
+              <h2 className="text-[14px] font-semibold uppercase tracking-[0.16em]">
                 Otros servicios relacionados
               </h2>
-              <p className="mt-2 text-[13px] leading-6 text-white/80">
+              <p className="mt-3 text-[14px] leading-7 text-white/80">
                 Desde esta pagina podemos luego enlazar a otros servicios
                 complementarios, como riego automatico, canteros o mantenimiento
                 periodico.
@@ -215,7 +243,7 @@ export default async function ServicioDetailPage({ params }: Props) {
                     <Link
                       key={item.id}
                       href={`/servicios/${item.id}`}
-                      className="rounded-full border border-white/40 px-3 py-1 text-[11px] font-semibold"
+                      className="rounded-full border border-white/30 bg-white/6 px-3 py-2 text-[11px] font-semibold backdrop-blur"
                     >
                       {item.title}
                     </Link>
