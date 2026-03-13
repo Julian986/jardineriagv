@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { jardineriaServices, whatsappHref } from "@/app/data/services";
 
@@ -139,82 +141,71 @@ export default function Home() {
         </div>
         */}
 
-        <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
-          <aside className="mt-2 lg:mt-4 lg:sticky lg:top-24 lg:self-start">
-            <nav className="rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(247,246,241,0.94))] p-4 shadow-[0_18px_46px_rgba(31,41,55,0.06)]">
-              <div className="mb-4 px-1">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#8fa393]">
-                  Navegación de secciones
-                </p>
+        <div className="grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
+          <aside className="hidden border-r border-[#e5e7eb] bg-white lg:block lg:sticky lg:top-24 lg:h-[calc(100vh-7rem)] lg:self-start lg:py-6 lg:pr-4">
+            <nav className="flex flex-col gap-1">
+              <div className="mb-6 flex items-center gap-3 px-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#f0fdf4] text-[#166534]">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="h-4 w-4 stroke-[2]" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 20c4.5-2.2 7-6.2 7-10.8C15 9.2 12.7 8 10 8c-2.5 0-4.7 1.2-6 3.3C4 15.4 7.1 18.8 12 20Z" />
+                    <path d="M12 19c0-5 2.6-9 7-11" />
+                  </svg>
+                </div>
+                <span className="text-sm font-semibold text-[#111827]">Jardineriagv</span>
               </div>
 
-              <div className="space-y-5">
-                <section>
-                  <a
-                    href="#servicios-jardineria"
-                    className="mb-2 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#111827]"
+              <a
+                href="#servicios-jardineria"
+                className="rounded-lg bg-[#f0fdf4] px-3 py-2 text-sm font-medium text-[#166534]"
+              >
+                Servicios de jardinería
+              </a>
+              <div className="ml-3 mt-1 flex flex-col gap-0.5 border-l-2 border-[#dcfce7] pl-3">
+                {featuredServices.map((service) => (
+                  <Link
+                    key={service.id}
+                    href={`/servicios/${service.id}`}
+                    className="rounded-md px-2 py-1.5 text-[13px] text-[#374151] transition hover:bg-[#f0fdf4] hover:text-[#166534]"
                   >
-                    <span className="text-[#1f7a45]">▾</span>
-                    Servicios de jardinería
-                  </a>
-                  <div className="space-y-2 pl-4">
-                    {featuredServices.map((service, index) => (
-                      <Link
-                        key={service.id}
-                        href={`/servicios/${service.id}`}
-                        className={`flex items-center justify-between rounded-[14px] border px-3 py-2 text-[13px] transition ${
-                          index === 0
-                            ? "border-[#d9e8dc] bg-[#f2f8f3] text-[#111827]"
-                            : "border-transparent bg-white/65 text-[#374151] hover:border-[#e3e8e3] hover:bg-white"
-                        }`}
-                      >
-                        <span>{service.title}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </section>
+                    {service.title}
+                  </Link>
+                ))}
+              </div>
 
-                <section className="border-t border-[#ecefea] pt-4">
+              <a
+                href="#decoracion"
+                className="mt-2 rounded-lg px-3 py-2 text-sm font-medium text-[#374151] transition hover:bg-[#f9fafb] hover:text-[#111827]"
+              >
+                Decoración
+              </a>
+              <div className="ml-3 mt-1 flex flex-col gap-0.5 border-l-2 border-[#e5e7eb] pl-3">
+                {decoracionItems.map((item) => (
                   <a
-                    href="#decoracion"
-                    className="mb-2 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#111827]"
+                    key={item.id}
+                    href={`#${item.id}`}
+                    className="rounded-md px-2 py-1.5 text-[13px] text-[#6b7280] transition hover:bg-[#f9fafb] hover:text-[#111827]"
                   >
-                    <span className="text-[#8fa393]">▸</span>
-                    Decoración
+                    {item.label}
                   </a>
-                  <div className="space-y-2 pl-4">
-                    {decoracionItems.map((item) => (
-                      <a
-                        key={item.id}
-                        href={`#${item.id}`}
-                        className="flex items-center justify-between rounded-[14px] border border-transparent bg-white/65 px-3 py-2 text-[13px] text-[#374151] transition hover:border-[#e9dfd2] hover:bg-[#fcfaf6]"
-                      >
-                        <span>{item.label}</span>
-                      </a>
-                    ))}
-                  </div>
-                </section>
+                ))}
+              </div>
 
-                <section className="border-t border-[#ecefea] pt-4">
+              <a
+                href="#madera-plastica"
+                className="mt-2 rounded-lg px-3 py-2 text-sm font-medium text-[#374151] transition hover:bg-[#f9fafb] hover:text-[#111827]"
+              >
+                Madera plástica
+              </a>
+              <div className="ml-3 mt-1 flex flex-col gap-0.5 border-l-2 border-[#e5e7eb] pl-3">
+                {maderaPlasticaItems.map((item) => (
                   <a
-                    href="#madera-plastica"
-                    className="mb-2 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#111827]"
+                    key={item.id}
+                    href={`#${item.id}`}
+                    className="rounded-md px-2 py-1.5 text-[13px] text-[#6b7280] transition hover:bg-[#f9fafb] hover:text-[#111827]"
                   >
-                    <span className="text-[#8fa393]">▸</span>
-                    Madera plástica
+                    {item.label}
                   </a>
-                  <div className="space-y-2 pl-4">
-                    {maderaPlasticaItems.map((item) => (
-                      <a
-                        key={item.id}
-                        href={`#${item.id}`}
-                        className="flex items-center justify-between rounded-[14px] border border-transparent bg-white/65 px-3 py-2 text-[13px] text-[#374151] transition hover:border-[#dde4ee] hover:bg-[#f5f8fc]"
-                      >
-                        <span>{item.label}</span>
-                      </a>
-                    ))}
-                  </div>
-                </section>
+                ))}
               </div>
             </nav>
           </aside>
