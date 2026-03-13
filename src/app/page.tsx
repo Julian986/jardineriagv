@@ -140,112 +140,88 @@ export default function Home() {
         */}
 
         <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
-          <aside className="mt-2 space-y-6 lg:mt-4 lg:sticky lg:top-24 lg:self-start">
-            {/* Card de "Subcategoria / Jardín" comentada a pedido del cliente
-            <section className="rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(247,244,237,0.94))] p-6 shadow-[0_18px_46px_rgba(31,41,55,0.07)]">
-              <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
-                Subcategoria
+          <aside className="mt-2 lg:mt-4 lg:sticky lg:top-24 lg:self-start">
+            <nav className="space-y-1 rounded-2xl border border-white/70 bg-white/90 p-2 shadow-[0_18px_46px_rgba(31,41,55,0.05)]">
+              <p className="px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9ca3af]">
+                Navegación
               </p>
-              <h2 className="text-[30px] font-semibold tracking-[-0.03em] text-[#101828]">
-                Jardin
-              </h2>
-              <a
-                href="#servicios-jardineria"
-                className="mt-4 inline-flex rounded-full bg-[#edf4ee] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#1f5d38] transition hover:bg-[#dfece1]"
-              >
-                Volver al catalogo
-              </a>
-            </section>
-            */}
-            <section className="rounded-[28px] border border-white/70 bg-white/85 p-6 shadow-[0_18px_46px_rgba(31,41,55,0.05)]">
-              <div className="mb-3 flex items-center justify-between">
-                <a
-                  href="#servicios-jardineria"
-                  className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[#101828] hover:text-[#0f5f2f]"
+
+              <div className="space-y-1">
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-[13px] font-semibold text-[#111827] hover:bg-[#f3f6f3]"
                 >
-                  Servicios de jardineria
-                </a>
-                <span className="rounded-full bg-[#eef5ee] px-2.5 py-1 text-[11px] font-bold text-[#1f5d38]">
-                  2
-                </span>
-              </div>
-              <div className="space-y-2 text-[15px]">
+                  <span className="uppercase tracking-[0.12em] text-[11px]">Servicios de jardineria</span>
+                  <span className="rounded-full bg-[#eef5ee] px-2 py-0.5 text-[10px] font-bold text-[#1f5d38]">
+                    2
+                  </span>
+                </button>
                 {featuredServices.map((service) => (
                   <Link
                     key={service.id}
                     href={`/servicios/${service.id}`}
-                    className="group flex items-center justify-between gap-3 rounded-[18px] border border-[#e4e8df] bg-[#f8fbf8] px-4 py-3 transition hover:border-[#bfd3c1] hover:bg-white"
+                    className="group flex items-center justify-between rounded-lg px-4 py-2 text-[13px] text-[#4b5563] hover:bg-[#f3f6f3]"
                   >
-                    <span className="text-[14px] font-medium text-[#111827]">
-                      {service.title}
-                    </span>
-                    <span className="shrink-0 text-[16px] text-[#1f5d38] transition group-hover:translate-x-0.5">
+                    <span>{service.title}</span>
+                    <span className="text-[14px] text-[#1f5d38] transition group-hover:translate-x-0.5">
                       →
                     </span>
                   </Link>
                 ))}
               </div>
-            </section>
 
-            <section className="rounded-[28px] border border-white/70 bg-white/85 p-6 shadow-[0_18px_46px_rgba(31,41,55,0.05)]">
-              <div className="mb-3 flex items-center justify-between">
-                <a
-                  href="#decoracion"
-                  className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[#101828] hover:text-[#0f5f2f]"
-                >
-                  Decoracion
-                </a>
-                <span className="rounded-full bg-[#f5f0e6] px-2.5 py-1 text-[11px] font-bold text-[#8a5a24]">
+              <div className="mt-2 h-px w-full bg-[#e5e7eb]" />
+
+              <button
+                type="button"
+                className="mt-1 flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-[13px] font-semibold text-[#111827] hover:bg-[#f9f4ea]"
+              >
+                <span className="uppercase tracking-[0.12em] text-[11px]">Decoracion</span>
+                <span className="rounded-full bg-[#f5f0e6] px-2 py-0.5 text-[10px] font-bold text-[#8a5a24]">
                   2
                 </span>
-              </div>
-              <div className="space-y-2 text-[15px]">
+              </button>
+              <div className="space-y-1">
                 {decoracionItems.map((item) => (
                   <a
                     key={item.id}
                     href={`#${item.id}`}
-                    className="group flex items-center justify-between gap-3 rounded-[18px] border border-[#ebe5d7] bg-[#fcfaf6] px-4 py-3 transition hover:border-[#d5c7a7] hover:bg-white"
+                    className="group flex items-center justify-between rounded-lg px-4 py-2 text-[13px] text-[#4b5563] hover:bg-[#f9f4ea]"
                   >
-                    <span className="text-[14px] font-medium text-[#111827]">
-                      {item.label}
-                    </span>
-                    <span className="shrink-0 text-[16px] text-[#8a5a24] transition group-hover:translate-x-0.5">
+                    <span>{item.label}</span>
+                    <span className="text-[14px] text-[#8a5a24] transition group-hover:translate-x-0.5">
                       →
                     </span>
                   </a>
                 ))}
               </div>
-            </section>
 
-            <section className="rounded-[28px] border border-white/70 bg-white/85 p-6 shadow-[0_18px_46px_rgba(31,41,55,0.05)]">
-              <div className="mb-3 flex items-center justify-between">
-                <a
-                  href="#madera-plastica"
-                  className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[#101828] hover:text-[#0f5f2f]"
-                >
-                  Madera plastica
-                </a>
-                <span className="rounded-full bg-[#eef2f6] px-2.5 py-1 text-[11px] font-bold text-[#425466]">
+              <div className="mt-2 h-px w-full bg-[#e5e7eb]" />
+
+              <button
+                type="button"
+                className="mt-1 flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-[13px] font-semibold text-[#111827] hover:bg-[#edf2f8]"
+              >
+                <span className="uppercase tracking-[0.12em] text-[11px]">Madera plastica</span>
+                <span className="rounded-full bg-[#eef2f6] px-2 py-0.5 text-[10px] font-bold text-[#425466]">
                   5
                 </span>
-              </div>
-              <div className="space-y-2 text-[15px]">
+              </button>
+              <div className="space-y-1">
                 {maderaPlasticaItems.map((item) => (
                   <a
                     key={item.id}
                     href={`#${item.id}`}
-                    className="group flex items-center justify-between gap-3 rounded-[18px] border border-[#e2e8ef] bg-[#f7fafc] px-4 py-3 transition hover:border-[#c8d1dc] hover:bg-white"
+                    className="group flex items-center justify-between rounded-lg px-4 py-2 text-[13px] text-[#4b5563] hover:bg-[#edf2f8]"
                   >
-                    <span className="text-[14px] font-medium text-[#111827]">
-                      {item.label}
-                    </span>
-                    <span className="shrink-0 text-[16px] text-[#425466] transition group-hover:translate-x-0.5">
+                    <span>{item.label}</span>
+                    <span className="text-[14px] text-[#425466] transition group-hover:translate-x-0.5">
                       →
                     </span>
                   </a>
                 ))}
               </div>
-            </section>
+            </nav>
           </aside>
 
           <div className="space-y-10">
