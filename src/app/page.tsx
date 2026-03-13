@@ -142,7 +142,7 @@ export default function Home() {
         */}
 
         <div className="grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
-          <aside className="hidden border-r border-[#e5e7eb] bg-white lg:block lg:sticky lg:top-24 lg:h-[calc(100vh-7rem)] lg:self-start lg:py-6 lg:pr-4">
+          <aside className="hidden rounded-2xl bg-[#f4f5f5] lg:block lg:sticky lg:top-24 lg:h-[calc(100vh-7rem)] lg:self-start lg:py-6 lg:px-4">
             <nav className="flex flex-col gap-1">
               <div className="mb-6 flex items-center gap-3 px-3">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#f0fdf4] text-[#166534]">
