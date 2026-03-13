@@ -165,8 +165,11 @@ export default function Home() {
                   <Link
                     key={service.id}
                     href={`/servicios/${service.id}`}
-                    className="rounded-md px-2 py-1.5 text-[13px] text-[#374151] transition hover:bg-[#f0fdf4] hover:text-[#166534]"
+                    className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px] text-[#374151] transition hover:bg-[#f0fdf4] hover:text-[#166534]"
                   >
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center text-base leading-none" aria-hidden>
+                      {service.icon}
+                    </span>
                     {service.title}
                   </Link>
                 ))}
@@ -183,8 +186,11 @@ export default function Home() {
                   <a
                     key={item.id}
                     href={`#${item.id}`}
-                    className="rounded-md px-2 py-1.5 text-[13px] text-[#6b7280] transition hover:bg-[#f9fafb] hover:text-[#111827]"
+                    className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px] text-[#6b7280] transition hover:bg-[#f9fafb] hover:text-[#111827]"
                   >
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center text-base leading-none" aria-hidden>
+                      {item.icon}
+                    </span>
                     {item.label}
                   </a>
                 ))}
@@ -201,8 +207,11 @@ export default function Home() {
                   <a
                     key={item.id}
                     href={`#${item.id}`}
-                    className="rounded-md px-2 py-1.5 text-[13px] text-[#6b7280] transition hover:bg-[#f9fafb] hover:text-[#111827]"
+                    className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px] text-[#6b7280] transition hover:bg-[#f9fafb] hover:text-[#111827]"
                   >
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center text-base leading-none" aria-hidden>
+                      {item.icon}
+                    </span>
                     {item.label}
                   </a>
                 ))}
