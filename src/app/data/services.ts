@@ -60,9 +60,10 @@ export const jardineriaServices: readonly JardineriaService[] = [
     description:
       "Trabajamos dos variedades de césped en rollos. Grama Bahiana: resistente al alto tránsito, con buena tolerancia a lapsos sin riego; en invierno cambia a un color amarillo. Festuca y Raygras: de alto tránsito, requiere riego constante (en verano dos veces por día), es de cuatro estaciones y se mantiene verde todo el año. El corte se realiza una vez por semana en verano, cada quince días en otoño-primavera y una vez por mes en invierno. Una vez realizado el pedido, se coordina día de entrega.",
     images: [
-      "/servicios/cesped-rollos-1.jpg",
-      "/servicios/cesped-rollos-2.jpg",
-      "/servicios/cesped-rollos-3.jpg",
+      "/cesped en rollos/portada.png",
+      "/cesped en rollos/2.png",
+      "/cesped en rollos/3.png",
+      "/cesped en rollos/4.png",
     ],
   },
   {
