@@ -33,74 +33,6 @@ const quickLinks = [
 
 const featuredServices = jardineriaServices.slice(0, 2);
 
-type SidebarIconKind =
-  | "home"
-  | "palette"
-  | "grid"
-  | "leaf"
-  | "sparkles"
-  | "layers";
-
-function SidebarIcon({ kind }: { kind: SidebarIconKind }) {
-  const className = "h-5 w-5 stroke-[1.8]";
-
-  if (kind === "home") {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className={className}>
-        <path d="M3 10.5 12 3l9 7.5" />
-        <path d="M5 9.5V20h5.5v-5.5h3V20H19V9.5" />
-      </svg>
-    );
-  }
-
-  if (kind === "palette") {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className={className}>
-        <path d="M12 3c-5 0-9 3.7-9 8.3C3 15.6 6.3 19 10.5 19H12a2 2 0 0 0 0-4h-.7a1.8 1.8 0 0 1 0-3.5H12c5 0 9-3.7 9-8.2S17 3 12 3Z" />
-        <circle cx="7.5" cy="10" r="1" />
-        <circle cx="10.5" cy="7.5" r="1" />
-        <circle cx="14.5" cy="7.5" r="1" />
-      </svg>
-    );
-  }
-
-  if (kind === "grid") {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className={className}>
-        <rect x="3" y="3" width="7" height="7" rx="1.5" />
-        <rect x="14" y="3" width="7" height="7" rx="1.5" />
-        <rect x="3" y="14" width="7" height="7" rx="1.5" />
-        <rect x="14" y="14" width="7" height="7" rx="1.5" />
-      </svg>
-    );
-  }
-
-  if (kind === "sparkles") {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className={className}>
-        <path d="m12 3 1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3Z" />
-        <path d="m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z" />
-      </svg>
-    );
-  }
-
-  if (kind === "layers") {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className={className}>
-        <path d="m12 4 8 4-8 4-8-4 8-4Z" />
-        <path d="m4 12 8 4 8-4" />
-        <path d="m4 16 8 4 8-4" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className={className}>
-      <path d="M12 4c4.5 0 7 2.7 7 6.1C19 16.2 14.2 20 9 20c-2.2 0-4-.8-4-2.7 0-1.5 1.2-2.4 2.8-2.4h2.5c2.8 0 4.7-1.8 4.7-4.4 0-2.5-2-4.5-4.9-4.5-4 0-6.8 2.8-6.8 7.1" />
-    </svg>
-  );
-}
-
 export default function Home() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f7f8f8] text-[#1f2937]">
@@ -209,95 +141,92 @@ export default function Home() {
 
         <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
           <aside className="mt-2 lg:mt-4 lg:sticky lg:top-24 lg:self-start">
-            <nav className="rounded-[28px] border border-white/70 bg-white/95 px-4 py-5 shadow-[0_18px_46px_rgba(31,41,55,0.06)]">
-              <div className="mb-8 flex h-11 w-11 items-center justify-center rounded-2xl bg-[#eef3ff] text-[#4f46e5] shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="h-6 w-6 stroke-[2.4]">
-                  <path d="M4 8c2.5-3 6.5-3 9 0s6.5 3 9 0" />
-                  <path d="M4 16c2.5-3 6.5-3 9 0s6.5 3 9 0" />
-                </svg>
-              </div>
-
-              <div className="space-y-1">
-                <a
-                  href="#servicios-jardineria"
-                  className="flex items-center gap-3 rounded-xl bg-[#f5f6fb] px-3 py-3 text-[#4f46e5]"
-                >
-                  <SidebarIcon kind="home" />
-                  <span className="text-[15px] font-semibold">Servicios de jardinería</span>
-                </a>
-
-                <a
-                  href="#decoracion"
-                  className="flex items-center gap-3 rounded-xl px-3 py-3 text-[#0f172a] transition hover:bg-[#f8f9fb]"
-                >
-                  <span className="text-[#94a3b8]">
-                    <SidebarIcon kind="palette" />
-                  </span>
-                  <span className="text-[15px] font-semibold">Decoración</span>
-                </a>
-
-                <a
-                  href="#madera-plastica"
-                  className="flex items-center gap-3 rounded-xl px-3 py-3 text-[#0f172a] transition hover:bg-[#f8f9fb]"
-                >
-                  <span className="text-[#94a3b8]">
-                    <SidebarIcon kind="grid" />
-                  </span>
-                  <span className="text-[15px] font-semibold">Madera plástica</span>
-                </a>
-              </div>
-
-              <div className="mt-8">
-                <p className="px-2 text-[13px] font-semibold text-[#a78bfa]">Destacados</p>
-                <div className="mt-3 space-y-2">
-                  {featuredServices.map((service) => (
-                    <Link
-                      key={service.id}
-                      href={`/servicios/${service.id}`}
-                      className="flex items-center gap-3 rounded-xl px-2 py-2 text-[#0f172a] transition hover:bg-[#f8f9fb]"
-                    >
-                      <span className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#eceef3] bg-white text-[11px] font-semibold text-[#94a3b8]">
-                        {service.title.charAt(0)}
-                      </span>
-                      <span className="text-[14px] font-medium">{service.title}</span>
-                    </Link>
-                  ))}
+            <nav className="rounded-[26px] border border-[#edf1ec] bg-white/95 px-4 py-5 shadow-[0_18px_46px_rgba(31,41,55,0.06)]">
+              <div className="mb-6 flex items-center gap-3 px-2">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#edf7ef] text-[#1f7a45]">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="h-5 w-5 stroke-[2.2]">
+                    <path d="M12 20c4.5-2.2 7-6.2 7-10.8C15 9.2 12.7 8 10 8c-2.5 0-4.7 1.2-6 3.3C4 15.4 7.1 18.8 12 20Z" />
+                    <path d="M12 19c0-5 2.6-9 7-11" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9aa3a0]">
+                    Menú lateral
+                  </p>
+                  <p className="text-[14px] font-semibold text-[#111827]">Jardineriagv</p>
                 </div>
               </div>
 
-              <div className="mt-8">
-                <p className="px-2 text-[13px] font-semibold text-[#94a3b8]">Complementos</p>
-                <div className="mt-3 space-y-2">
+              <div className="space-y-6">
+                <section>
+                  <a
+                    href="#servicios-jardineria"
+                    className="mb-3 flex items-center gap-2 text-[14px] font-semibold text-[#111827]"
+                  >
+                    <span className="text-[#1f7a45]">▾</span>
+                    <span>Servicios de jardinería</span>
+                  </a>
+                  <div className="space-y-2 pl-5">
+                    {featuredServices.map((service, index) => (
+                      <Link
+                        key={service.id}
+                        href={`/servicios/${service.id}`}
+                        className={`flex items-center justify-between rounded-xl px-3 py-2 text-[13px] transition ${
+                          index === 0
+                            ? "bg-[#f3f5f3] text-[#111827]"
+                            : "text-[#374151] hover:bg-[#f7f9f7]"
+                        }`}
+                      >
+                        <span>{service.title}</span>
+                        <span className="text-[#9aa3a0]">→</span>
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+
+                <section className="border-t border-[#edf1ec] pt-5">
                   <a
                     href="#decoracion"
-                    className="flex items-center gap-3 rounded-xl px-2 py-2 text-[#0f172a] transition hover:bg-[#f8f9fb]"
+                    className="mb-3 flex items-center gap-2 text-[14px] font-semibold text-[#111827]"
                   >
-                    <span className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#eceef3] bg-white text-[#c084fc]">
-                      <SidebarIcon kind="sparkles" />
-                    </span>
-                    <span className="text-[14px] font-medium">Artículos y decoración</span>
+                    <span className="text-[#9aa3a0]">▸</span>
+                    <span>Decoración</span>
                   </a>
+                  <div className="space-y-2 pl-5">
+                    {decoracionItems.map((item) => (
+                      <a
+                        key={item.id}
+                        href={`#${item.id}`}
+                        className="flex items-center justify-between rounded-xl px-3 py-2 text-[13px] text-[#374151] transition hover:bg-[#faf7f2]"
+                      >
+                        <span>{item.label}</span>
+                        <span className="text-[#c19a6b]">→</span>
+                      </a>
+                    ))}
+                  </div>
+                </section>
 
+                <section className="border-t border-[#edf1ec] pt-5">
                   <a
                     href="#madera-plastica"
-                    className="flex items-center gap-3 rounded-xl px-2 py-2 text-[#0f172a] transition hover:bg-[#f8f9fb]"
+                    className="mb-3 flex items-center gap-2 text-[14px] font-semibold text-[#111827]"
                   >
-                    <span className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#eceef3] bg-white text-[#94a3b8]">
-                      <SidebarIcon kind="layers" />
-                    </span>
-                    <span className="text-[14px] font-medium">Línea madera plástica</span>
+                    <span className="text-[#9aa3a0]">▸</span>
+                    <span>Madera plástica</span>
                   </a>
-
-                  <a
-                    href={whatsappHref}
-                    className="flex items-center gap-3 rounded-xl px-2 py-2 text-[#0f172a] transition hover:bg-[#f8f9fb]"
-                  >
-                    <span className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#eceef3] bg-white text-[#22c55e]">
-                      <SidebarIcon kind="leaf" />
-                    </span>
-                    <span className="text-[14px] font-medium">Pedir asesoramiento</span>
-                  </a>
-                </div>
+                  <div className="space-y-2 pl-5">
+                    {maderaPlasticaItems.map((item) => (
+                      <a
+                        key={item.id}
+                        href={`#${item.id}`}
+                        className="flex items-center justify-between rounded-xl px-3 py-2 text-[13px] text-[#374151] transition hover:bg-[#f5f7fa]"
+                      >
+                        <span>{item.label}</span>
+                        <span className="text-[#8b98a8]">→</span>
+                      </a>
+                    ))}
+                  </div>
+                </section>
               </div>
             </nav>
           </aside>
