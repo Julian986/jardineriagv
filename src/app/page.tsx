@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { jardineriaServices, whatsappHref } from "@/app/data/services";
@@ -58,6 +59,18 @@ const serviceHeroImages: Record<string, string> = {
 const featuredServices = jardineriaServices.slice(0, 2);
 
 export default function Home() {
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+
+  useEffect(() => {
+    if (isMobileNavOpen) {
+      const original = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = original;
+      };
+    }
+  }, [isMobileNavOpen]);
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f7f8f8] text-[#1f2937]">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(circle_at_top_left,_rgba(36,101,60,0.18),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(182,160,117,0.16),_transparent_26%)]" />
@@ -65,9 +78,9 @@ export default function Home() {
         Enviamos a todo GBA y alrededores · Presupuestos claros y visitas programadas
       </div>
 
-      <header className="relative z-10 border-b border-black/10 bg-white">
-        <div className="mx-auto flex max-w-[1400px] items-center gap-6 px-4 py-5 lg:px-8">
-          <div className="min-w-fit text-3xl font-black tracking-[0.28em] text-[#101010]">
+      <header className="relative z-20 border-b border-black/10 bg-white">
+        <div className="mx-auto flex max-w-[1400px] flex-col gap-4 px-4 py-4 sm:py-5 lg:flex-row lg:items-center lg:gap-6 lg:px-8">
+          <div className="min-w-fit text-2xl font-black tracking-[0.24em] text-[#101010] sm:text-3xl sm:tracking-[0.28em]">
             JARDINERIAGV
           </div>
 
@@ -86,51 +99,178 @@ export default function Home() {
             </label>
           </div>
 
-          <div className="ml-auto flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-black/75">
-            <a href="#contacto" className="hover:text-[#0f5f2f]">
+          <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-black/75 lg:ml-auto lg:mt-0 lg:gap-3">
+            <a href="#contacto" className="hidden text-black/75 hover:text-[#0f5f2f] sm:inline">
               Acceder / registrarse
             </a>
             <a
               href="#servicios-jardineria"
-              className="rounded-full bg-[#0f5f2f] px-3 py-2 text-white"
+              className="rounded-full bg-[#0f5f2f] px-3 py-2 text-white sm:px-4"
             >
               Favoritos
             </a>
             <a
               href={whatsappHref}
-              className="rounded-full border border-[#0f5f2f] px-3 py-2 text-[#0f5f2f]"
+              className="rounded-full border border-[#0f5f2f] px-3 py-2 text-[#0f5f2f] sm:px-4"
             >
               Agendar
             </a>
+            <button
+              type="button"
+              aria-label="Abrir menú"
+              className="ml-auto inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/10 bg-white text-black lg:hidden"
+              onClick={() => setIsMobileNavOpen(true)}
+            >
+              <span className="sr-only">Abrir navegación</span>
+              <span className="flex flex-col gap-1.5">
+                <span className="block h-0.5 w-4 rounded-full bg-black" />
+                <span className="block h-0.5 w-4 rounded-full bg-black" />
+                <span className="block h-0.5 w-4 rounded-full bg-black" />
+              </span>
+            </button>
           </div>
         </div>
 
         <div className="border-t border-black/6">
-          <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-4 px-4 py-3 lg:px-8">
-            <nav className="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.08em]">
-              <a
-                href="#servicios-jardineria"
-                className="rounded bg-[#0f5f2f] px-3 py-2 text-white"
-              >
-                Catalogo
-              </a>
-              {quickLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="px-2 py-1 text-black/75 transition hover:text-[#0f5f2f]"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-
-            <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-black/75">
+          <div className="mx-auto flex max-w-[1400px] px-4 py-3 lg:px-8">
+            <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-black/60 lg:text-black/75">
               Hasta 3 visitas cotizadas · Respuesta rapida por WhatsApp
             </div>
           </div>
         </div>
       </header>
+
+      {/* Menú mobile desplegable */}
+      {isMobileNavOpen && (
+        <div className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden">
+          <div className="absolute inset-y-0 right-0 w-[78%] max-w-xs bg-white shadow-[0_0_40px_rgba(0,0,0,0.25)]">
+            <div className="flex items-center justify-between border-b border-black/10 px-4 py-3">
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
+                Menú
+              </span>
+              <button
+                type="button"
+                aria-label="Cerrar menú"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/10 bg-white text-black"
+                onClick={() => setIsMobileNavOpen(false)}
+              >
+                <span className="sr-only">Cerrar navegación</span>
+                <span className="relative block h-3 w-3">
+                  <span className="absolute left-1/2 top-1/2 block h-0.5 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full bg-black" />
+                  <span className="absolute left-1/2 top-1/2 block h-0.5 w-3 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full bg-black" />
+                </span>
+              </button>
+            </div>
+
+            <nav className="flex flex-col gap-3 px-4 py-4 text-sm font-medium text-[#111827]">
+              {/* Servicios de jardinería */}
+              <div>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
+                  Servicios de jardinería
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileNavOpen(false);
+                    window.location.hash = "servicios-jardineria";
+                  }}
+                  className="mb-2 flex w-full items-center justify-between rounded-lg bg-[#0f5f2f] px-3 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-white"
+                >
+                  <span>Catálogo principal</span>
+                  <span>↓</span>
+                </button>
+                <div className="space-y-1.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileNavOpen(false);
+                      window.location.href = "/servicios/asesoramiento-diseno";
+                    }}
+                    className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[14px] text-[#374151] hover:bg-[#f3f4f6]"
+                  >
+                    <span aria-hidden>🏡</span>
+                    <span>Asesoramiento y diseño</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileNavOpen(false);
+                      window.location.href = "/servicios/riego-automatico";
+                    }}
+                    className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[14px] text-[#374151] hover:bg-[#f3f4f6]"
+                  >
+                    <span aria-hidden>💧</span>
+                    <span>Riego automatico por aspersion y goteo</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Decoración */}
+              <div>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
+                  Decoración
+                </p>
+                <div className="space-y-1.5">
+                  {decoracionItems.map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => {
+                        setIsMobileNavOpen(false);
+                        window.location.hash = item.id;
+                      }}
+                      className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[14px] text-[#374151] hover:bg-[#f3f4f6]"
+                    >
+                      <span aria-hidden>{item.icon}</span>
+                      <span>{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Madera plástica */}
+              <div>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
+                  Madera plástica
+                </p>
+                <div className="space-y-1.5">
+                  {maderaPlasticaItems.map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => {
+                        setIsMobileNavOpen(false);
+                        window.location.hash = item.id;
+                      }}
+                      className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[14px] text-[#374151] hover:bg-[#f3f4f6]"
+                    >
+                      <span aria-hidden>{item.icon}</span>
+                      <span>{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-2 border-t border-[#e5e7eb] pt-4">
+                <a
+                  href={whatsappHref}
+                  onClick={() => setIsMobileNavOpen(false)}
+                  className="mb-2 block rounded-full bg-[#1f5d38] px-4 py-2 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-white"
+                >
+                  Agendar visita
+                </a>
+                <a
+                  href="#contacto"
+                  onClick={() => setIsMobileNavOpen(false)}
+                  className="block rounded-full border border-[#1f5d38]/20 px-4 py-2 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-[#1f5d38]"
+                >
+                  Ir a contacto
+                </a>
+              </div>
+            </nav>
+          </div>
+        </div>
+      )}
 
       <main className="relative z-10 mx-auto max-w-[1400px] px-4 py-6 lg:px-8 lg:py-8">
         {/* Hero principal comentado a pedido del cliente
@@ -355,7 +495,7 @@ export default function Home() {
                     id={visita.id}
                     className="overflow-hidden rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,246,241,0.96))] p-6 shadow-[0_20px_52px_rgba(31,41,55,0.08)]"
                   >
-                    <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
+                    <div className="flex flex-col gap-6 md:gap-7 xl:flex-row xl:items-start xl:justify-between">
                       <div className="max-w-3xl">
                         <div className="mb-4 flex flex-wrap items-center gap-3">
                           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#e5f1e7] text-2xl">
@@ -382,7 +522,7 @@ export default function Home() {
                         </a>
                       </div>
 
-                      <div className="min-w-[290px]">
+                      <div className="w-full md:max-w-md xl:min-w-[290px]">
                         {serviceHeroImages[visita.id] && (
                           <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] bg-[#dfe7dd]">
                             <img
@@ -408,7 +548,7 @@ export default function Home() {
                     key={service.id}
                     className="overflow-hidden rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,247,242,0.95))] p-6 shadow-[0_18px_46px_rgba(31,41,55,0.07)]"
                   >
-                    <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
+                    <div className="flex flex-col gap-6 md:gap-7 md:flex-row md:items-start md:justify-between">
                       <div className="max-w-3xl">
                         <div className="mb-4 flex items-center gap-3">
                           <span
@@ -443,7 +583,7 @@ export default function Home() {
                         </a>
                       </div>
 
-                      <div className="min-w-[290px]">
+                      <div className="mt-1 w-full md:mt-0 md:max-w-xs md:flex-shrink-0">
                         {serviceHeroImages[service.id] && (
                           <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] bg-[#dfe7dd]">
                             <img
