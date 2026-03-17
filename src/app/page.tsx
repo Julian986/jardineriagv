@@ -74,51 +74,26 @@ export default function Home() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f7f8f8] text-[#1f2937]">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(circle_at_top_left,_rgba(36,101,60,0.18),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(182,160,117,0.16),_transparent_26%)]" />
-      <div className="bg-[#0f5f2f] px-4 py-2 text-center text-[11px] font-semibold tracking-[0.08em] text-white uppercase">
-        Enviamos a todo GBA y alrededores · Presupuestos claros y visitas programadas
-      </div>
 
-      <header className="relative z-20 border-b border-black/10 bg-white">
-        <div className="mx-auto flex max-w-[1400px] flex-col gap-4 px-4 py-4 sm:py-5 lg:flex-row lg:items-center lg:gap-6 lg:px-8">
+      {/* Bloque fijo solo con header en mobile */}
+      <div className="fixed inset-x-0 top-0 z-20 bg-white/95 backdrop-blur lg:hidden">
+        {/*
+        <div className="bg-[#0f5f2f] px-4 py-2 text-center text-[11px] font-semibold tracking-[0.08em] text-white uppercase">
+          Presupuestos claros y visitas programadas · Hasta 3 visitas cotizadas
+        </div>
+        */}
+
+        <header>
+          <div className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-3 sm:py-4 lg:px-8">
           <div className="min-w-fit text-2xl font-black tracking-[0.24em] text-[#101010] sm:text-3xl sm:tracking-[0.28em]">
             JARDINERIAGV
           </div>
 
-          <div className="hidden flex-1 lg:block">
-            <label
-              htmlFor="catalog-search"
-              className="flex h-12 items-center rounded-sm border border-black/10 bg-[#fafafa] px-4"
-            >
-              <span className="mr-3 text-sm text-black/35">⌕</span>
-              <input
-                id="catalog-search"
-                type="text"
-                placeholder="Buscar servicios, categorias o productos..."
-                className="w-full bg-transparent text-sm outline-none placeholder:text-black/35"
-              />
-            </label>
-          </div>
-
-          <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-black/75 lg:ml-auto lg:mt-0 lg:gap-3">
-            <a href="#contacto" className="hidden text-black/75 hover:text-[#0f5f2f] sm:inline">
-              Acceder / registrarse
-            </a>
-            <a
-              href="#servicios-jardineria"
-              className="rounded-full bg-[#0f5f2f] px-3 py-2 text-white sm:px-4"
-            >
-              Favoritos
-            </a>
-            <a
-              href={whatsappHref}
-              className="rounded-full border border-[#0f5f2f] px-3 py-2 text-[#0f5f2f] sm:px-4"
-            >
-              Agendar
-            </a>
+          <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-black/75">
             <button
               type="button"
               aria-label="Abrir menú"
-              className="ml-auto inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/10 bg-white text-black lg:hidden"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/10 bg-white text-black lg:hidden"
               onClick={() => setIsMobileNavOpen(true)}
             >
               <span className="sr-only">Abrir navegación</span>
@@ -130,11 +105,92 @@ export default function Home() {
             </button>
           </div>
         </div>
+          {/* Navegación desktop */}
+          <div className="hidden border-t border-black/10 bg-white/95 lg:block">
+            <nav className="mx-auto flex max-w-[1400px] items-center gap-4 px-4 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-black/75 lg:px-8">
+              <a
+                href="#servicios-jardineria"
+                className="rounded bg-[#0f5f2f] px-3 py-2 text-white"
+              >
+                Catalogo
+              </a>
+              {quickLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="px-2 py-1 text-black/75 transition hover:text-[#0f5f2f]"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+          </div>
+        </header>
+      </div>
+
+      {/* Header completo en desktop (restaurado) */}
+      <header className="relative z-10 hidden border-b border-black/10 bg-white lg:block">
+        <div className="mx-auto flex max-w-[1400px] items-center gap-6 px-4 py-5 lg:px-8">
+          <div className="min-w-fit text-3xl font-black tracking-[0.28em] text-[#101010]">
+            JARDINERIAGV
+          </div>
+
+          <div className="flex-1">
+            <label
+              htmlFor="catalog-search-desktop"
+              className="flex h-12 items-center rounded-sm border border-black/10 bg-[#fafafa] px-4"
+            >
+              <span className="mr-3 text-sm text-black/35">⌕</span>
+              <input
+                id="catalog-search-desktop"
+                type="text"
+                placeholder="Buscar servicios, categorias o productos..."
+                className="w-full bg-transparent text-sm outline-none placeholder:text-black/35"
+              />
+            </label>
+          </div>
+
+          <div className="ml-auto flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-black/75">
+            <a href="#contacto" className="hover:text-[#0f5f2f]">
+              Acceder / registrarse
+            </a>
+            <a
+              href="#servicios-jardineria"
+              className="rounded-full bg-[#0f5f2f] px-3 py-2 text-white"
+            >
+              Favoritos
+            </a>
+            <a
+              href={whatsappHref}
+              className="rounded-full border border-[#0f5f2f] px-3 py-2 text-[#0f5f2f]"
+            >
+              Agendar
+            </a>
+          </div>
+        </div>
 
         <div className="border-t border-black/6">
-          <div className="mx-auto flex max-w-[1400px] px-4 py-3 lg:px-8">
-            <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-black/60 lg:text-black/75">
-              Hasta 3 visitas cotizadas · Respuesta rapida por WhatsApp
+          <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-4 px-4 py-3 lg:px-8">
+            <nav className="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.08em]">
+              <a
+                href="#servicios-jardineria"
+                className="rounded bg-[#0f5f2f] px-3 py-2 text-white"
+              >
+                Catalogo
+              </a>
+              {quickLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="px-2 py-1 text-black/75 transition hover:text-[#0f5f2f]"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+
+            <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-black/75">
+              Presupuestos claros y visitas programadas · Hasta 3 visitas cotizadas
             </div>
           </div>
         </div>
@@ -272,7 +328,11 @@ export default function Home() {
         </div>
       )}
 
-      <main className="relative z-10 mx-auto max-w-[1400px] px-4 py-6 lg:px-8 lg:py-8">
+      <main className="relative z-10 mx-auto max-w-[1400px] px-4 pt-16 pb-6 lg:px-8 lg:pt-8 lg:pb-8">
+        <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.08em] text-black/60 lg:text-black/75">
+          Presupuestos claros y visitas programadas · Hasta 3 visitas cotizadas
+        </div>
+
         {/* Hero principal comentado a pedido del cliente
         <section className="mb-8 overflow-hidden rounded-[30px] border border-white/60 bg-[linear-gradient(135deg,rgba(255,255,255,0.94),rgba(249,247,242,0.9))] shadow-[0_24px_70px_rgba(31,41,55,0.08)]">
           ...
