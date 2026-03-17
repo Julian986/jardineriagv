@@ -34,6 +34,27 @@ const quickLinks = [
   { href: "#contacto", label: "Contacto" },
 ] as const;
 
+const serviceHeroImages: Record<string, string> = {
+  "asesoramiento-diseno":
+    "https://res.cloudinary.com/dzoupwn0e/image/upload/v1773766075/4_ibjjhb.webp",
+  "riego-automatico":
+    "https://res.cloudinary.com/dzoupwn0e/image/upload/v1773766074/9_mzwsnm.webp",
+  "cesped-rollos":
+    "https://res.cloudinary.com/dzoupwn0e/image/upload/v1773766074/3_gyvgib.webp",
+  "siembra-cesped":
+    "https://res.cloudinary.com/dzoupwn0e/image/upload/v1773766074/7_bzk3di.webp",
+  "relleno-nivelacion":
+    "https://res.cloudinary.com/dzoupwn0e/image/upload/v1773766074/1_1_vfvter.webp",
+  "canteros-plantas":
+    "https://res.cloudinary.com/dzoupwn0e/image/upload/v1773766074/6_simhhl.webp",
+  "desmalezado":
+    "https://res.cloudinary.com/dzoupwn0e/image/upload/v1773766074/2_iavni7.webp",
+  "poda-limpieza":
+    "https://res.cloudinary.com/dzoupwn0e/image/upload/v1773766074/5_qexqzr.webp",
+  "cerco-vivo":
+    "https://res.cloudinary.com/dzoupwn0e/image/upload/v1773766074/8_evkscr.webp",
+};
+
 const featuredServices = jardineriaServices.slice(0, 2);
 
 export default function Home() {
@@ -245,137 +266,198 @@ export default function Home() {
               </a>
             </section>
 
+            {/* Grilla de cards del catálogo comentada a pedido del cliente (catálogo de WhatsApp) */}
+            {/*
             <section>
               <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
                 {jardineriaServices
                   .filter((service) => service.id !== "asesoramiento-diseno")
                   .map((service, index) => (
-                  <article
-                    key={service.id}
-                    className="group overflow-hidden rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(247,246,241,0.94))] p-3 shadow-[0_18px_46px_rgba(31,41,55,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_56px_rgba(31,41,55,0.14)]"
-                  >
-                    <div
-                      className={`relative mb-4 flex min-h-[250px] items-center justify-center overflow-hidden rounded-[22px] p-6 ${
-                        index % 4 === 0
-                          ? "bg-[linear-gradient(145deg,#edf7ef_0%,#d9ead8_100%)]"
-                          : index % 4 === 1
-                            ? "bg-[linear-gradient(145deg,#f7f1e7_0%,#eadcc8_100%)]"
-                            : index % 4 === 2
-                              ? "bg-[linear-gradient(145deg,#eef2f5_0%,#d7e0e8_100%)]"
-                              : "bg-[linear-gradient(145deg,#f3efe7_0%,#e4dbc8_100%)]"
-                      }`}
+                    <article
+                      key={service.id}
+                      className="group overflow-hidden rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(247,246,241,0.94))] p-3 shadow-[0_18px_46px_rgba(31,41,55,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_56px_rgba(31,41,55,0.14)]"
                     >
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.55),transparent_45%)]" />
-                      {service.images.length > 0 ? (
-                        <Image
-                          src={service.images[0]}
-                          alt=""
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                        />
-                      ) : (
-                        <div className="relative flex h-full w-full flex-col items-center justify-center rounded-[18px] border border-white/40 bg-white/20 p-6 text-center backdrop-blur-[2px]">
-                          <span className="mb-3 rounded-full bg-[#101828] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white">
-                            {service.badge}
-                          </span>
-                          <span className="text-6xl drop-shadow-[0_8px_18px_rgba(255,255,255,0.4)]">
-                            {service.icon}
-                          </span>
-                        </div>
-                      )}
-                      <span className="absolute left-4 top-4 rounded-full bg-[#101828] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white">
-                        {service.badge}
-                      </span>
-                    </div>
-
-                    <div className="px-2 pb-2">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
-                        {service.category}
-                      </p>
-                      <h3 className="mt-2 min-h-[52px] text-[19px] font-semibold leading-6 tracking-[-0.02em] text-[#111827]">
-                        {service.title}
-                      </h3>
-                      <p className="mt-3 text-[28px] font-semibold leading-none tracking-[-0.03em] text-[#9a4034]">
-                        {service.price}
-                      </p>
-                      <p className="mt-2 text-[11px] leading-5 text-[#6b7280]">
-                        {service.summary}
-                      </p>
-                      <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
-                        Presupuesto orientativo
-                      </p>
-                      <Link
-                        href={`/servicios/${service.id}`}
-                        className="mt-5 inline-flex items-center rounded-full bg-[#1f5d38] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(31,93,56,0.2)] transition hover:bg-[#18492c]"
+                      <div
+                        className={`relative mb-4 flex min-h-[250px] items-center justify-center overflow-hidden rounded-[22px] p-6 ${
+                          index % 4 === 0
+                            ? "bg-[linear-gradient(145deg,#edf7ef_0%,#d9ead8_100%)]"
+                            : index % 4 === 1
+                              ? "bg-[linear-gradient(145deg,#f7f1e7_0%,#eadcc8_100%)]"
+                              : index % 4 === 2
+                                ? "bg-[linear-gradient(145deg,#eef2f5_0%,#d7e0e8_100%)]"
+                                : "bg-[linear-gradient(145deg,#f3efe7_0%,#e4dbc8_100%)]"
+                        }`}
                       >
-                        Ver detalle
-                      </Link>
-                    </div>
-                  </article>
-                  ))}
-              </div>
-            </section>
-
-            <section className="space-y-5">
-              {jardineriaServices
-                .filter((service) => service.id !== "asesoramiento-diseno")
-                .map((service, index) => (
-                <article
-                  id={service.id}
-                  key={service.id}
-                  className="overflow-hidden rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,247,242,0.95))] p-6 shadow-[0_18px_46px_rgba(31,41,55,0.07)]"
-                >
-                  <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
-                    <div className="max-w-3xl">
-                      <div className="mb-4 flex items-center gap-3">
-                        <span
-                          className={`flex h-12 w-12 items-center justify-center rounded-2xl text-2xl ${
-                            index % 3 === 0
-                              ? "bg-[#e5f1e7]"
-                              : index % 3 === 1
-                                ? "bg-[#f5ecdf]"
-                                : "bg-[#e8eef3]"
-                          }`}
-                        >
-                          {service.icon}
-                        </span>
-                        <span className="rounded-full bg-[#eef5ee] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#1f5d38]">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.55),transparent_45%)]" />
+                        {service.images.length > 0 ? (
+                          <Image
+                            src={service.images[0]}
+                            alt=""
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                          />
+                        ) : (
+                          <div className="relative flex h-full w-full flex-col items-center justify-center rounded-[18px] border border-white/40 bg-white/20 p-6 text-center backdrop-blur-[2px]">
+                            <span className="mb-3 rounded-full bg-[#101828] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white">
+                              {service.badge}
+                            </span>
+                            <span className="text-6xl drop-shadow-[0_8px_18px_rgba(255,255,255,0.4)]">
+                              {service.icon}
+                            </span>
+                          </div>
+                        )}
+                        <span className="absolute left-4 top-4 rounded-full bg-[#101828] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white">
                           {service.badge}
                         </span>
                       </div>
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
-                        {service.category}
-                      </p>
-                      <h3 className="mt-2 text-[30px] font-semibold leading-tight tracking-[-0.03em] text-[#101828]">
-                        {service.title}
-                      </h3>
-                      <p className="mt-4 max-w-3xl text-[15px] leading-8 text-[#4b5563]">
-                        {service.description}
-                      </p>
-                    </div>
 
-                    <div className="min-w-[290px] rounded-[24px] border border-[#dfe8df] bg-[linear-gradient(180deg,#f9fbf9_0%,#eef4ef_100%)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
-                        Valor de referencia
-                      </p>
-                      <p className="mt-2 text-4xl font-semibold tracking-[-0.04em] text-[#9a4034]">
-                        {service.price}
-                      </p>
-                      <div className="mt-4 h-px w-full bg-[#d8e2d9]" />
-                      <p className="mt-4 text-[14px] leading-7 text-[#4b5563]">
-                        {service.summary}
-                      </p>
-                      <a
-                        href={whatsappHref}
-                        className="mt-6 inline-flex rounded-full bg-[#1f5d38] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(31,93,56,0.2)] transition hover:bg-[#18492c]"
-                      >
-                        Agendar visita
-                      </a>
+                      <div className="px-2 pb-2">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
+                          {service.category}
+                        </p>
+                        <h3 className="mt-2 min-h-[52px] text-[19px] font-semibold leading-6 tracking-[-0.02em] text-[#111827]">
+                          {service.title}
+                        </h3>
+                        <p className="mt-3 text-[28px] font-semibold leading-none tracking-[-0.03em] text-[#9a4034]">
+                          {service.price}
+                        </p>
+                        <p className="mt-2 text-[11px] leading-5 text-[#6b7280]">
+                          {service.summary}
+                        </p>
+                        <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
+                          Presupuesto orientativo
+                        </p>
+                        <Link
+                          href={`/servicios/${service.id}`}
+                          className="mt-5 inline-flex items-center rounded-full bg-[#1f5d38] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(31,93,56,0.2)] transition hover:bg-[#18492c]"
+                        >
+                          Ver detalle
+                        </Link>
+                      </div>
+                    </article>
+                  ))}
+              </div>
+            </section>
+            */}
+
+            {/* Sección de fichas largas por servicio activa: puerta de entrada por visita al jardín */}
+            <section className="space-y-5">
+              {/* Bloque principal: visita al jardín como puerta de entrada */}
+              {(() => {
+                const visita = jardineriaServices.find(
+                  (service) => service.id === "asesoramiento-diseno",
+                );
+                if (!visita) return null;
+
+                return (
+                  <article
+                    id={visita.id}
+                    className="overflow-hidden rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,246,241,0.96))] p-6 shadow-[0_20px_52px_rgba(31,41,55,0.08)]"
+                  >
+                    <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
+                      <div className="max-w-3xl">
+                        <div className="mb-4 flex flex-wrap items-center gap-3">
+                          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#e5f1e7] text-2xl">
+                            {visita.icon}
+                          </span>
+                          <span className="rounded-full bg-[#0f5f2f] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white">
+                            Visita al jardín
+                          </span>
+                        </div>
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
+                          Primero vemos tu espacio, después definimos el servicio
+                        </p>
+                        <h3 className="mt-2 text-[30px] font-semibold leading-tight tracking-[-0.03em] text-[#101828]">
+                          {visita.title}
+                        </h3>
+                        <p className="mt-4 max-w-3xl text-[15px] leading-8 text-[#4b5563]">
+                          {visita.description}
+                        </p>
+                        <a
+                          href={whatsappHref}
+                          className="mt-6 inline-flex rounded-full bg-[#1f5d38] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(31,93,56,0.2)] transition hover:bg-[#18492c]"
+                        >
+                          Agendar visita al jardín
+                        </a>
+                      </div>
+
+                      <div className="min-w-[290px]">
+                        {serviceHeroImages[visita.id] && (
+                          <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] bg-[#dfe7dd]">
+                            <img
+                              src={serviceHeroImages[visita.id]}
+                              alt={visita.title}
+                              className="h-full w-full object-cover"
+                              loading="lazy"
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })()}
+
+              {/* Resto de servicios: complementan lo definido en la visita */}
+              {jardineriaServices
+                .filter((service) => service.id !== "asesoramiento-diseno")
+                .map((service, index) => (
+                  <article
+                    id={service.id}
+                    key={service.id}
+                    className="overflow-hidden rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,247,242,0.95))] p-6 shadow-[0_18px_46px_rgba(31,41,55,0.07)]"
+                  >
+                    <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
+                      <div className="max-w-3xl">
+                        <div className="mb-4 flex items-center gap-3">
+                          <span
+                            className={`flex h-12 w-12 items-center justify-center rounded-2xl text-2xl ${
+                              index % 3 === 0
+                                ? "bg-[#e5f1e7]"
+                                : index % 3 === 1
+                                  ? "bg-[#f5ecdf]"
+                                  : "bg-[#e8eef3]"
+                            }`}
+                          >
+                            {service.icon}
+                          </span>
+                          <span className="rounded-full bg-[#eef5ee] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#1f5d38]">
+                            {service.badge}
+                          </span>
+                        </div>
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
+                          {service.category}
+                        </p>
+                        <h3 className="mt-2 text-[30px] font-semibold leading-tight tracking-[-0.03em] text-[#101828]">
+                          {service.title}
+                        </h3>
+                        <p className="mt-4 max-w-3xl text-[15px] leading-8 text-[#4b5563]">
+                          {service.description}
+                        </p>
+                        <a
+                          href={whatsappHref}
+                          className="mt-6 inline-flex rounded-full bg-[#1f5d38] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(31,93,56,0.2)] transition hover:bg-[#18492c]"
+                        >
+                          Agendar visita
+                        </a>
+                      </div>
+
+                      <div className="min-w-[290px]">
+                        {serviceHeroImages[service.id] && (
+                          <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] bg-[#dfe7dd]">
+                            <img
+                              src={serviceHeroImages[service.id]}
+                              alt={service.title}
+                              className="h-full w-full object-cover"
+                              loading="lazy"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </article>
+                ))}
             </section>
 
             <section id="decoracion" className="space-y-5">
