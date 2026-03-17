@@ -71,6 +71,17 @@ export default function Home() {
     }
   }, [isMobileNavOpen]);
 
+  const scrollToSection = (id: string) => {
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    const headerOffset = 80;
+    const rect = target.getBoundingClientRect();
+    const offsetPosition = window.scrollY + rect.top - headerOffset;
+
+    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f7f8f8] text-[#1f2937]">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(circle_at_top_left,_rgba(36,101,60,0.18),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(182,160,117,0.16),_transparent_26%)]" />
@@ -84,7 +95,7 @@ export default function Home() {
         */}
 
         <header>
-          <div className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-3 sm:py-4 lg:px-8">
+          <div className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-4 sm:py-4 lg:px-8">
           <div className="min-w-fit text-2xl font-black tracking-[0.24em] text-[#101010] sm:text-3xl sm:tracking-[0.28em]">
             JARDINERIAGV
           </div>
@@ -93,14 +104,38 @@ export default function Home() {
             <button
               type="button"
               aria-label="Abrir menú"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/10 bg-white text-black lg:hidden"
+              className="inline-flex h-10 items-center gap-1 rounded-full border border-black/15 bg-white px-3 text-black shadow-sm lg:hidden"
               onClick={() => setIsMobileNavOpen(true)}
             >
               <span className="sr-only">Abrir navegación</span>
-              <span className="flex flex-col gap-1.5">
-                <span className="block h-0.5 w-4 rounded-full bg-black" />
-                <span className="block h-0.5 w-4 rounded-full bg-black" />
-                <span className="block h-0.5 w-4 rounded-full bg-black" />
+              <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+                <rect
+                  x="3.5"
+                  y="6"
+                  width="17"
+                  height="2"
+                  rx="1"
+                  className="fill-black"
+                />
+                <rect
+                  x="5.5"
+                  y="11"
+                  width="15"
+                  height="2"
+                  rx="1"
+                  className="fill-black/80"
+                />
+                <rect
+                  x="7.5"
+                  y="16"
+                  width="13"
+                  height="2"
+                  rx="1"
+                  className="fill-black/60"
+                />
+              </svg>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#4b5563]">
+                Menú
               </span>
             </button>
           </div>
@@ -198,8 +233,14 @@ export default function Home() {
 
       {/* Menú mobile desplegable */}
       {isMobileNavOpen && (
-        <div className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden">
-          <div className="absolute inset-y-0 right-0 w-[78%] max-w-xs bg-white shadow-[0_0_40px_rgba(0,0,0,0.25)]">
+        <div
+          className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden"
+          onClick={() => setIsMobileNavOpen(false)}
+        >
+          <div
+            className="absolute inset-y-0 right-0 w-[78%] max-w-xs bg-white shadow-[0_0_40px_rgba(0,0,0,0.25)]"
+            onClick={(event) => event.stopPropagation()}
+          >
             <div className="flex items-center justify-between border-b border-black/10 px-4 py-3">
               <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
                 Menú
@@ -219,28 +260,28 @@ export default function Home() {
             </div>
 
             <nav className="flex flex-col gap-3 px-4 py-4 text-sm font-medium text-[#111827]">
-              {/* Servicios de jardinería */}
+              {/* Catálogo principal / Servicios de jardinería */}
               <div>
-                <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
-                  Servicios de jardinería
-                </p>
                 <button
                   type="button"
                   onClick={() => {
                     setIsMobileNavOpen(false);
-                    window.location.hash = "servicios-jardineria";
+                    scrollToSection("servicios-jardineria");
                   }}
-                  className="mb-2 flex w-full items-center justify-between rounded-lg bg-[#0f5f2f] px-3 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-white"
+                  className="mb-5 flex w-full items-center justify-between rounded-lg border border-[#0f5f2f] bg-white px-3 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#0f5f2f]"
                 >
                   <span>Catálogo principal</span>
                   <span>↓</span>
                 </button>
+                <p className="mb-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
+                  Servicios de jardinería
+                </p>
                 <div className="space-y-1.5">
                   <button
                     type="button"
                     onClick={() => {
                       setIsMobileNavOpen(false);
-                      window.location.href = "/servicios/asesoramiento-diseno";
+                      scrollToSection("asesoramiento-diseno");
                     }}
                     className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[14px] text-[#374151] hover:bg-[#f3f4f6]"
                   >
@@ -251,7 +292,7 @@ export default function Home() {
                     type="button"
                     onClick={() => {
                       setIsMobileNavOpen(false);
-                      window.location.href = "/servicios/riego-automatico";
+                      scrollToSection("riego-automatico");
                     }}
                     className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[14px] text-[#374151] hover:bg-[#f3f4f6]"
                   >
@@ -263,7 +304,7 @@ export default function Home() {
 
               {/* Decoración */}
               <div>
-                <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
+                <p className="mb-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
                   Decoración
                 </p>
                 <div className="space-y-1.5">
@@ -273,7 +314,7 @@ export default function Home() {
                       type="button"
                       onClick={() => {
                         setIsMobileNavOpen(false);
-                        window.location.hash = item.id;
+                        scrollToSection(item.id);
                       }}
                       className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[14px] text-[#374151] hover:bg-[#f3f4f6]"
                     >
@@ -286,7 +327,7 @@ export default function Home() {
 
               {/* Madera plástica */}
               <div>
-                <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
+                <p className="mb-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
                   Madera plástica
                 </p>
                 <div className="space-y-1.5">
@@ -296,7 +337,7 @@ export default function Home() {
                       type="button"
                       onClick={() => {
                         setIsMobileNavOpen(false);
-                        window.location.hash = item.id;
+                        scrollToSection(item.id);
                       }}
                       className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[14px] text-[#374151] hover:bg-[#f3f4f6]"
                     >
@@ -328,10 +369,12 @@ export default function Home() {
         </div>
       )}
 
-      <main className="relative z-10 mx-auto max-w-[1400px] px-4 pt-16 pb-6 lg:px-8 lg:pt-8 lg:pb-8">
+      <main className="relative z-10 mx-auto max-w-[1400px] px-4 pt-24 pb-6 lg:px-8 lg:pt-8 lg:pb-8">
+        {/*
         <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.08em] text-black/60 lg:text-black/75">
           Presupuestos claros y visitas programadas · Hasta 3 visitas cotizadas
         </div>
+        */}
 
         {/* Hero principal comentado a pedido del cliente
         <section className="mb-8 overflow-hidden rounded-[30px] border border-white/60 bg-[linear-gradient(135deg,rgba(255,255,255,0.94),rgba(249,247,242,0.9))] shadow-[0_24px_70px_rgba(31,41,55,0.08)]">
@@ -561,7 +604,7 @@ export default function Home() {
                           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#e5f1e7] text-2xl">
                             {visita.icon}
                           </span>
-                          <span className="rounded-full bg-[#0f5f2f] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white">
+                          <span className="rounded-full bg-[#eef5ee] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#1f5d38]">
                             Visita al jardín
                           </span>
                         </div>
