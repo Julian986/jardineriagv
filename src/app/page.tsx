@@ -38,6 +38,8 @@ const quickLinks = [
 const serviceHeroImages: Record<string, string> = {
   "asesoramiento-diseno":
     "https://res.cloudinary.com/dzoupwn0e/image/upload/v1773766075/4_ibjjhb.webp",
+  "decoracion-interiores-exteriores":
+    "https://res.cloudinary.com/dzoupwn0e/image/upload/v1773766074/9_mzwsnm.webp",
   "riego-automatico":
     "https://res.cloudinary.com/dzoupwn0e/image/upload/v1773766074/9_mzwsnm.webp",
   "cesped-rollos":
@@ -60,6 +62,7 @@ const featuredServices = jardineriaServices.slice(0, 2);
 
 export default function Home() {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [showMenuIcons, setShowMenuIcons] = useState(true);
 
   useEffect(() => {
     if (isMobileNavOpen) {
@@ -285,19 +288,19 @@ export default function Home() {
                     }}
                     className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[14px] text-[#374151] hover:bg-[#f3f4f6]"
                   >
-                    <span aria-hidden>🏡</span>
+                    {showMenuIcons && <span aria-hidden>🏡</span>}
                     <span>Asesoramiento y diseño</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => {
                       setIsMobileNavOpen(false);
-                      scrollToSection("riego-automatico");
+                      scrollToSection("decoracion-interiores-exteriores");
                     }}
                     className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[14px] text-[#374151] hover:bg-[#f3f4f6]"
                   >
-                    <span aria-hidden>💧</span>
-                    <span>Riego automatico por aspersion y goteo</span>
+                    {showMenuIcons && <span aria-hidden>🪴</span>}
+                    <span>Decoración de interiores y exteriores con plantas y macetas</span>
                   </button>
                 </div>
               </div>
@@ -318,7 +321,7 @@ export default function Home() {
                       }}
                       className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[14px] text-[#374151] hover:bg-[#f3f4f6]"
                     >
-                      <span aria-hidden>{item.icon}</span>
+                      {showMenuIcons && <span aria-hidden>{item.icon}</span>}
                       <span>{item.label}</span>
                     </button>
                   ))}
@@ -341,7 +344,7 @@ export default function Home() {
                       }}
                       className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[14px] text-[#374151] hover:bg-[#f3f4f6]"
                     >
-                      <span aria-hidden>{item.icon}</span>
+                      {showMenuIcons && <span aria-hidden>{item.icon}</span>}
                       <span>{item.label}</span>
                     </button>
                   ))}
@@ -349,6 +352,14 @@ export default function Home() {
               </div>
 
               <div className="mt-2 border-t border-[#e5e7eb] pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowMenuIcons((prev) => !prev)}
+                  className="mb-3 flex w-full items-center justify-between rounded-full border border-[#d1d5db] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#374151]"
+                >
+                  <span>{showMenuIcons ? "Ocultar iconos" : "Mostrar iconos"}</span>
+                  <span>{showMenuIcons ? "👁️" : "🚫"}</span>
+                </button>
                 <a
                   href={whatsappHref}
                   onClick={() => setIsMobileNavOpen(false)}
@@ -432,9 +443,11 @@ export default function Home() {
                     href={`/servicios/${service.id}`}
                     className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px] text-[#374151] transition hover:bg-[#f0fdf4] hover:text-[#166534]"
                   >
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center text-base leading-none" aria-hidden>
-                      {service.icon}
-                    </span>
+                    {showMenuIcons && (
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center text-base leading-none" aria-hidden>
+                        {service.icon}
+                      </span>
+                    )}
                     {service.title}
                   </Link>
                 ))}
@@ -453,9 +466,11 @@ export default function Home() {
                     href={`#${item.id}`}
                     className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px] text-[#6b7280] transition hover:bg-[#f9fafb] hover:text-[#111827]"
                   >
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center text-base leading-none" aria-hidden>
-                      {item.icon}
-                    </span>
+                    {showMenuIcons && (
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center text-base leading-none" aria-hidden>
+                        {item.icon}
+                      </span>
+                    )}
                     {item.label}
                   </a>
                 ))}
@@ -474,9 +489,11 @@ export default function Home() {
                     href={`#${item.id}`}
                     className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px] text-[#6b7280] transition hover:bg-[#f9fafb] hover:text-[#111827]"
                   >
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center text-base leading-none" aria-hidden>
-                      {item.icon}
-                    </span>
+                    {showMenuIcons && (
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center text-base leading-none" aria-hidden>
+                        {item.icon}
+                      </span>
+                    )}
                     {item.label}
                   </a>
                 ))}
@@ -497,8 +514,8 @@ export default function Home() {
                   Servicios de jardineria
                 </h2>
                 <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[#4b5563]">
-                  Servicios pensados para presentarse con una imagen más potente y más clara. Cada ficha tiene
-                  salida directa a su detalle.
+                  En esta etapa estamos tomando visitas para jardines a construir desde cero y para proyectos de
+                  decoracion de interiores y exteriores con plantas y macetas.
                 </p>
               </div>
               <a
@@ -584,9 +601,9 @@ export default function Home() {
             </section>
             */}
 
-            {/* Sección de fichas largas por servicio activa: puerta de entrada por visita al jardín */}
+            {/* Sección de fichas de servicios de jardinería comentada a pedido del cliente */}
+            {/*
             <section className="space-y-5">
-              {/* Bloque principal: visita al jardín como puerta de entrada */}
               {(() => {
                 const visita = jardineriaServices.find(
                   (service) => service.id === "asesoramiento-diseno",
@@ -642,7 +659,6 @@ export default function Home() {
                 );
               })()}
 
-              {/* Resto de servicios: complementan lo definido en la visita */}
               {jardineriaServices
                 .filter((service) => service.id !== "asesoramiento-diseno")
                 .map((service, index) => (
@@ -702,6 +718,7 @@ export default function Home() {
                   </article>
                 ))}
             </section>
+            */}
 
             <section id="decoracion" className="space-y-5">
               <div>
@@ -713,30 +730,43 @@ export default function Home() {
                 </h2>
               </div>
 
-              <div className="grid gap-5 md:grid-cols-2">
+              <div className="space-y-5">
                 {decoracionItems.map((item) => (
                   <article
                     id={item.id}
                     key={item.id}
-                    className="rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(251,248,241,0.96))] p-6 shadow-[0_18px_46px_rgba(31,41,55,0.06)]"
+                    className="overflow-hidden rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,247,242,0.95))] p-6 shadow-[0_18px_46px_rgba(31,41,55,0.07)]"
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-[20px] bg-[#f5ecdf] text-3xl shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                        {item.icon}
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-semibold tracking-[-0.03em] text-[#101828]">
+                    <div className="flex flex-col gap-6 md:gap-7 md:flex-row md:items-start md:justify-between">
+                      <div className="max-w-3xl">
+                        <div className="mb-4 flex items-center gap-3">
+                          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f5ecdf] text-2xl">
+                            {item.icon}
+                          </span>
+                          <span className="rounded-full bg-[#f7ede0] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#8a5a24]">
+                            Decoración
+                          </span>
+                        </div>
+                        <h3 className="text-[30px] font-semibold leading-tight tracking-[-0.03em] text-[#101828]">
                           {item.label}
                         </h3>
-                        <p className="mt-3 text-[15px] leading-8 text-[#4b5563]">
+                        <p className="mt-4 max-w-3xl text-[15px] leading-8 text-[#4b5563]">
                           {item.text}
                         </p>
                         <a
                           href={whatsappHref}
-                          className="mt-5 inline-flex rounded-full border border-[#8a5a24]/20 bg-white/80 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#8a5a24]"
+                          className="mt-6 inline-flex rounded-full bg-[#8a5a24] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(138,90,36,0.2)] transition hover:bg-[#73491f]"
                         >
                           Consultar disponibilidad
                         </a>
+                      </div>
+
+                      <div className="mt-1 w-full md:mt-0 md:max-w-xs md:flex-shrink-0">
+                        <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] bg-[linear-gradient(145deg,#f7f1e7_0%,#eadcc8_100%)]">
+                          <div className="flex h-full w-full items-center justify-center text-7xl">
+                            {item.icon}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </article>
@@ -754,32 +784,46 @@ export default function Home() {
                 </h2>
               </div>
 
-              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              <div className="space-y-5">
                 {maderaPlasticaItems.map((item) => (
                   <article
                     id={item.id}
                     key={item.id}
-                    className="rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(244,247,249,0.96))] p-5 shadow-[0_18px_46px_rgba(31,41,55,0.06)]"
+                    className="overflow-hidden rounded-[30px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,247,242,0.95))] p-6 shadow-[0_18px_46px_rgba(31,41,55,0.07)]"
                   >
-                    <div className="mb-5 flex h-[190px] items-center justify-center rounded-[22px] bg-[linear-gradient(145deg,#eef3f7_0%,#dde6ee_100%)] text-6xl">
-                      {item.icon}
+                    <div className="flex flex-col gap-6 md:gap-7 md:flex-row md:items-start md:justify-between">
+                      <div className="max-w-3xl">
+                        <div className="mb-4 flex items-center gap-3">
+                          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#e8eef3] text-2xl">
+                            {item.icon}
+                          </span>
+                          <span className="rounded-full bg-[#eef3f7] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#425466]">
+                            Madera plástica
+                          </span>
+                        </div>
+                        <h3 className="text-[30px] font-semibold leading-tight tracking-[-0.03em] text-[#101828]">
+                          {item.label}
+                        </h3>
+                        <p className="mt-4 max-w-3xl text-[15px] leading-8 text-[#4b5563]">
+                          Categoria preparada para cargar modelos, medidas, imagenes y precios reales en la
+                          siguiente etapa.
+                        </p>
+                        <a
+                          href={whatsappHref}
+                          className="mt-6 inline-flex rounded-full bg-[#425466] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(66,84,102,0.2)] transition hover:bg-[#344353]"
+                        >
+                          Pedir informacion
+                        </a>
+                      </div>
+
+                      <div className="mt-1 w-full md:mt-0 md:max-w-xs md:flex-shrink-0">
+                        <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] bg-[linear-gradient(145deg,#eef3f7_0%,#dde6ee_100%)]">
+                          <div className="flex h-full w-full items-center justify-center text-7xl">
+                            {item.icon}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
-                      Madera plastica
-                    </p>
-                    <h3 className="mt-2 text-[22px] font-semibold tracking-[-0.03em] text-[#101828]">
-                      {item.label}
-                    </h3>
-                    <p className="mt-3 text-[15px] leading-8 text-[#4b5563]">
-                      Categoria preparada para cargar modelos, medidas, imagenes y
-                      precios reales en la siguiente etapa.
-                    </p>
-                    <a
-                      href={whatsappHref}
-                      className="mt-5 inline-flex rounded-full bg-[#425466] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white"
-                    >
-                      Pedir informacion
-                    </a>
                   </article>
                 ))}
               </div>

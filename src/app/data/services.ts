@@ -32,6 +32,23 @@ export const jardineriaServices: readonly JardineriaService[] = [
     ],
   },
   {
+    id: "decoracion-interiores-exteriores",
+    badge: "Nuevo",
+    icon: "🪴",
+    category: "Servicio de jardineria",
+    title: "Decoracion de interiores y exteriores con plantas y macetas",
+    price: "Presupuesto a medida",
+    summary:
+      "Asesoramiento para integrar plantas y macetas en interiores y exteriores segun estilo y espacio.",
+    description:
+      "Servicio orientado a la seleccion y disposicion de plantas y macetas para transformar ambientes interiores y exteriores. Incluye propuesta estetica y recomendaciones de mantenimiento.",
+    images: [
+      "/canteros con plantas/portada.png",
+      "/canteros con plantas/2.png",
+    ],
+  },
+  /*
+  {
     id: "riego-automatico",
     badge: "Nuevo",
     icon: "💧",
@@ -51,6 +68,7 @@ export const jardineriaServices: readonly JardineriaService[] = [
       "/riego automatico/6.png",
     ],
   },
+  */
   {
     id: "cesped-rollos",
     badge: "Popular",
