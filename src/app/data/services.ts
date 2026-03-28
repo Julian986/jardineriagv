@@ -1,5 +1,5 @@
 export const whatsappHref =
-  "https://wa.me/5492914315080?text=Hola%20Guillermo%2C%20quisiera%20coordinar%20una%20visita%20para%20ver%20mi%20jardin%20y%20pedir%20presupuesto.";
+  "/reservar";
 
 export type JardineriaService = {
   id: string;
