@@ -10,9 +10,9 @@ const WA_HREF =
 
 // Imágenes del carrusel hero (trabajos reales de Guillermo)
 const HERO_IMAGES = [
+  "/ultimas imagenes/5.webp",
   "/ultimas imagenes/1 (1).webp",
   "/ultimas imagenes/3.webp",
-  "/ultimas imagenes/5.webp",
   "/ultimas imagenes/7.webp",
   "/ultimas imagenes/9.webp",
 ];
