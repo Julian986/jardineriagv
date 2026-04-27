@@ -7,16 +7,22 @@ import { jardineriaServices, whatsappHref } from "@/app/data/services";
 
 const decoracionItems = [
   {
-    id: "articulos-maderas",
-    label: "Articulos de maderas recuperadas",
+    id: "articulos-madera",
+    label: "Artículos en madera",
     icon: "🪵",
-    text: "Piezas decorativas y funcionales con madera recuperada para exterior e interior.",
+    text: "Piezas decorativas y utilitarias elaboradas en madera para ambientes interiores y exteriores. Ideales para sumar calidez y carácter a cualquier espacio.",
   },
   {
-    id: "macetas-tierras",
-    label: "Macetas, tierras y sustratos",
+    id: "macetas-plantas",
+    label: "Macetas y plantas",
     icon: "🪴",
-    text: "Complementos para acompañar proyectos de paisajismo y mantenimiento del jardin.",
+    text: "Amplia selección de macetas y plantas para interiores y exteriores. Te ayudamos a elegir la combinación ideal según el espacio, la luz y el estilo que buscás.",
+  },
+  {
+    id: "tierras-sustrato",
+    label: "Tierras y sustrato",
+    icon: "🌱",
+    text: "Tierras y sustratos seleccionados para garantizar el desarrollo óptimo de plantas en macetas, canteros y jardines.",
   },
 ] as const;
 
@@ -31,7 +37,6 @@ const maderaPlasticaItems = [
 const quickLinks = [
   { href: "#servicios-jardineria", label: "Servicios de jardineria" },
   { href: "#decoracion", label: "Decoracion" },
-  { href: "#madera-plastica", label: "Madera plastica" },
   { href: "#contacto", label: "Contacto" },
 ] as const;
 
@@ -328,7 +333,8 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Madera plástica */}
+              {/* Madera plástica comentada a pedido del cliente */}
+              {/*
               <div>
                 <p className="mb-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#6b7280]">
                   Madera plástica
@@ -350,6 +356,7 @@ export default function Home() {
                   ))}
                 </div>
               </div>
+              */}
 
               <div className="mt-2 border-t border-[#e5e7eb] pt-4">
                 <button
@@ -476,28 +483,6 @@ export default function Home() {
                 ))}
               </div>
 
-              <a
-                href="#madera-plastica"
-                className="mt-2 rounded-lg px-3 py-2 text-sm font-medium text-[#374151] transition hover:bg-[#f9fafb] hover:text-[#111827]"
-              >
-                Madera plástica
-              </a>
-              <div className="ml-3 mt-1 flex flex-col gap-0.5 border-l-2 border-[#e5e7eb] pl-3">
-                {maderaPlasticaItems.map((item) => (
-                  <a
-                    key={item.id}
-                    href={`#${item.id}`}
-                    className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px] text-[#6b7280] transition hover:bg-[#f9fafb] hover:text-[#111827]"
-                  >
-                    {showMenuIcons && (
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center text-base leading-none" aria-hidden>
-                        {item.icon}
-                      </span>
-                    )}
-                    {item.label}
-                  </a>
-                ))}
-              </div>
             </nav>
           </aside>
 
@@ -514,8 +499,9 @@ export default function Home() {
                   Servicios de jardineria
                 </h2>
                 <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[#4b5563]">
-                  En esta etapa estamos tomando visitas para jardines a construir desde cero y para proyectos de
-                  decoracion de interiores y exteriores con plantas y macetas.
+                  Realizamos visitas para relevar tu espacio, definir el plan de trabajo y preparar un presupuesto
+                  claro. Nos especializamos en jardines a construir desde cero y en proyectos de riego automático.
+                  También asesoramos en decoración de interiores y exteriores con plantas y macetas.
                 </p>
               </div>
               <a
@@ -774,6 +760,8 @@ export default function Home() {
               </div>
             </section>
 
+            {/* Sección Madera plástica comentada a pedido del cliente */}
+            {/*
             <section id="madera-plastica" className="space-y-5">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#425466]">
@@ -828,6 +816,7 @@ export default function Home() {
                 ))}
               </div>
             </section>
+            */}
 
             <section
               id="contacto"
