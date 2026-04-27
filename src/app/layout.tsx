@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jardineriagv",
-  description: "Creamos espacios verdes",
+  title: "Jardinería GV — Diseño y mantenimiento de jardines en Bahía Blanca",
+  description:
+    "Jardinería profesional en Bahía Blanca. Diseño de jardines desde cero, mantenimiento, riego automático y asesoramiento. Agendá una visita sin cargo.",
 };
 
 export default function RootLayout({
