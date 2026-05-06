@@ -3,13 +3,13 @@ import { cookies } from "next/headers";
 import { getDb } from "@/lib/mongodb";
 import { isPanelSessionValid, PANEL_SESSION_COOKIE } from "@/lib/panel-auth";
 import {
+  RESERVA_VISITA_MONTO_ARS,
   TurnoCreateSchema,
   buildTurnoCodigo,
   buildTurnoDetalle,
+  formatTurnoCreateValidationError,
   type TurnoCreateInput,
 } from "@/lib/turnos";
-
-const TURNO_PRECIO_REFERENCIA = 30000;
 
 export async function POST(request: Request) {
   let payload: unknown;
@@ -25,7 +25,14 @@ export async function POST(request: Request) {
   const parsed = TurnoCreateSchema.safeParse(payload);
   if (!parsed.success) {
     return NextResponse.json(
-      { ok: false, error: "Datos inválidos", issues: parsed.error.issues },
+      {
+        ok: false,
+        error: formatTurnoCreateValidationError(parsed.error),
+        issues: parsed.error.issues.map((i) => ({
+          path: i.path.map(String),
+          message: i.message,
+        })),
+      },
       { status: 400 },
     );
   }
@@ -36,13 +43,15 @@ export async function POST(request: Request) {
 
   const doc = {
     nombre: input.nombre,
-    mail: input.mail,
     celular: input.celular,
+    direccion: input.direccion.trim(),
     motivo: input.motivo,
     horario: input.horario,
     turnoDetalle,
     turnoCodigo: buildTurnoCodigo(),
-    precioReferenciaArs: TURNO_PRECIO_REFERENCIA,
+    precioReferenciaArs: RESERVA_VISITA_MONTO_ARS,
+    montoReservaAlAgendarArs: RESERVA_VISITA_MONTO_ARS,
+    aceptaPagoReserva: true,
     estado: "pendiente" as const,
     notaInterna: "",
     createdAt: now,

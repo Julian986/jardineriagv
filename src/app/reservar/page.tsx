@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   HORARIO_OPTIONS,
   MOTIVO_OPTIONS,
+  RESERVA_VISITA_MONTO_ARS,
   TurnoCreateSchema,
   type TurnoCreateInput,
 } from "@/lib/turnos";
@@ -16,11 +17,18 @@ type TouchedState = Partial<Record<keyof FormState, boolean>>;
 
 const initialForm: FormState = {
   nombre: "",
-  mail: "",
   celular: "",
+  direccion: "",
   motivo: MOTIVO_OPTIONS[0].value,
   horario: HORARIO_OPTIONS[0],
+  aceptaPagoReserva: false,
 };
+
+const montoReservaFormateado = new Intl.NumberFormat("es-AR", {
+  style: "currency",
+  currency: "ARS",
+  maximumFractionDigits: 0,
+}).format(RESERVA_VISITA_MONTO_ARS);
 
 export default function ReservarPage() {
   const [form, setForm] = useState<FormState>(initialForm);
@@ -68,10 +76,11 @@ export default function ReservarPage() {
       setErrors(nextErrors);
       setTouched({
         nombre: true,
-        mail: true,
         celular: true,
+        direccion: true,
         motivo: true,
         horario: true,
+        aceptaPagoReserva: true,
       });
       return;
     }
@@ -84,14 +93,53 @@ export default function ReservarPage() {
         body: JSON.stringify(validation.data),
       });
 
-      const data = (await response.json()) as { ok?: boolean; error?: string };
+      const data = (await response.json()) as {
+        ok?: boolean;
+        error?: string;
+        issues?: { path: string[]; message: string }[];
+      };
 
       if (!response.ok || !data.ok) {
-        setSubmitError(data.error ?? "No pudimos registrar la reserva.");
+        const issues = data.issues ?? [];
+        const formKeys = new Set<string>([
+          "nombre",
+          "celular",
+          "direccion",
+          "motivo",
+          "horario",
+          "aceptaPagoReserva",
+        ]);
+        const nextErrors: ErrorState = {};
+        for (const issue of issues) {
+          const key = issue.path[0];
+          if (typeof key === "string" && formKeys.has(key)) {
+            const f = key as keyof FormState;
+            if (!nextErrors[f]) nextErrors[f] = issue.message;
+          }
+        }
+        if (Object.keys(nextErrors).length > 0) {
+          setErrors((prev) => ({ ...prev, ...nextErrors }));
+          setTouched({
+            nombre: true,
+            celular: true,
+            direccion: true,
+            motivo: true,
+            horario: true,
+            aceptaPagoReserva: true,
+          });
+          setSubmitError("");
+        } else {
+          setSubmitError(
+            data.error?.trim() ||
+              "No pudimos registrar la reserva. Revisá los datos e intentá de nuevo.",
+          );
+        }
         return;
       }
 
-      setSuccessMessage("Reserva enviada con éxito. Te vamos a contactar a la brevedad.");
+      setSuccessMessage(
+        "Tu visita se agendó con éxito. Te vamos a contactar por WhatsApp con el link o los datos para abonar la seña con Mercado Pago y confirmar el turno.",
+      );
       setForm(initialForm);
       setErrors({});
       setTouched({});
@@ -111,11 +159,17 @@ export default function ReservarPage() {
         <h1 className="mt-2 text-3xl font-semibold tracking-[-0.03em] text-[#101828] md:text-4xl">
           Agendar visita
         </h1>
-        <p className="mt-3 text-[15px] leading-7 text-[#4b5563]">
-          Completá el formulario y registramos tu solicitud. Te contactamos para confirmar la reserva.
+        <p className="mt-3 text-[15px] leading-6 text-[#4b5563]">
+          Completá dirección y celular. Seña de{" "}
+          <strong className="text-[#101828]">{montoReservaFormateado}</strong> con{" "}
+          <strong className="text-[#101828]">Mercado Pago</strong> para confirmar la visita; el turno
+          lo coordinás por <strong className="text-[#101828]">WhatsApp</strong> con Guillermo.
+        </p>
+        <p className="mt-2 text-[13px] text-[#6b7280]">
+          💳 Pronto vas a poder abonar la seña desde esta misma página.
         </p>
 
-        <form className="mt-8 space-y-5" onSubmit={handleSubmit} noValidate>
+        <form className="mt-6 space-y-5" onSubmit={handleSubmit} noValidate>
           <div>
             <label className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6b7280]">
               Nombre y apellido
@@ -132,38 +186,38 @@ export default function ReservarPage() {
             )}
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <label className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6b7280]">
-                Mail
-              </label>
-              <input
-                value={form.mail}
-                onChange={(event) => updateField("mail", event.target.value)}
-                onBlur={() => handleBlur("mail")}
-                className="h-11 w-full rounded-xl border border-[#d1d5db] bg-white px-3 text-[14px] outline-none ring-[#1f5d38]/20 focus:ring-4"
-                aria-invalid={Boolean(errors.mail)}
-              />
-              {touched.mail && errors.mail && (
-                <p className="mt-1 text-xs text-[#b91c1c]">{errors.mail}</p>
-              )}
-            </div>
+          <div>
+            <label className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6b7280]">
+              Celular
+            </label>
+            <input
+              value={form.celular}
+              onChange={(event) => updateField("celular", event.target.value)}
+              onBlur={() => handleBlur("celular")}
+              className="h-11 w-full rounded-xl border border-[#d1d5db] bg-white px-3 text-[14px] outline-none ring-[#1f5d38]/20 focus:ring-4"
+              aria-invalid={Boolean(errors.celular)}
+            />
+            {touched.celular && errors.celular && (
+              <p className="mt-1 text-xs text-[#b91c1c]">{errors.celular}</p>
+            )}
+          </div>
 
-            <div>
-              <label className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6b7280]">
-                Celular
-              </label>
-              <input
-                value={form.celular}
-                onChange={(event) => updateField("celular", event.target.value)}
-                onBlur={() => handleBlur("celular")}
-                className="h-11 w-full rounded-xl border border-[#d1d5db] bg-white px-3 text-[14px] outline-none ring-[#1f5d38]/20 focus:ring-4"
-                aria-invalid={Boolean(errors.celular)}
-              />
-              {touched.celular && errors.celular && (
-                <p className="mt-1 text-xs text-[#b91c1c]">{errors.celular}</p>
-              )}
-            </div>
+          <div>
+            <label className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6b7280]">
+              Direccion
+            </label>
+            <textarea
+              value={form.direccion}
+              onChange={(event) => updateField("direccion", event.target.value)}
+              onBlur={() => handleBlur("direccion")}
+              rows={3}
+              placeholder="Ej: Mitre 1234, entre calles X e Y, Bahía Blanca"
+              className="w-full rounded-xl border border-[#d1d5db] bg-white px-3 py-2 text-[14px] outline-none ring-[#1f5d38]/20 focus:ring-4"
+              aria-invalid={Boolean(errors.direccion)}
+            />
+            {touched.direccion && errors.direccion && (
+              <p className="mt-1 text-xs text-[#b91c1c]">{errors.direccion}</p>
+            )}
           </div>
 
           <div>
@@ -207,6 +261,33 @@ export default function ReservarPage() {
                 </option>
               ))}
             </select>
+            {touched.horario && errors.horario && (
+              <p className="mt-1 text-xs text-[#b91c1c]">{errors.horario}</p>
+            )}
+          </div>
+
+          <div className="rounded-xl border border-[#e5e7eb] bg-[#f9fafb] p-4">
+            <label className="flex cursor-pointer items-start gap-3">
+              <input
+                type="checkbox"
+                checked={form.aceptaPagoReserva}
+                onChange={(event) =>
+                  updateField("aceptaPagoReserva", event.target.checked)
+                }
+                onBlur={() => handleBlur("aceptaPagoReserva")}
+                className="mt-1 h-4 w-4 shrink-0 rounded border-[#d1d5db] text-[#1f5d38] focus:ring-[#1f5d38]"
+                aria-invalid={Boolean(errors.aceptaPagoReserva)}
+              />
+              <span className="text-[14px] leading-6 text-[#374151]">
+                Acepto abonar la <strong>seña de {montoReservaFormateado}</strong> con{" "}
+                <strong>Mercado Pago</strong> para reservar la visita. Entiendo que, una vez
+                acreditado el pago, me van a contactar por <strong>WhatsApp</strong> para confirmar
+                día y hora.
+              </span>
+            </label>
+            {touched.aceptaPagoReserva && errors.aceptaPagoReserva && (
+              <p className="mt-2 text-xs text-[#b91c1c]">{errors.aceptaPagoReserva}</p>
+            )}
           </div>
 
           {submitError && (
@@ -221,20 +302,25 @@ export default function ReservarPage() {
             </p>
           )}
 
-          <div className="flex flex-wrap gap-3 pt-2">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="rounded-full bg-[#1f5d38] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(31,93,56,0.2)] transition hover:bg-[#18492c] disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isSubmitting ? "Enviando..." : "Confirmar reserva"}
-            </button>
-            <Link
-              href="/"
-              className="rounded-full border border-[#1f5d38]/20 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[#1f5d38]"
-            >
-              Volver
-            </Link>
+          <div className="flex flex-col gap-2 pt-2">
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="rounded-full bg-[#1f5d38] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(31,93,56,0.2)] transition hover:bg-[#18492c] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isSubmitting ? "Enviando..." : "Enviar solicitud de reserva"}
+              </button>
+              <Link
+                href="/"
+                className="rounded-full border border-[#1f5d38]/20 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[#1f5d38]"
+              >
+                Volver
+              </Link>
+            </div>
+            <p className="text-[12px] leading-5 text-[#6b7280]">
+              Por ahora solo enviamos tu solicitud; el pago con Mercado Pago se agrega después.
+            </p>
           </div>
         </form>
       </div>

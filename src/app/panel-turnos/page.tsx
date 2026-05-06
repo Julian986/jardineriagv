@@ -9,8 +9,9 @@ import {
 type Turno = {
   id: string;
   nombre: string;
-  mail: string;
+  mail?: string;
   celular: string;
+  direccion?: string;
   turnoDetalle: string;
   turnoCodigo: string;
   precioReferenciaArs: number;
@@ -29,7 +30,7 @@ export default function PanelTurnosPage() {
   const [savingId, setSavingId] = useState<string | null>(null);
   const [toast, setToast] = useState("");
   const [mensajeTemplate, setMensajeTemplate] = useState(
-    "Hola {nombre}, soy {profesional}. Te escribo por tu reserva ({turnoDetalle}).",
+    "Hola {nombre}, soy {profesional}. Te escribo por tu reserva ({turnoDetalle}). Dirección: {direccion}",
   );
 
   async function loadTurnos() {
@@ -101,7 +102,8 @@ export default function PanelTurnosPage() {
     const message = mensajeTemplate
       .replaceAll("{nombre}", turno.nombre)
       .replaceAll("{profesional}", PROFESIONAL_DEFAULT)
-      .replaceAll("{turnoDetalle}", turno.turnoDetalle);
+      .replaceAll("{turnoDetalle}", turno.turnoDetalle)
+      .replaceAll("{direccion}", turno.direccion?.trim() || "(sin dirección)");
 
     return `https://wa.me/${normalized}?text=${encodeURIComponent(message)}`;
   }
@@ -183,8 +185,9 @@ export default function PanelTurnosPage() {
               <tr>
                 <th className="px-4 py-3">Fecha</th>
                 <th className="px-4 py-3">Persona</th>
+                <th className="px-4 py-3">Direccion</th>
                 <th className="px-4 py-3">Turno</th>
-                <th className="px-4 py-3">Precio de referencia</th>
+                <th className="px-4 py-3">Reserva</th>
                 <th className="px-4 py-3">Estado</th>
                 <th className="px-4 py-3">Nota interna</th>
               </tr>
@@ -192,7 +195,7 @@ export default function PanelTurnosPage() {
             <tbody>
               {!isLoading && turnosFiltrados.length === 0 && (
                 <tr>
-                  <td className="px-4 py-6 text-[#6b7280]" colSpan={6}>
+                  <td className="px-4 py-6 text-[#6b7280]" colSpan={7}>
                     No hay turnos para mostrar.
                   </td>
                 </tr>
@@ -207,7 +210,6 @@ export default function PanelTurnosPage() {
                     </td>
                     <td className="px-4 py-3">
                       <p className="font-semibold text-[#111827]">{turno.nombre}</p>
-                      <p className="text-[#4b5563]">{turno.mail}</p>
                       {waLink ? (
                         <a
                           href={waLink}
@@ -226,6 +228,11 @@ export default function PanelTurnosPage() {
                           {turno.celular}
                         </button>
                       )}
+                    </td>
+                    <td className="max-w-[220px] px-4 py-3 text-[13px] text-[#374151]">
+                      <p className="whitespace-pre-wrap break-words">
+                        {turno.direccion?.trim() || "—"}
+                      </p>
                     </td>
                     <td className="px-4 py-3 text-[#374151]">
                       <p className="font-semibold">{turno.turnoCodigo}</p>

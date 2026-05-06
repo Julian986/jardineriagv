@@ -105,23 +105,28 @@ const TESTIMONIOS = [
   },
 ];
 
-const DECORACION = [
-  {
-    icon: "🪵",
-    title: "Artículos en madera",
-    desc: "Piezas decorativas y utilitarias elaboradas en madera para interiores y exteriores.",
-  },
-  {
-    icon: "🪴",
-    title: "Macetas y plantas",
-    desc: "Selección de macetas y plantas para interiores y exteriores, con asesoramiento incluido.",
-  },
-  {
-    icon: "🌱",
-    title: "Tierras y sustrato",
-    desc: "Tierras y sustratos seleccionados para el desarrollo óptimo de plantas y jardines.",
-  },
-];
+/** Macetas primero, madera después (pedido del cliente). Imágenes orientativas. */
+const MACETAS_PRODUCTO = {
+  id: "macetas",
+  icon: "🪴",
+  title: "Macetas y plantas",
+  desc: "Selección de macetas y plantas para interiores y exteriores, con asesoramiento incluido.",
+  img: "/canteros con plantas/portada.png",
+};
+
+const MADERA_PRODUCTO = {
+  id: "madera",
+  icon: "🪵",
+  title: "Artículos en madera",
+  desc: "Piezas decorativas y utilitarias elaboradas en madera para interiores y exteriores.",
+  img: "/colocacion de cerco vivo/portada.png",
+};
+
+const TIERRAS_PRODUCTO = {
+  icon: "🌱",
+  title: "Tierras y sustrato",
+  desc: "Tierras y sustratos seleccionados para el desarrollo óptimo de plantas y jardines.",
+};
 
 // ── Ícono WhatsApp (reutilizable) ─────────────────────────────────────────────
 function WAIcon({ className = "h-5 w-5" }: { className?: string }) {
@@ -299,7 +304,7 @@ export default function Home() {
 
           <div className="relative z-10 mx-auto max-w-3xl text-center">
             <span className="mb-4 inline-block rounded-full bg-white/15 px-3 py-1 text-sm font-medium text-white/90 backdrop-blur-sm">
-              Jardinería en Bahía Blanca
+              Jardinería y decoración
             </span>
 
             <h1 className="mb-5 text-balance text-4xl font-bold leading-tight tracking-tight drop-shadow-lg md:text-5xl lg:text-6xl">
@@ -308,9 +313,12 @@ export default function Home() {
               lo que hace
             </h1>
 
-            <p className="mx-auto mb-8 max-w-xl text-lg text-white/85 drop-shadow md:text-xl">
-              Diseño, mantenimiento y riego automático para casas y comercios en
-              Bahía Blanca. Agendá una visita sin cargo en minutos.
+            <p className="mx-auto mb-8 max-w-xl text-lg leading-relaxed text-white/85 drop-shadow md:text-xl">
+              Parquización y diseño de espacios
+              <br />
+              verdes en interiores y exteriores
+              <br />
+              para casas y comercios
             </p>
 
             <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -318,22 +326,104 @@ export default function Home() {
                 href="/reservar"
                 className="flex w-full items-center justify-center rounded-full bg-[#c4933f] px-7 py-3.5 text-base font-bold text-white shadow-xl transition-opacity hover:opacity-90 sm:w-auto"
               >
-                Agendar visita sin cargo
+                Agendar visita
               </Link>
-              <a
+           {/* <a
                 href={WA_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-white/50 px-7 py-3.5 text-base font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/15 sm:w-auto"
               >
                 <WAIcon className="h-4 w-4" /> Hablar por WhatsApp
-              </a>
+              </a> */}
             </div>
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════════
-            2. BARRA DE STATS
+            2. MACETAS → MADERA (después del hero)
+        ══════════════════════════════════════════════════ */}
+        <section
+          className="border-b border-[#e4ead8] bg-[#fafaf7] px-4 py-12 md:py-16"
+          aria-labelledby="productos-complemento-heading"
+        >
+          <div className="mx-auto max-w-6xl">
+            <p
+              id="productos-complemento-heading"
+              className="mx-auto mb-10 max-w-2xl text-center text-[15px] leading-relaxed text-[#555]"
+            >
+              Además del trabajo en tu espacio, podés sumar{" "}
+              <span className="font-semibold text-[#1c1c1c]">macetas y plantas</span> y{" "}
+              <span className="font-semibold text-[#1c1c1c]">piezas en madera</span>. Te asesoramos
+              para que combine con tu jardín o interior.
+            </p>
+
+            <article
+              id={MACETAS_PRODUCTO.id}
+              className="mb-12 flex flex-col gap-6 rounded-2xl border border-[#e4ead8] bg-white p-6 shadow-sm md:mb-14 md:flex-row md:items-center md:gap-10 md:p-8"
+            >
+              <div className="relative mx-auto h-52 w-full max-w-md shrink-0 overflow-hidden rounded-xl bg-[#f0f5ea] md:mx-0 md:h-56 md:w-80 md:max-w-none">
+                <Image
+                  src={MACETAS_PRODUCTO.img}
+                  alt={MACETAS_PRODUCTO.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 320px"
+                />
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <span className="text-3xl" aria-hidden>
+                  {MACETAS_PRODUCTO.icon}
+                </span>
+                <h2 className="mt-2 text-2xl font-bold text-[#1c1c1c] md:text-3xl">
+                  {MACETAS_PRODUCTO.title}
+                </h2>
+                <p className="mt-2 text-[15px] leading-relaxed text-[#555]">{MACETAS_PRODUCTO.desc}</p>
+                <Link
+                  href="/reservar"
+                  className="mt-5 inline-block rounded-full bg-[#c4933f] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                >
+                  Consultar o agendar visita
+                </Link>
+              </div>
+            </article>
+
+            <article
+              id={MADERA_PRODUCTO.id}
+              className="flex flex-col gap-6 rounded-2xl border border-[#e4ead8] bg-white p-6 shadow-sm md:flex-row-reverse md:items-center md:gap-10 md:p-8"
+            >
+              <div className="relative mx-auto h-52 w-full max-w-md shrink-0 overflow-hidden rounded-xl bg-[#f0f5ea] md:mx-0 md:h-56 md:w-80 md:max-w-none">
+                <Image
+                  src={MADERA_PRODUCTO.img}
+                  alt={MADERA_PRODUCTO.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 320px"
+                />
+              </div>
+              <div className="flex-1 text-center md:text-right">
+                <span className="text-3xl" aria-hidden>
+                  {MADERA_PRODUCTO.icon}
+                </span>
+                <h2 className="mt-2 text-2xl font-bold text-[#1c1c1c] md:text-3xl">
+                  {MADERA_PRODUCTO.title}
+                </h2>
+                <p className="mt-2 text-[15px] leading-relaxed text-[#555] md:ml-auto md:max-w-xl">
+                  {MADERA_PRODUCTO.desc}
+                </p>
+                <Link
+                  href="/reservar"
+                  className="mt-5 inline-block rounded-full bg-[#c4933f] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 md:ml-auto md:inline-flex"
+                >
+                  Consultar o agendar visita
+                </Link>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════
+            3. BARRA DE STATS
         ══════════════════════════════════════════════════ */}
         <section className="bg-[#2d5016] px-4 py-8">
           <div className="mx-auto grid max-w-4xl grid-cols-3 gap-4 text-center text-white">
@@ -543,44 +633,36 @@ export default function Home() {
         </section>
 
         {/* ══════════════════════════════════════════════════
-            8. DECORACIÓN Y PRODUCTOS
+            8. TIERRAS (macetas y madera ya están arriba, tras el hero)
         ══════════════════════════════════════════════════ */}
         <section id="decoracion" className="border-t border-[#e4ead8] bg-white px-4 py-14 md:py-16">
           <div className="mx-auto max-w-6xl">
             <div className="mb-2 text-center">
               <span className="text-sm font-medium uppercase tracking-widest text-[#2d5016]">
-                Además
+                También
               </span>
             </div>
             <div className="mb-8 text-center">
               <h2 className="text-2xl font-bold text-[#1c1c1c] md:text-3xl">
-                Decoración y productos
+                {TIERRAS_PRODUCTO.title}
               </h2>
               <p className="mt-1 text-sm text-[#888]">
-                Todo lo que necesitás para tu jardín, en un solo lugar.
+                Complemento para macetas, canteros y jardín.
               </p>
             </div>
-            <div className="grid gap-5 sm:grid-cols-3">
-              {DECORACION.map((d) => (
-                <div
-                  key={d.title}
-                  className="flex flex-col gap-2 rounded-2xl border border-[#e4ead8] bg-[#fafaf7] p-5"
+            <div className="mx-auto max-w-lg">
+              <div className="flex flex-col gap-3 rounded-2xl border border-[#e4ead8] bg-[#fafaf7] p-6 text-center">
+                <span className="text-3xl" role="img" aria-hidden>
+                  {TIERRAS_PRODUCTO.icon}
+                </span>
+                <p className="text-sm leading-relaxed text-[#666]">{TIERRAS_PRODUCTO.desc}</p>
+                <Link
+                  href="/reservar"
+                  className="mx-auto mt-1 inline-block text-sm font-medium text-[#2d5016] underline underline-offset-2 hover:opacity-80"
                 >
-                  <span className="text-2xl" role="img" aria-label={d.title}>{d.icon}</span>
-                  <h3 className="font-semibold text-[#1c1c1c]">{d.title}</h3>
-                  <p className="text-sm leading-relaxed text-[#666]">{d.desc}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-6 text-center">
-              <a
-                href={WA_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-medium text-[#2d5016] underline underline-offset-2 hover:opacity-80"
-              >
-                Consultar disponibilidad por WhatsApp →
-              </a>
+                  Consultar por la web →
+                </Link>
+              </div>
             </div>
           </div>
         </section>

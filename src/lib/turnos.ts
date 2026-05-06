@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z, type ZodError } from "zod";
 
 export const TURNO_ESTADOS = [
   "pendiente",
@@ -34,12 +34,47 @@ const MOTIVO_VALUES = [
   "decoracion_plantas_macetas",
 ] as const;
 
+/** Monto que el cliente acepta abonar al agendar la visita (ARS). */
+export const RESERVA_VISITA_MONTO_ARS = 25_000;
+
+const msg = {
+  nombreReq: "Ingresá tu nombre y apellido.",
+  nombreMin: "El nombre debe tener al menos 3 letras.",
+  celularReq: "Ingresá tu número de celular.",
+  celularMin: "El celular parece incompleto. Incluí código de área.",
+  direccionReq: "Ingresá la dirección donde querés la visita.",
+  direccionMin: "La dirección es muy corta. Incluí calle, número y barrio o ciudad.",
+  motivo: "Elegí un motivo de consulta.",
+  horarioReq: "Elegí un horario de preferencia.",
+  horarioMin: "Elegí un horario de la lista.",
+  pagoReserva:
+    "Tenés que marcar la casilla para aceptar abonar la seña de $ 25.000 con Mercado Pago.",
+} as const;
+
 export const TurnoCreateSchema = z.object({
-  nombre: z.string().trim().min(3, "Ingresá nombre y apellido"),
-  mail: z.string().trim().email("Ingresá un mail válido"),
-  celular: z.string().trim().min(8, "Ingresá un celular válido"),
-  motivo: z.enum(MOTIVO_VALUES),
-  horario: z.string().trim().min(3, "Seleccioná un horario"),
+  nombre: z
+    .string({ message: msg.nombreReq })
+    .trim()
+    .min(3, msg.nombreMin),
+  celular: z
+    .string({ message: msg.celularReq })
+    .trim()
+    .min(8, msg.celularMin),
+  direccion: z
+    .string({ message: msg.direccionReq })
+    .trim()
+    .min(10, msg.direccionMin),
+  motivo: z.enum(MOTIVO_VALUES, { message: msg.motivo }),
+  horario: z
+    .string({ message: msg.horarioReq })
+    .trim()
+    .min(3, msg.horarioMin)
+    .refine((h) => (HORARIO_OPTIONS as readonly string[]).includes(h), {
+      message: "Elegí un horario válido de la lista.",
+    }),
+  aceptaPagoReserva: z
+    .boolean({ message: msg.pagoReserva })
+    .refine((v) => v === true, { message: msg.pagoReserva }),
 });
 
 export const TurnoPatchSchema = z
@@ -56,12 +91,28 @@ export const TurnoPatchSchema = z
 export type TurnoCreateInput = z.infer<typeof TurnoCreateSchema>;
 export type TurnoPatchInput = z.infer<typeof TurnoPatchSchema>;
 
+/** Mensaje único para mostrar al usuario (formulario o API). */
+export function formatTurnoCreateValidationError(error: ZodError): string {
+  const seen = new Set<string>();
+  const parts: string[] = [];
+  for (const issue of error.issues) {
+    const m = issue.message?.trim();
+    if (!m || seen.has(m)) continue;
+    seen.add(m);
+    parts.push(m);
+  }
+  return parts.length > 0
+    ? parts.join(" ")
+    : "Revisá los datos del formulario e intentá de nuevo.";
+}
+
 export function getMotivoLabel(motivo: TurnoCreateInput["motivo"]): string {
   return MOTIVO_OPTIONS.find((m) => m.value === motivo)?.label ?? motivo;
 }
 
 export function buildTurnoDetalle(input: TurnoCreateInput): string {
-  return `${getMotivoLabel(input.motivo)} · ${input.horario}`;
+  const dir = input.direccion.replace(/\s+/g, " ").trim();
+  return `${getMotivoLabel(input.motivo)} · ${input.horario} · ${dir}`;
 }
 
 export function buildTurnoCodigo(): string {
