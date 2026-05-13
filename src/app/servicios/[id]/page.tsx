@@ -64,9 +64,13 @@ export default async function ServicioDetailPage({ params }: Props) {
 
             <Link
               href="/#servicios-jardineria"
-              className="inline-flex items-center justify-center rounded-full border border-[#1f5d38]/20 bg-white/80 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1f5d38] shadow-[0_12px_28px_rgba(31,93,56,0.08)]"
+              aria-label="Volver al catálogo de servicios"
+              className="inline-flex items-center gap-2 rounded-full border border-[#1f5d38]/20 bg-white/80 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#1f5d38] shadow-[0_12px_28px_rgba(31,93,56,0.08)] transition hover:bg-[#f0fdf4]"
             >
-              ← Volver al catálogo
+              <span aria-hidden className="text-sm leading-none">
+                ←
+              </span>
+              Volver al catálogo
             </Link>
           </div>
 

@@ -28,6 +28,9 @@ export const HORARIO_OPTIONS = [
   "Sábados - 10:00",
 ] as const;
 
+/** getDay(): 0=dom … 6=sáb — visitas solo lunes, miércoles y viernes */
+export const DIAS_SEMANA_RESERVA_PERMITIDOS = [1, 3, 5] as const;
+
 const MOTIVO_VALUES = [
   "jardin_desde_cero",
   "riego",
@@ -44,12 +47,41 @@ const msg = {
   celularMin: "El celular parece incompleto. Incluí código de área.",
   direccionReq: "Ingresá la dirección donde querés la visita.",
   direccionMin: "La dirección es muy corta. Incluí calle, número y barrio o ciudad.",
-  motivo: "Elegí un motivo de consulta.",
+  fechaReq: "Elegí un día para la visita (lunes, miércoles o viernes).",
+  fechaInvalida: "Solo podés elegir lunes, miércoles o viernes.",
+  fechaPasado: "Elegí una fecha desde hoy en adelante.",
   horarioReq: "Elegí un horario de preferencia.",
   horarioMin: "Elegí un horario de la lista.",
-  pagoReserva:
-    "Tenés que marcar la casilla para aceptar abonar la seña de $ 25.000 con Mercado Pago.",
 } as const;
+
+function parseIsoDateLocal(iso: string): Date | null {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso.trim());
+  if (!m) return null;
+  const y = Number(m[1]);
+  const mo = Number(m[2]) - 1;
+  const d = Number(m[3]);
+  const date = new Date(y, mo, d, 12, 0, 0, 0);
+  if (date.getFullYear() !== y || date.getMonth() !== mo || date.getDate() !== d)
+    return null;
+  return date;
+}
+
+function startOfTodayLocal(): Date {
+  const t = new Date();
+  t.setHours(0, 0, 0, 0);
+  return t;
+}
+
+export function formatFechaPreferidaAR(isoDate: string): string {
+  const d = parseIsoDateLocal(isoDate);
+  if (!d) return isoDate;
+  return d.toLocaleDateString("es-AR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
 
 export const TurnoCreateSchema = z.object({
   nombre: z
@@ -64,7 +96,38 @@ export const TurnoCreateSchema = z.object({
     .string({ message: msg.direccionReq })
     .trim()
     .min(10, msg.direccionMin),
-  motivo: z.enum(MOTIVO_VALUES, { message: msg.motivo }),
+  fechaPreferida: z
+    .string({ message: msg.fechaReq })
+    .trim()
+    .min(10, msg.fechaReq)
+    .superRefine((val, ctx) => {
+      const parsed = parseIsoDateLocal(val);
+      if (!parsed) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: msg.fechaReq,
+          path: ["fechaPreferida"],
+        });
+        return;
+      }
+      const today = startOfTodayLocal();
+      if (parsed < today) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: msg.fechaPasado,
+          path: ["fechaPreferida"],
+        });
+        return;
+      }
+      const dow = parsed.getDay();
+      if (!(DIAS_SEMANA_RESERVA_PERMITIDOS as readonly number[]).includes(dow)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: msg.fechaInvalida,
+          path: ["fechaPreferida"],
+        });
+      }
+    }),
   horario: z
     .string({ message: msg.horarioReq })
     .trim()
@@ -72,9 +135,8 @@ export const TurnoCreateSchema = z.object({
     .refine((h) => (HORARIO_OPTIONS as readonly string[]).includes(h), {
       message: "Elegí un horario válido de la lista.",
     }),
-  aceptaPagoReserva: z
-    .boolean({ message: msg.pagoReserva })
-    .refine((v) => v === true, { message: msg.pagoReserva }),
+  /** Sin campo en el formulario: valor por defecto para registros históricos / panel */
+  motivo: z.enum(MOTIVO_VALUES).default("jardin_desde_cero"),
 });
 
 export const TurnoPatchSchema = z
@@ -112,7 +174,8 @@ export function getMotivoLabel(motivo: TurnoCreateInput["motivo"]): string {
 
 export function buildTurnoDetalle(input: TurnoCreateInput): string {
   const dir = input.direccion.replace(/\s+/g, " ").trim();
-  return `${getMotivoLabel(input.motivo)} · ${input.horario} · ${dir}`;
+  const fechaFmt = formatFechaPreferidaAR(input.fechaPreferida);
+  return `${fechaFmt} · ${input.horario} · ${dir}`;
 }
 
 export function buildTurnoCodigo(): string {

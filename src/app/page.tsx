@@ -8,6 +8,9 @@ import { useState, useEffect, useCallback } from "react";
 const WA_HREF =
   "https://wa.me/5492914315080?text=Hola%20Guillermo%2C%20quisiera%20coordinar%20una%20visita%20para%20ver%20mi%20jard%C3%ADn%20y%20pedir%20presupuesto.";
 
+/** CTA principal hacia /reservar (hero + navegación). */
+const CTA_RESERVAR_LABEL = "Empecemos a diseñar tu espacio";
+
 // Imágenes del carrusel hero (trabajos reales de Guillermo)
 const HERO_IMAGES = [
   "/ultimas imagenes/5.webp",
@@ -17,7 +20,7 @@ const HERO_IMAGES = [
   "/ultimas imagenes/9.webp",
 ];
 
-// Galería de trabajos (todas las disponibles)
+// Galería de trabajos (todas las disponibles) — usada por sección galería (oculta vía false && más abajo)
 const GALERIA = [
   { src: "/ultimas imagenes/1 (1).webp", alt: "Jardín diseñado por Guillermo" },
   { src: "/ultimas imagenes/2.webp",     alt: "Trabajo de jardinería en Bahía Blanca" },
@@ -105,27 +108,40 @@ const TESTIMONIOS = [
   },
 ];
 
-/** Macetas primero, madera después (pedido del cliente). Imágenes orientativas. */
-const MACETAS_PRODUCTO = {
-  id: "macetas",
-  icon: "🪴",
-  title: "Macetas y plantas",
-  desc: "Selección de macetas y plantas para interiores y exteriores, con asesoramiento incluido.",
-  img: "/canteros con plantas/portada.png",
-};
-
-const MADERA_PRODUCTO = {
-  id: "madera",
-  icon: "🪵",
-  title: "Artículos en madera",
-  desc: "Piezas decorativas y utilitarias elaboradas en madera para interiores y exteriores.",
-  img: "/colocacion de cerco vivo/portada.png",
-};
-
 const TIERRAS_PRODUCTO = {
   icon: "🌱",
   title: "Tierras y sustrato",
   desc: "Tierras y sustratos seleccionados para el desarrollo óptimo de plantas y jardines.",
+};
+
+/** Macetas primero, madera después (pedido del cliente). Imágenes orientativas. */
+const MACETAS_PRODUCTO = {
+  id: "macetas",
+  detailHref: "/decoracion-plantas-macetas",
+  icon: "🪴",
+  tituloPrincipal: "DECORACIÓN CON PLANTAS Y MACETAS:",
+  tituloSecundario: "Vida en cada rincón",
+  desc: "Llevamos la naturaleza a donde vos estés. Ya sea en el corazón de tu hogar o en el espacio de trabajo de tu empresa, nuestro servicio de decoración botánica transforma ambientes comunes en espacios vibrantes y saludables.",
+  img: "/canteros con plantas/portada.png",
+};
+
+const PARQUIZACION_PRODUCTO = {
+  id: "parquizacion",
+  detailHref: "/parquizacion-diseno-exterior",
+  icon: "🌳",
+  tituloPrincipal: "PARQUIZACIÓN Y DISEÑO EXTERIOR:",
+  tituloSecundario: "Creamos el jardín que siempre soñaste.",
+  desc: "Desde la elección de la especie ideal hasta la armonía de las texturas. Creamos escenarios donde la calidad y la excelencia técnica garantizan que tu única tarea sea disfrutar del aire libre.",
+  img: "/siembra de cesped/portada.png",
+};
+
+const MADERA_PRODUCTO = {
+  id: "madera",
+  tituloPrincipal: "MUEBLES CON HISTORIA:",
+  tituloSecundario: "Artesanía en madera recuperada.",
+  desc: "Damos una segunda vida a maderas nobles para crear piezas únicas que cuentan una historia. Cada mueble es fabricado a mano, respetando las vetas, texturas y marcas del tiempo que hacen de cada diseño algo irrepetible.",
+  tagline: "♻️ Piezas únicas, 100% sustentables.",
+  img: "/colocacion de cerco vivo/portada.png",
 };
 
 // ── Ícono WhatsApp (reutilizable) ─────────────────────────────────────────────
@@ -243,9 +259,9 @@ export default function Home() {
             </a>
             <Link
               href="/reservar"
-              className="rounded-full bg-[#c4933f] px-4 py-1.5 font-semibold text-white transition-opacity hover:opacity-90"
+              className="max-w-[200px] rounded-full bg-[#c4933f] px-3 py-1.5 text-center text-[11px] font-semibold leading-snug text-white transition-opacity hover:opacity-90 sm:max-w-none sm:px-4 sm:text-xs md:text-sm"
             >
-              Agendar visita
+              {CTA_RESERVAR_LABEL}
             </Link>
           </nav>
 
@@ -275,10 +291,10 @@ export default function Home() {
               <a href="#sobre-guillermo" onClick={() => setNavOpen(false)} className="py-1">Sobre Guillermo</a>
               <Link
                 href="/reservar"
-                className="mt-1 flex items-center justify-center rounded-full bg-[#c4933f] px-4 py-2.5 font-semibold text-white"
+                className="mt-1 flex items-center justify-center rounded-full bg-[#c4933f] px-4 py-2.5 text-center text-sm font-semibold leading-snug text-white"
                 onClick={() => setNavOpen(false)}
               >
-                Agendar visita
+                {CTA_RESERVAR_LABEL}
               </Link>
               <a
                 href={WA_HREF}
@@ -303,30 +319,26 @@ export default function Home() {
           <HeroCarousel />
 
           <div className="relative z-10 mx-auto max-w-3xl text-center">
-            <span className="mb-4 inline-block rounded-full bg-white/15 px-3 py-1 text-sm font-medium text-white/90 backdrop-blur-sm">
-              Jardinería y decoración
+            <span className="mb-4 inline-block rounded-full bg-white/15 px-3 py-1 text-sm font-medium uppercase tracking-wide text-white/90 backdrop-blur-sm">
+              PARQUIZACIÓN Y DISEÑO
             </span>
 
             <h1 className="mb-5 text-balance text-4xl font-bold leading-tight tracking-tight drop-shadow-lg md:text-5xl lg:text-6xl">
-              Tu jardín en manos de{" "}
-              <span className="text-[#e8b46a]">alguien que sabe</span>{" "}
-              lo que hace
+              Transformamos espacios,{" "}
+              <span className="text-[#e8b46a]">cultivamos bienestar</span>
             </h1>
 
             <p className="mx-auto mb-8 max-w-xl text-lg leading-relaxed text-white/85 drop-shadow md:text-xl">
-              Parquización y diseño de espacios
-              <br />
-              verdes en interiores y exteriores
-              <br />
-              para casas y comercios
+              nuestra pasión por la naturaleza nos impulsa a diseñar paisajes que respiran y
+              evolucionan con el tiempo
             </p>
 
             <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Link
                 href="/reservar"
-                className="flex w-full items-center justify-center rounded-full bg-[#c4933f] px-7 py-3.5 text-base font-bold text-white shadow-xl transition-opacity hover:opacity-90 sm:w-auto"
+                className="flex w-full items-center justify-center rounded-full bg-[#c4933f] px-5 py-3.5 text-center text-sm font-bold leading-snug text-white shadow-xl transition-opacity hover:opacity-90 sm:w-auto sm:px-7 sm:text-base"
               >
-                Agendar visita
+                {CTA_RESERVAR_LABEL}
               </Link>
            {/* <a
                 href={WA_HREF}
@@ -341,7 +353,7 @@ export default function Home() {
         </section>
 
         {/* ══════════════════════════════════════════════════
-            2. MACETAS → MADERA (después del hero)
+            2. MACETAS → PARQUIZACIÓN → MADERA (después del hero)
         ══════════════════════════════════════════════════ */}
         <section
           className="border-b border-[#e4ead8] bg-[#fafaf7] px-4 py-12 md:py-16"
@@ -350,12 +362,11 @@ export default function Home() {
           <div className="mx-auto max-w-6xl">
             <p
               id="productos-complemento-heading"
-              className="mx-auto mb-10 max-w-2xl text-center text-[15px] leading-relaxed text-[#555]"
+              className="mx-auto mb-10 max-w-3xl text-center text-[15px] leading-relaxed text-[#555]"
             >
-              Además del trabajo en tu espacio, podés sumar{" "}
-              <span className="font-semibold text-[#1c1c1c]">macetas y plantas</span> y{" "}
-              <span className="font-semibold text-[#1c1c1c]">piezas en madera</span>. Te asesoramos
-              para que combine con tu jardín o interior.
+              En JardineríaGV cada proyecto es un compromiso con la durabilidad y la estética.
+              Porque entendemos que un rincón verde no es solo decoración; es una inversión en
+              calidad de vida y bienestar.
             </p>
 
             <article
@@ -365,7 +376,7 @@ export default function Home() {
               <div className="relative mx-auto h-52 w-full max-w-md shrink-0 overflow-hidden rounded-xl bg-[#f0f5ea] md:mx-0 md:h-56 md:w-80 md:max-w-none">
                 <Image
                   src={MACETAS_PRODUCTO.img}
-                  alt={MACETAS_PRODUCTO.title}
+                  alt={`${MACETAS_PRODUCTO.tituloPrincipal} ${MACETAS_PRODUCTO.tituloSecundario}`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 320px"
@@ -375,27 +386,40 @@ export default function Home() {
                 <span className="text-3xl" aria-hidden>
                   {MACETAS_PRODUCTO.icon}
                 </span>
-                <h2 className="mt-2 text-2xl font-bold text-[#1c1c1c] md:text-3xl">
-                  {MACETAS_PRODUCTO.title}
+                <h2 className="mt-2">
+                  <span className="block text-base font-bold uppercase tracking-wide text-[#1c1c1c] md:text-lg">
+                    {MACETAS_PRODUCTO.tituloPrincipal}
+                  </span>
+                  <span className="mt-1 block text-2xl font-bold text-[#2d5016] md:text-3xl">
+                    {MACETAS_PRODUCTO.tituloSecundario}
+                  </span>
                 </h2>
                 <p className="mt-2 text-[15px] leading-relaxed text-[#555]">{MACETAS_PRODUCTO.desc}</p>
-                <Link
-                  href="/reservar"
-                  className="mt-5 inline-block rounded-full bg-[#c4933f] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-                >
-                  Consultar o agendar visita
-                </Link>
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:justify-start">
+                  <Link
+                    href="/reservar"
+                    className="inline-flex justify-center rounded-full bg-[#c4933f] px-5 py-2.5 text-center text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                  >
+                    {CTA_RESERVAR_LABEL}
+                  </Link>
+                  <Link
+                    href={MACETAS_PRODUCTO.detailHref}
+                    className="inline-flex justify-center rounded-full border-2 border-[#2d5016] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#f0f5ea]"
+                  >
+                    Ver más
+                  </Link>
+                </div>
               </div>
             </article>
 
             <article
-              id={MADERA_PRODUCTO.id}
-              className="flex flex-col gap-6 rounded-2xl border border-[#e4ead8] bg-white p-6 shadow-sm md:flex-row-reverse md:items-center md:gap-10 md:p-8"
+              id={PARQUIZACION_PRODUCTO.id}
+              className="mb-12 flex flex-col gap-6 rounded-2xl border border-[#e4ead8] bg-white p-6 shadow-sm md:mb-14 md:flex-row-reverse md:items-center md:gap-10 md:p-8"
             >
               <div className="relative mx-auto h-52 w-full max-w-md shrink-0 overflow-hidden rounded-xl bg-[#f0f5ea] md:mx-0 md:h-56 md:w-80 md:max-w-none">
                 <Image
-                  src={MADERA_PRODUCTO.img}
-                  alt={MADERA_PRODUCTO.title}
+                  src={PARQUIZACION_PRODUCTO.img}
+                  alt={`${PARQUIZACION_PRODUCTO.tituloPrincipal} ${PARQUIZACION_PRODUCTO.tituloSecundario}`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 320px"
@@ -403,25 +427,91 @@ export default function Home() {
               </div>
               <div className="flex-1 text-center md:text-right">
                 <span className="text-3xl" aria-hidden>
-                  {MADERA_PRODUCTO.icon}
+                  {PARQUIZACION_PRODUCTO.icon}
                 </span>
-                <h2 className="mt-2 text-2xl font-bold text-[#1c1c1c] md:text-3xl">
-                  {MADERA_PRODUCTO.title}
+                <h2 className="mt-2">
+                  <span className="block text-base font-bold uppercase tracking-wide text-[#1c1c1c] md:text-lg">
+                    {PARQUIZACION_PRODUCTO.tituloPrincipal}
+                  </span>
+                  <span className="mt-1 block text-2xl font-bold text-[#2d5016] md:text-3xl">
+                    {PARQUIZACION_PRODUCTO.tituloSecundario}
+                  </span>
                 </h2>
                 <p className="mt-2 text-[15px] leading-relaxed text-[#555] md:ml-auto md:max-w-xl">
+                  {PARQUIZACION_PRODUCTO.desc}
+                </p>
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:ml-auto md:justify-end">
+                  <Link
+                    href="/reservar"
+                    className="inline-flex justify-center rounded-full bg-[#c4933f] px-5 py-2.5 text-center text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                  >
+                    {CTA_RESERVAR_LABEL}
+                  </Link>
+                  <Link
+                    href={PARQUIZACION_PRODUCTO.detailHref}
+                    className="inline-flex justify-center rounded-full border-2 border-[#2d5016] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#f0f5ea]"
+                  >
+                    Ver más
+                  </Link>
+                </div>
+              </div>
+            </article>
+
+            <article
+              id={MADERA_PRODUCTO.id}
+              className="flex flex-col gap-6 rounded-2xl border border-[#e4ead8] bg-white p-6 shadow-sm md:flex-row md:items-center md:gap-10 md:p-8"
+            >
+              <div className="relative mx-auto h-52 w-full max-w-md shrink-0 overflow-hidden rounded-xl bg-[#f0f5ea] md:mx-0 md:h-56 md:w-80 md:max-w-none">
+                <Image
+                  src={MADERA_PRODUCTO.img}
+                  alt={`${MADERA_PRODUCTO.tituloPrincipal} ${MADERA_PRODUCTO.tituloSecundario}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 320px"
+                />
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <h2 className="mt-0 md:mt-0">
+                  <span className="block text-base font-bold uppercase tracking-wide text-[#1c1c1c] md:text-lg">
+                    {MADERA_PRODUCTO.tituloPrincipal}
+                  </span>
+                  <span className="mt-1 block text-2xl font-bold text-[#2d5016] md:text-3xl">
+                    {MADERA_PRODUCTO.tituloSecundario}
+                  </span>
+                </h2>
+                <p className="mt-2 text-[15px] leading-relaxed text-[#555] md:max-w-xl">
                   {MADERA_PRODUCTO.desc}
                 </p>
-                <Link
-                  href="/reservar"
-                  className="mt-5 inline-block rounded-full bg-[#c4933f] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 md:ml-auto md:inline-flex"
-                >
-                  Consultar o agendar visita
-                </Link>
+                <p className="mt-3 text-sm font-semibold text-[#2d5016] md:max-w-xl">
+                  {MADERA_PRODUCTO.tagline}
+                </p>
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                  <Link
+                    href="/reservar"
+                    className="inline-flex justify-center rounded-full bg-[#c4933f] px-5 py-2.5 text-center text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                  >
+                    {CTA_RESERVAR_LABEL}
+                  </Link>
+                  <span
+                    className="inline-flex cursor-default select-none items-center justify-center rounded-full border border-[#cfd9c4] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#5a6b52] shadow-sm"
+                    title="Catálogo y más información cuando tengamos las fotos de los muebles"
+                    aria-disabled="true"
+                  >
+                    Próximamente
+                  </span>
+                </div>
               </div>
             </article>
           </div>
         </section>
 
+        {/*
+         * Pedido cliente: oculto desde barra STATS hasta sección Tierras (inclusive).
+         * La sección "CTA final" (#contacto) y el <footer> permanecen visibles.
+         * Restaurar bloques ocultos: cambiar \`false &&\` por \`true &&\` o eliminar el envoltorio.
+         */}
+        {false && (
+          <>
         {/* ══════════════════════════════════════════════════
             3. BARRA DE STATS
         ══════════════════════════════════════════════════ */}
@@ -633,7 +723,7 @@ export default function Home() {
         </section>
 
         {/* ══════════════════════════════════════════════════
-            8. TIERRAS (macetas y madera ya están arriba, tras el hero)
+            8. TIERRAS (macetas, parquización y madera ya están arriba, tras el hero)
         ══════════════════════════════════════════════════ */}
         <section id="decoracion" className="border-t border-[#e4ead8] bg-white px-4 py-14 md:py-16">
           <div className="mx-auto max-w-6xl">
@@ -666,9 +756,11 @@ export default function Home() {
             </div>
           </div>
         </section>
+          </>
+        )}
 
         {/* ══════════════════════════════════════════════════
-            9. CTA FINAL
+            CTA FINAL (siempre visible — no forma parte del bloque oculto arriba)
         ══════════════════════════════════════════════════ */}
         <section
           id="contacto"
@@ -682,19 +774,24 @@ export default function Home() {
             }}
           />
           <div className="relative mx-auto max-w-2xl text-center">
-            <h2 className="mb-4 text-3xl font-bold leading-tight md:text-4xl">
-              ¿Listo para tener el jardín que siempre quisiste?
-            </h2>
-            <p className="mb-8 text-lg text-white/80">
-              Agendá una visita sin cargo directamente desde la web. Guillermo se contacta en menos
-              de 24 hs para confirmar el día y la hora.
-            </p>
+            {false && (
+              <>
+                {/* Pedido cliente: ocultar titular y bajada del CTA; restaurar con true */}
+                <h2 className="mb-4 text-3xl font-bold leading-tight md:text-4xl">
+                  ¿Listo para tener el jardín que siempre quisiste?
+                </h2>
+                <p className="mb-8 text-lg text-white/80">
+                  Agendá una visita sin cargo directamente desde la web. Guillermo se contacta en
+                  menos de 24 hs para confirmar el día y la hora.
+                </p>
+              </>
+            )}
             <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Link
                 href="/reservar"
                 className="flex w-full items-center justify-center rounded-full bg-[#c4933f] px-8 py-4 text-base font-bold text-white shadow-xl transition-opacity hover:opacity-90 sm:w-auto"
               >
-                Agendar mi visita sin cargo
+                {CTA_RESERVAR_LABEL}
               </Link>
               <a
                 href={WA_HREF}
