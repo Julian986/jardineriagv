@@ -15,7 +15,7 @@ type Turno = {
   turnoDetalle: string;
   turnoCodigo: string;
   precioReferenciaArs: number;
-  estado: (typeof TURNO_ESTADOS)[number];
+  estado: string;
   notaInterna?: string;
   createdAt: string;
 };
@@ -26,7 +26,7 @@ export default function PanelTurnosPage() {
   const [turnos, setTurnos] = useState<Turno[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [filtroEstado, setFiltroEstado] = useState<"todos" | Turno["estado"]>("todos");
+  const [filtroEstado, setFiltroEstado] = useState<"todos" | string>("todos");
   const [savingId, setSavingId] = useState<string | null>(null);
   const [toast, setToast] = useState("");
   const [mensajeTemplate, setMensajeTemplate] = useState(
@@ -141,7 +141,7 @@ export default function PanelTurnosPage() {
           <select
             value={filtroEstado}
             onChange={(event) =>
-              setFiltroEstado(event.target.value as "todos" | Turno["estado"])
+              setFiltroEstado(event.target.value as "todos" | string)
             }
             className="h-10 w-full rounded-xl border border-[#d1d5db] bg-white px-3 text-[14px] outline-none"
           >
@@ -250,7 +250,7 @@ export default function PanelTurnosPage() {
                         value={turno.estado}
                         onChange={(event) =>
                           void updateTurno(turno.id, {
-                            estado: event.target.value as Turno["estado"],
+                            estado: event.target.value,
                           })
                         }
                         disabled={savingId === turno.id}

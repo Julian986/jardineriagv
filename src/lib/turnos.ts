@@ -1,6 +1,9 @@
 import { z, type ZodError } from "zod";
 
 export const TURNO_ESTADOS = [
+  "pending_payment",
+  "confirmed",
+  "expired",
   "pendiente",
   "contactado",
   "confirmado",
@@ -23,9 +26,8 @@ export const MOTIVO_OPTIONS = [
 ] as const;
 
 export const HORARIO_OPTIONS = [
-  "Lunes a viernes - 09:00 a 12:00",
-  "Lunes a viernes - 14:00 a 17:00",
-  "Sábados - 10:00",
+  "09:00 a 12:00",
+  "14:00 a 17:00",
 ] as const;
 
 /** getDay(): 0=dom … 6=sáb — visitas solo lunes, miércoles y viernes */
@@ -38,7 +40,8 @@ const MOTIVO_VALUES = [
 ] as const;
 
 /** Monto que el cliente acepta abonar al agendar la visita (ARS). */
-export const RESERVA_VISITA_MONTO_ARS = 25_000;
+export const RESERVA_VISITA_MONTO_ARS = 30;
+// Real 25_000;
 
 const msg = {
   nombreReq: "Ingresá tu nombre y apellido.",

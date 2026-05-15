@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   DIAS_SEMANA_RESERVA_PERMITIDOS,
@@ -28,11 +28,9 @@ const initialForm: FormFields = {
   horario: HORARIO_OPTIONS[0],
 };
 
-const montoVisitaFormateado = new Intl.NumberFormat("es-AR", {
-  style: "currency",
-  currency: "ARS",
+const montoVisitaFormateado = `$${new Intl.NumberFormat("es-AR", {
   maximumFractionDigits: 0,
-}).format(RESERVA_VISITA_MONTO_ARS);
+}).format(RESERVA_VISITA_MONTO_ARS)}`;
 
 const WEEKDAY_HEADERS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
 
@@ -85,15 +83,33 @@ export default function ReservarPage() {
   const [errors, setErrors] = useState<ErrorState>({});
   const [touched, setTouched] = useState<TouchedState>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
   const [submitError, setSubmitError] = useState("");
+  const [mpReturnHint, setMpReturnHint] = useState<"success" | "failure" | "pending" | null>(null);
 
   const [cursorMonth, setCursorMonth] = useState(() => {
     const n = new Date();
     return new Date(n.getFullYear(), n.getMonth(), 1);
   });
 
+  const despuesDeFechaRef = useRef<HTMLDivElement>(null);
+
   const horariosDisponibles = useMemo(() => HORARIO_OPTIONS, []);
+
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search).get("mp");
+    if (p === "success" || p === "failure" || p === "pending") {
+      setMpReturnHint(p);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!form.fechaPreferida) return;
+    const el = despuesDeFechaRef.current;
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, [form.fechaPreferida]);
 
   const calendarWeeks = useMemo(
     () => buildMonthWeeks(cursorMonth.getFullYear(), cursorMonth.getMonth()),
@@ -142,7 +158,6 @@ export default function ReservarPage() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitError("");
-    setSuccessMessage("");
 
     const validation = validateForm(form);
     if (!validation.success) {
@@ -166,20 +181,21 @@ export default function ReservarPage() {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch("/api/turnos", {
+      const pendingRes = await fetch("/api/reservas/pending", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(validation.data),
       });
 
-      const data = (await response.json()) as {
+      const pendingJson = (await pendingRes.json()) as {
         ok?: boolean;
         error?: string;
         issues?: { path: string[]; message: string }[];
+        id?: string;
       };
 
-      if (!response.ok || !data.ok) {
-        const issues = data.issues ?? [];
+      if (!pendingRes.ok || !pendingJson.ok || !pendingJson.id) {
+        const issues = pendingJson.issues ?? [];
         const formKeys = new Set<string>([
           "nombre",
           "celular",
@@ -207,19 +223,31 @@ export default function ReservarPage() {
           setSubmitError("");
         } else {
           setSubmitError(
-            data.error?.trim() ||
-              "No pudimos registrar la reserva. Revisá los datos e intentá de nuevo.",
+            pendingJson.error?.trim() ||
+              "No pudimos guardar la reserva. Revisá los datos e intentá de nuevo.",
           );
         }
         return;
       }
 
-      setSuccessMessage(
-        "Tu visita se registró con éxito. Te vamos a contactar por WhatsApp para coordinar la hora exacta y el pago con Mercado Pago.",
-      );
-      setForm(initialForm);
-      setErrors({});
-      setTouched({});
+      const prefRes = await fetch(`/api/reservas/${pendingJson.id}/preference`, {
+        method: "POST",
+      });
+      const prefJson = (await prefRes.json()) as {
+        ok?: boolean;
+        error?: string;
+        initPoint?: string;
+      };
+
+      if (!prefRes.ok || !prefJson.ok || !prefJson.initPoint) {
+        setSubmitError(
+          prefJson.error?.trim() ||
+            "No pudimos iniciar el pago con Mercado Pago. Intentá de nuevo en unos minutos o contactanos por WhatsApp.",
+        );
+        return;
+      }
+
+      window.location.assign(prefJson.initPoint);
     } catch {
       setSubmitError("Ocurrió un error de conexión. Intentá nuevamente.");
     } finally {
@@ -250,6 +278,25 @@ export default function ReservarPage() {
         <h1 className="mt-2 text-3xl font-semibold tracking-[-0.03em] text-[#101828] md:text-4xl">
           Agendar visita
         </h1>
+
+        {mpReturnHint === "success" && (
+          <p className="mt-4 rounded-xl border border-[#bfdbfe] bg-[#eff6ff] px-4 py-3 text-[14px] leading-relaxed text-[#1e3a8a]">
+            Si completaste el pago en Mercado Pago, la confirmación de la visita se registra automáticamente
+            cuando el pago figure como aprobado (puede demorar unos segundos). Te contactaremos por WhatsApp.
+            Esta pantalla no confirma el pago por sí sola.
+          </p>
+        )}
+        {mpReturnHint === "failure" && (
+          <p className="mt-4 rounded-xl border border-[#fecaca] bg-[#fff1f2] px-4 py-3 text-[14px] leading-relaxed text-[#991b1b]">
+            El pago no se completó o fue rechazado. Podés volver a cargar el formulario e intentar de nuevo.
+          </p>
+        )}
+        {mpReturnHint === "pending" && (
+          <p className="mt-4 rounded-xl border border-[#fde68a] bg-[#fffbeb] px-4 py-3 text-[14px] leading-relaxed text-[#92400e]">
+            Tu pago puede estar pendiente de acreditación. Cuando Mercado Pago lo apruebe, la reserva pasará a
+            confirmada. Si tenés dudas, escribinos por WhatsApp.
+          </p>
+        )}
 
         <form className="mt-6 space-y-6" onSubmit={handleSubmit} noValidate>
           <div>
@@ -396,7 +443,10 @@ export default function ReservarPage() {
           </div>
 
           {form.fechaPreferida && (
-            <div className="space-y-3 rounded-xl border border-[#d1fae5] bg-[#f0fdf4] px-4 py-4">
+            <div
+              ref={despuesDeFechaRef}
+              className="scroll-mt-6 space-y-3 rounded-xl border border-[#d1fae5] bg-[#f0fdf4] px-4 py-4"
+            >
               <p className="text-[14px] leading-relaxed text-[#166534]">
                 Seleccioná el rango horario y ese día nos contactaremos para coordinar la hora
                 exacta. 
@@ -427,23 +477,19 @@ export default function ReservarPage() {
 
           <div className="rounded-2xl border border-[#e5e7eb] bg-[#fafafa] p-5">
             <p className="text-center text-[15px] font-semibold text-[#101828]">
-              El valor de la visita y asesoramiento es de{" "}
+              El valor de la visita y asesoramiento es{" "}
               <span className="text-[#1f5d38]">{montoVisitaFormateado}</span>
             </p>
             <p className="mt-2 text-center text-[13px] text-[#6b7280]">
-              Importe total de la visita (no es seña).
+              Importe total de la visita (no es seña). La reserva queda{" "}
+              <strong className="text-[#374151]">confirmada solo cuando Mercado Pago acredite el pago</strong>, no
+              al volver de la página de pago.
             </p>
           </div>
 
           {submitError && (
             <p className="rounded-lg border border-[#fecaca] bg-[#fff1f2] px-3 py-2 text-sm text-[#b91c1c]">
               {submitError}
-            </p>
-          )}
-
-          {successMessage && (
-            <p className="rounded-lg border border-[#bbf7d0] bg-[#f0fdf4] px-3 py-2 text-sm text-[#166534]">
-              {successMessage}
             </p>
           )}
 
@@ -454,7 +500,7 @@ export default function ReservarPage() {
                 disabled={isSubmitting}
                 className="rounded-full bg-[#1f5d38] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(31,93,56,0.2)] transition hover:bg-[#18492c] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {isSubmitting ? "Procesando..." : "Pagar y reservar"}
+                {isSubmitting ? "Redirigiendo…" : "Continuar al pago con Mercado Pago"}
               </button>
               <Link
                 href="/"

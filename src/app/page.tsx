@@ -11,13 +11,16 @@ const WA_HREF =
 /** CTA principal hacia /reservar (hero + navegación). */
 const CTA_RESERVAR_LABEL = "Empecemos a diseñar tu espacio";
 
-// Imágenes del carrusel hero (trabajos reales de Guillermo)
+// Imágenes del carrusel hero — carpeta `public/ultimas imagenes2`
 const HERO_IMAGES = [
-  "/ultimas imagenes/5.webp",
-  "/ultimas imagenes/1 (1).webp",
-  "/ultimas imagenes/3.webp",
-  "/ultimas imagenes/7.webp",
-  "/ultimas imagenes/9.webp",
+  "/ultimas imagenes2/laone.jpeg",
+  "/ultimas imagenes2/1 (1).webp",
+  "/ultimas imagenes2/2.webp",
+  "/ultimas imagenes2/5.webp",
+  "/ultimas imagenes2/WhatsApp Image 2026-05-14 at 11.22.24 AM.jpeg",
+  "/ultimas imagenes2/WhatsApp Image 2026-05-14 at 11.22.24 AM (1).jpeg",
+  "/ultimas imagenes2/WhatsApp Image 2026-05-14 at 11.22.24 AM (2).jpeg",
+  "/ultimas imagenes2/WhatsApp Image 2026-05-14 at 11.22.25 AM.jpeg",
 ];
 
 // Galería de trabajos (todas las disponibles) — usada por sección galería (oculta vía false && más abajo)

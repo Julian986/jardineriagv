@@ -2,72 +2,20 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getDb } from "@/lib/mongodb";
 import { isPanelSessionValid, PANEL_SESSION_COOKIE } from "@/lib/panel-auth";
-import {
-  RESERVA_VISITA_MONTO_ARS,
-  TurnoCreateSchema,
-  buildTurnoCodigo,
-  buildTurnoDetalle,
-  formatTurnoCreateValidationError,
-  type TurnoCreateInput,
-} from "@/lib/turnos";
 
-export async function POST(request: Request) {
-  let payload: unknown;
-  try {
-    payload = await request.json();
-  } catch {
-    return NextResponse.json(
-      { ok: false, error: "JSON inválido" },
-      { status: 400 },
-    );
-  }
-
-  const parsed = TurnoCreateSchema.safeParse(payload);
-  if (!parsed.success) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: formatTurnoCreateValidationError(parsed.error),
-        issues: parsed.error.issues.map((i) => ({
-          path: i.path.map(String),
-          message: i.message,
-        })),
-      },
-      { status: 400 },
-    );
-  }
-
-  const input: TurnoCreateInput = parsed.data;
-  const now = new Date();
-  const turnoDetalle = buildTurnoDetalle(input);
-
-  const doc = {
-    nombre: input.nombre,
-    celular: input.celular,
-    direccion: input.direccion.trim(),
-    fechaPreferida: input.fechaPreferida,
-    motivo: input.motivo,
-    horario: input.horario,
-    turnoDetalle,
-    turnoCodigo: buildTurnoCodigo(),
-    precioReferenciaArs: RESERVA_VISITA_MONTO_ARS,
-    /** Total visita y asesoramiento (no es seña) */
-    montoTotalVisitaArs: RESERVA_VISITA_MONTO_ARS,
-    montoReservaAlAgendarArs: RESERVA_VISITA_MONTO_ARS,
-    aceptaPagoReserva: true,
-    estado: "pendiente" as const,
-    notaInterna: "",
-    createdAt: now,
-    updatedAt: now,
-  };
-
-  const db = await getDb();
-  const result = await db.collection("turnos").insertOne(doc);
-
-  return NextResponse.json({
-    ok: true,
-    id: result.insertedId.toString(),
-  });
+/**
+ * Las reservas públicas pasan por Mercado Pago Checkout Pro:
+ * POST /api/reservas/pending y POST /api/reservas/:id/preference
+ */
+export async function POST() {
+  return NextResponse.json(
+    {
+      ok: false,
+      error:
+        "Este endpoint ya no registra turnos directamente. Usá POST /api/reservas/pending y luego POST /api/reservas/:id/preference para iniciar el pago con Mercado Pago.",
+    },
+    { status: 410 },
+  );
 }
 
 export async function GET() {
