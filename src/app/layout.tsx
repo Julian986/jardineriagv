@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ScrollToTopOnNavigate } from "@/components/ScrollToTopOnNavigate";
+import { buildSiteMetadata } from "@/lib/site-metadata";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,11 +13,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Jardinería GV — Diseño y mantenimiento de jardines en Bahía Blanca",
-  description:
-    "Jardinería profesional en Bahía Blanca. Diseño de jardines desde cero, mantenimiento, riego automático y asesoramiento. Agendá una visita sin cargo.",
-};
+export const metadata = buildSiteMetadata();
 
 export default function RootLayout({
   children,
