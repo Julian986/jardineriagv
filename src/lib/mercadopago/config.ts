@@ -38,7 +38,7 @@ export function getReservaVisitaMontoArs(): number {
   const raw =
     process.env.MERCADOPAGO_RESERVA_MONTO_ARS?.trim() ??
     process.env.RESERVA_VISITA_MONTO_ARS?.trim() ??
-    "25000";
+    "30";
   const n = Number(raw);
   if (!Number.isFinite(n) || n <= 0) {
     throw new Error("MERCADOPAGO_RESERVA_MONTO_ARS inválido");
