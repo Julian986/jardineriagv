@@ -21,6 +21,16 @@ type FormFields = {
 type ErrorState = Partial<Record<keyof FormFields, string>>;
 type TouchedState = Partial<Record<keyof FormFields, boolean>>;
 
+const FORM_FIELD_ORDER: (keyof FormFields)[] = [
+  "nombre",
+  "celular",
+  "direccion",
+  "fechaPreferida",
+  "horario",
+];
+
+const FIELD_ERROR_CLASS = "mt-1.5 text-[13px] leading-snug font-medium text-[#b91c1c]";
+
 const initialForm: FormFields = {
   nombre: "",
   celular: "",
@@ -98,6 +108,7 @@ export default function ReservarPage() {
   });
 
   const despuesDeFechaRef = useRef<HTMLDivElement>(null);
+  const fieldRefs = useRef<Partial<Record<keyof FormFields, HTMLElement | null>>>({});
 
   const horariosDisponibles = useMemo(() => HORARIO_OPTIONS, []);
 
@@ -167,6 +178,37 @@ export default function ReservarPage() {
     return TurnoCreateSchema.safeParse(values);
   }
 
+  function focusFirstInvalidField(errorMap: ErrorState) {
+    const first = FORM_FIELD_ORDER.find((key) => errorMap[key]);
+    if (!first) return;
+
+    window.setTimeout(() => {
+      const section = fieldRefs.current[first];
+      if (!section) return;
+      section.scrollIntoView({ behavior: "smooth", block: "center" });
+      const focusable = section.querySelector<HTMLElement>(
+        "input:not([disabled]), textarea:not([disabled]), select:not([disabled])",
+      );
+      if (focusable) {
+        focusable.focus({ preventScroll: true });
+      } else {
+        section.focus({ preventScroll: true });
+      }
+    }, 80);
+  }
+
+  function applyFieldErrors(nextErrors: ErrorState) {
+    setErrors(nextErrors);
+    setTouched({
+      nombre: true,
+      celular: true,
+      direccion: true,
+      fechaPreferida: true,
+      horario: true,
+    });
+    focusFirstInvalidField(nextErrors);
+  }
+
   function updateField<K extends keyof FormFields>(field: K, value: FormFields[K]) {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
@@ -215,14 +257,7 @@ export default function ReservarPage() {
           nextErrors[field] = issue.message;
         }
       }
-      setErrors(nextErrors);
-      setTouched({
-        nombre: true,
-        celular: true,
-        direccion: true,
-        fechaPreferida: true,
-        horario: true,
-      });
+      applyFieldErrors(nextErrors);
       return;
     }
 
@@ -259,14 +294,7 @@ export default function ReservarPage() {
           }
         }
         if (Object.keys(nextErrors).length > 0) {
-          setErrors((prev) => ({ ...prev, ...nextErrors }));
-          setTouched({
-            nombre: true,
-            celular: true,
-            direccion: true,
-            fechaPreferida: true,
-            horario: true,
-          });
+          applyFieldErrors(nextErrors);
           setSubmitError("");
         } else {
           setSubmitError(
@@ -356,7 +384,12 @@ export default function ReservarPage() {
         )}
 
         <form className="mt-6 space-y-6" onSubmit={handleSubmit} noValidate>
-          <div>
+          <div
+            ref={(el) => {
+              fieldRefs.current.nombre = el;
+            }}
+            className="scroll-mt-24"
+          >
             <label className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6b7280]">
               Nombre y apellido
             </label>
@@ -364,15 +397,26 @@ export default function ReservarPage() {
               value={form.nombre}
               onChange={(event) => updateField("nombre", event.target.value)}
               onBlur={() => handleBlur("nombre")}
-              className="h-11 w-full rounded-xl border border-[#d1d5db] bg-white px-3 text-[14px] outline-none ring-[#1f5d38]/20 focus:ring-4"
-              aria-invalid={Boolean(errors.nombre)}
+              className={`h-11 w-full rounded-xl border bg-white px-3 text-[14px] outline-none ring-[#1f5d38]/20 focus:ring-4 ${
+                touched.nombre && errors.nombre
+                  ? "border-[#f87171] ring-red-500/15"
+                  : "border-[#d1d5db]"
+              }`}
+              aria-invalid={Boolean(touched.nombre && errors.nombre)}
             />
             {touched.nombre && errors.nombre && (
-              <p className="mt-1 text-xs text-[#b91c1c]">{errors.nombre}</p>
+              <p className={FIELD_ERROR_CLASS} role="alert">
+                {errors.nombre}
+              </p>
             )}
           </div>
 
-          <div>
+          <div
+            ref={(el) => {
+              fieldRefs.current.celular = el;
+            }}
+            className="scroll-mt-24"
+          >
             <label className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6b7280]">
               Celular
             </label>
@@ -380,15 +424,26 @@ export default function ReservarPage() {
               value={form.celular}
               onChange={(event) => updateField("celular", event.target.value)}
               onBlur={() => handleBlur("celular")}
-              className="h-11 w-full rounded-xl border border-[#d1d5db] bg-white px-3 text-[14px] outline-none ring-[#1f5d38]/20 focus:ring-4"
-              aria-invalid={Boolean(errors.celular)}
+              className={`h-11 w-full rounded-xl border bg-white px-3 text-[14px] outline-none ring-[#1f5d38]/20 focus:ring-4 ${
+                touched.celular && errors.celular
+                  ? "border-[#f87171] ring-red-500/15"
+                  : "border-[#d1d5db]"
+              }`}
+              aria-invalid={Boolean(touched.celular && errors.celular)}
             />
             {touched.celular && errors.celular && (
-              <p className="mt-1 text-xs text-[#b91c1c]">{errors.celular}</p>
+              <p className={FIELD_ERROR_CLASS} role="alert">
+                {errors.celular}
+              </p>
             )}
           </div>
 
-          <div>
+          <div
+            ref={(el) => {
+              fieldRefs.current.direccion = el;
+            }}
+            className="scroll-mt-24"
+          >
             <label className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6b7280]">
               Direccion
             </label>
@@ -398,15 +453,31 @@ export default function ReservarPage() {
               onBlur={() => handleBlur("direccion")}
               rows={3}
               placeholder="Ej: Mitre 1234, entre calles X e Y, Bahía Blanca"
-              className="w-full rounded-xl border border-[#d1d5db] bg-white px-3 py-2 text-[14px] outline-none ring-[#1f5d38]/20 focus:ring-4"
-              aria-invalid={Boolean(errors.direccion)}
+              className={`w-full rounded-xl border bg-white px-3 py-2 text-[14px] outline-none ring-[#1f5d38]/20 focus:ring-4 ${
+                touched.direccion && errors.direccion
+                  ? "border-[#f87171] ring-red-500/15"
+                  : "border-[#d1d5db]"
+              }`}
+              aria-invalid={Boolean(touched.direccion && errors.direccion)}
             />
             {touched.direccion && errors.direccion && (
-              <p className="mt-1 text-xs text-[#b91c1c]">{errors.direccion}</p>
+              <p className={FIELD_ERROR_CLASS} role="alert">
+                {errors.direccion}
+              </p>
             )}
           </div>
 
-          <div className="rounded-2xl border border-[#e5e7eb] bg-white p-4 shadow-sm">
+          <div
+            ref={(el) => {
+              fieldRefs.current.fechaPreferida = el;
+            }}
+            tabIndex={-1}
+            className={`scroll-mt-24 rounded-2xl border bg-white p-4 shadow-sm outline-none ${
+              touched.fechaPreferida && errors.fechaPreferida
+                ? "border-[#f87171] ring-2 ring-red-500/12"
+                : "border-[#e5e7eb]"
+            }`}
+          >
             <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6b7280]">
               Elegí el día
             </p>
@@ -495,13 +566,18 @@ export default function ReservarPage() {
             </div>
 
             {touched.fechaPreferida && errors.fechaPreferida && (
-              <p className="mt-3 text-xs text-[#b91c1c]">{errors.fechaPreferida}</p>
+              <p className={FIELD_ERROR_CLASS} role="alert">
+                {errors.fechaPreferida}
+              </p>
             )}
           </div>
 
-          {form.fechaPreferida && (
+          {(form.fechaPreferida || (touched.horario && errors.horario)) && (
             <div
-              ref={despuesDeFechaRef}
+              ref={(el) => {
+                despuesDeFechaRef.current = el;
+                fieldRefs.current.horario = el;
+              }}
               className="scroll-mt-6 space-y-3 rounded-xl border border-[#d1fae5] bg-[#f0fdf4] px-4 py-4"
             >
               <p className="text-[14px] leading-relaxed text-[#166534]">
@@ -516,8 +592,12 @@ export default function ReservarPage() {
                   value={form.horario}
                   onChange={(event) => updateField("horario", event.target.value)}
                   onBlur={() => handleBlur("horario")}
-                  className="h-11 w-full rounded-xl border border-[#d1d5db] bg-white px-3 text-[14px] outline-none ring-[#1f5d38]/20 focus:ring-4"
-                  aria-invalid={Boolean(errors.horario)}
+                  className={`h-11 w-full rounded-xl border bg-white px-3 text-[14px] outline-none ring-[#1f5d38]/20 focus:ring-4 ${
+                    touched.horario && errors.horario
+                      ? "border-[#f87171] ring-red-500/15"
+                      : "border-[#d1d5db]"
+                  }`}
+                  aria-invalid={Boolean(touched.horario && errors.horario)}
                 >
                   {horariosDisponibles.map((horario) => (
                     <option key={horario} value={horario}>
@@ -526,7 +606,9 @@ export default function ReservarPage() {
                   ))}
                 </select>
                 {touched.horario && errors.horario && (
-                  <p className="mt-1 text-xs text-[#b91c1c]">{errors.horario}</p>
+                  <p className={FIELD_ERROR_CLASS} role="alert">
+                    {errors.horario}
+                  </p>
                 )}
               </div>
             </div>
@@ -545,7 +627,10 @@ export default function ReservarPage() {
           </div>
 
           {submitError && (
-            <p className="rounded-lg border border-[#fecaca] bg-[#fff1f2] px-3 py-2 text-sm text-[#b91c1c]">
+            <p
+              className="rounded-lg border border-[#fecaca] bg-[#fff1f2] px-3 py-2.5 text-[14px] leading-snug font-medium text-[#b91c1c]"
+              role="alert"
+            >
               {submitError}
             </p>
           )}
