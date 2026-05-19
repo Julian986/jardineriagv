@@ -480,11 +480,11 @@ export default function ReservarPage() {
               El valor de la visita y asesoramiento es{" "}
               <span className="text-[#1f5d38]">{montoVisitaFormateado}</span>
             </p>
-            <p className="mt-2 text-center text-[13px] text-[#6b7280]">
+          {/*   <p className="mt-2 text-center text-[13px] text-[#6b7280]">
               Importe total de la visita (no es seña). La reserva queda{" "}
               <strong className="text-[#374151]">confirmada solo cuando Mercado Pago acredite el pago</strong>, no
               al volver de la página de pago.
-            </p>
+            </p> */}
           </div>
 
           {submitError && (
@@ -500,7 +500,7 @@ export default function ReservarPage() {
                 disabled={isSubmitting}
                 className="rounded-full bg-[#1f5d38] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(31,93,56,0.2)] transition hover:bg-[#18492c] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {isSubmitting ? "Redirigiendo…" : "Continuar al pago con Mercado Pago"}
+                {isSubmitting ? "Redirigiendo…" : "Pagar y reservar"}
               </button>
               <Link
                 href="/"

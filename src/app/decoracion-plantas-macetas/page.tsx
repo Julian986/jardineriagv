@@ -61,7 +61,7 @@ export default function DecoracionPlantasMacetasPage() {
           <div className="flex flex-col gap-8 md:flex-row md:items-center md:gap-12">
             <div className="relative mx-auto h-56 w-full max-w-md shrink-0 overflow-hidden rounded-2xl md:mx-0 md:h-72 md:w-96">
               <Image
-                src="/canteros con plantas/portada.png"
+                src="/decoracion.webp"
                 alt="Decoración con plantas y macetas"
                 fill
                 className="object-cover"

@@ -18,7 +18,19 @@ export async function POST() {
   );
 }
 
-export async function GET() {
+function pad2(n: number) {
+  return String(n).padStart(2, "0");
+}
+
+function monthDateKeyRange(year: number, month: number) {
+  const lastDay = new Date(year, month, 0).getDate();
+  return {
+    start: `${year}-${pad2(month)}-01`,
+    end: `${year}-${pad2(month)}-${pad2(lastDay)}`,
+  };
+}
+
+export async function GET(request: Request) {
   const cookieStore = await cookies();
   const session = cookieStore.get(PANEL_SESSION_COOKIE)?.value;
 
@@ -26,19 +38,41 @@ export async function GET() {
     return NextResponse.json({ ok: false, error: "No autorizado" }, { status: 401 });
   }
 
+  const { searchParams } = new URL(request.url);
+  const yearRaw = searchParams.get("year");
+  const monthRaw = searchParams.get("month");
+
+  const filter: Record<string, unknown> = {};
+  if (yearRaw && monthRaw) {
+    const year = Number.parseInt(yearRaw, 10);
+    const month = Number.parseInt(monthRaw, 10);
+    if (
+      Number.isFinite(year) &&
+      Number.isFinite(month) &&
+      month >= 1 &&
+      month <= 12
+    ) {
+      const { start, end } = monthDateKeyRange(year, month);
+      filter.fechaPreferida = { $gte: start, $lte: end };
+    }
+  }
+
   const db = await getDb();
   const docs = await db
     .collection("turnos")
-    .find({})
-    .sort({ createdAt: -1 })
+    .find(filter)
+    .sort({ fechaPreferida: 1, horario: 1, createdAt: -1 })
     .toArray();
 
   return NextResponse.json({
     ok: true,
-    turnos: docs.map((doc) => ({
-      id: doc._id.toString(),
-      ...doc,
-    })),
+    turnos: docs.map((doc) => {
+      const { _id, ...rest } = doc;
+      return {
+        id: _id.toString(),
+        ...rest,
+      };
+    }),
   });
 }
 

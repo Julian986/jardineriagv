@@ -13,14 +13,14 @@ const CTA_RESERVAR_LABEL = "Empecemos a diseñar tu espacio";
 
 // Imágenes del carrusel hero — carpeta `public/ultimas imagenes2`
 const HERO_IMAGES = [
-  "/ultimas imagenes2/laone.jpeg",
-  "/ultimas imagenes2/1 (1).webp",
+  "/ultimas imagenes2/laone.webp",
   "/ultimas imagenes2/2.webp",
   "/ultimas imagenes2/5.webp",
-  "/ultimas imagenes2/WhatsApp Image 2026-05-14 at 11.22.24 AM.jpeg",
-  "/ultimas imagenes2/WhatsApp Image 2026-05-14 at 11.22.24 AM (1).jpeg",
-  "/ultimas imagenes2/WhatsApp Image 2026-05-14 at 11.22.24 AM (2).jpeg",
-  "/ultimas imagenes2/WhatsApp Image 2026-05-14 at 11.22.25 AM.jpeg",
+  "/ultimas imagenes2/WhatsApp Image 2026-05-14 at 11.22.24 AM.webp",
+  "/ultimas imagenes2/WhatsApp Image 2026-05-14 at 11.22.24 AM (1).webp",
+  "/ultimas imagenes2/WhatsApp Image 2026-05-14 at 11.22.24 AM (2).webp",
+  "/ultimas imagenes2/1 (1).webp",
+  "/ultimas imagenes2/WhatsApp Image 2026-05-14 at 11.22.25 AM.webp",
 ];
 
 // Galería de trabajos (todas las disponibles) — usada por sección galería (oculta vía false && más abajo)
@@ -125,7 +125,7 @@ const MACETAS_PRODUCTO = {
   tituloPrincipal: "DECORACIÓN CON PLANTAS Y MACETAS:",
   tituloSecundario: "Vida en cada rincón",
   desc: "Llevamos la naturaleza a donde vos estés. Ya sea en el corazón de tu hogar o en el espacio de trabajo de tu empresa, nuestro servicio de decoración botánica transforma ambientes comunes en espacios vibrantes y saludables.",
-  img: "/canteros con plantas/portada.png",
+  img: "/decoracion.webp",
 };
 
 const PARQUIZACION_PRODUCTO = {
@@ -135,7 +135,7 @@ const PARQUIZACION_PRODUCTO = {
   tituloPrincipal: "PARQUIZACIÓN Y DISEÑO EXTERIOR:",
   tituloSecundario: "Creamos el jardín que siempre soñaste.",
   desc: "Desde la elección de la especie ideal hasta la armonía de las texturas. Creamos escenarios donde la calidad y la excelencia técnica garantizan que tu única tarea sea disfrutar del aire libre.",
-  img: "/siembra de cesped/portada.png",
+  img: "/parquizacion.webp",
 };
 
 const MADERA_PRODUCTO = {

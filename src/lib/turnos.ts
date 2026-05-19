@@ -156,6 +156,30 @@ export const TurnoPatchSchema = z
 export type TurnoCreateInput = z.infer<typeof TurnoCreateSchema>;
 export type TurnoPatchInput = z.infer<typeof TurnoPatchSchema>;
 
+/** Estados permitidos al cargar una visita desde el panel (sin Mercado Pago). */
+export const PANEL_TURNO_ESTADOS_INICIALES = [
+  "confirmed",
+  "confirmado",
+  "contactado",
+  "pendiente",
+] as const;
+
+/** Alta manual desde /panel-turnos/nuevo (solo calendario, horario, cliente y nota). */
+export const PanelTurnoCreateSchema = TurnoCreateSchema.omit({
+  motivo: true,
+  direccion: true,
+}).extend({
+  celular: z
+    .string()
+    .trim()
+    .optional()
+    .default("")
+    .refine((v) => v === "" || v.length >= 8, { message: msg.celularMin }),
+  notaInterna: z.string().max(800).optional().default(""),
+});
+
+export type PanelTurnoCreateInput = z.infer<typeof PanelTurnoCreateSchema>;
+
 /** Mensaje único para mostrar al usuario (formulario o API). */
 export function formatTurnoCreateValidationError(error: ZodError): string {
   const seen = new Set<string>();
@@ -175,9 +199,12 @@ export function getMotivoLabel(motivo: TurnoCreateInput["motivo"]): string {
   return MOTIVO_OPTIONS.find((m) => m.value === motivo)?.label ?? motivo;
 }
 
-export function buildTurnoDetalle(input: TurnoCreateInput): string {
-  const dir = input.direccion.replace(/\s+/g, " ").trim();
+export function buildTurnoDetalle(
+  input: Pick<TurnoCreateInput, "fechaPreferida" | "horario" | "direccion">,
+): string {
   const fechaFmt = formatFechaPreferidaAR(input.fechaPreferida);
+  const dir = input.direccion.replace(/\s+/g, " ").trim();
+  if (!dir) return `${fechaFmt} · ${input.horario}`;
   return `${fechaFmt} · ${input.horario} · ${dir}`;
 }
 

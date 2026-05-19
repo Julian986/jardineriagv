@@ -1,5 +1,6 @@
 "use client";
 
+import { Leaf } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -37,44 +38,46 @@ export default function PanelLoginPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md items-center px-4 py-10">
-      <div className="w-full rounded-2xl border border-white/70 bg-white p-6 shadow-[0_18px_46px_rgba(31,41,55,0.07)]">
-        <h1 className="text-2xl font-semibold tracking-[-0.03em] text-[#101828]">
-          Panel de turnos
-        </h1>
-        <p className="mt-2 text-sm text-[#4b5563]">
-          Ingresá la contraseña para administrar reservas.
+    <main className="flex min-h-screen flex-col items-center justify-center bg-[#0f1a12] px-4 py-10 text-[#e8f0e9]">
+      <div className="mb-8 flex flex-col items-center gap-3 text-center">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#2d5016] to-[#c4933f] shadow-[0_10px_30px_rgba(45,80,22,0.35)]">
+          <Leaf className="h-7 w-7 text-white" strokeWidth={2} />
+        </div>
+        <h1 className="text-[26px] font-bold text-[#c4933f]">Jardinería GV</h1>
+        <p className="max-w-xs text-[14px] text-[#a8c4a8]/78">
+          Ingresá la contraseña para ver la agenda de visitas.
         </p>
-
-        <form className="mt-6 space-y-4" onSubmit={onSubmit} noValidate>
-          <label className="block">
-            <span className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6b7280]">
-              Contraseña
-            </span>
-            <input
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="h-11 w-full rounded-xl border border-[#d1d5db] bg-white px-3 text-[14px] outline-none ring-[#1f5d38]/20 focus:ring-4"
-            />
-          </label>
-
-          {error && (
-            <p className="rounded-lg border border-[#fecaca] bg-[#fff1f2] px-3 py-2 text-sm text-[#b91c1c]">
-              {error}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full rounded-full bg-[#1f5d38] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white transition hover:bg-[#18492c] disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {isLoading ? "Ingresando..." : "Ingresar"}
-          </button>
-        </form>
       </div>
+
+      <form
+        onSubmit={onSubmit}
+        noValidate
+        className="w-full max-w-sm rounded-[28px] border border-white/10 bg-[#1a2e1a] p-6 shadow-[0_18px_40px_rgba(0,0,0,0.45)]"
+      >
+        <label htmlFor="panel-password" className="text-[11px] tracking-[0.12em] text-[#a8c4a8]/55">
+          Contraseña
+        </label>
+        <input
+          id="panel-password"
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          className="mt-2 w-full rounded-xl border border-white/10 bg-[#141f14] px-3 py-3 text-[15px] text-[#e8f0e9] outline-none focus:border-[#c4933f]/55"
+        />
+        {error ? (
+          <p role="alert" className="mt-3 text-center text-[13px] text-red-300/95">
+            {error}
+          </p>
+        ) : null}
+        <button
+          type="submit"
+          disabled={isLoading || !password}
+          className="mt-5 h-[52px] w-full cursor-pointer rounded-full bg-gradient-to-r from-[#1f5d38] to-[#2d5016] text-[16px] font-semibold text-white shadow-[0_0_24px_rgba(31,93,56,0.28)] disabled:cursor-not-allowed disabled:opacity-45"
+        >
+          {isLoading ? "Ingresando…" : "Entrar"}
+        </button>
+      </form>
     </main>
   );
 }
-
