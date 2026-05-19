@@ -24,6 +24,7 @@ import {
   MOTIVO_OPTIONS,
   TURNO_ESTADOS,
   formatFechaPreferidaAR,
+  buildPanelWhatsAppMessage,
   normalizePhoneForWhatsApp,
 } from "@/lib/turnos";
 
@@ -88,11 +89,12 @@ function whatsAppChatUrl(
 ): string | null {
   const normalized = normalizePhoneForWhatsApp(turno.celular);
   if (!normalized) return null;
-  const message = messageTemplate
-    .replaceAll("{nombre}", turno.nombre)
-    .replaceAll("{profesional}", PROFESIONAL_DEFAULT)
-    .replaceAll("{turnoDetalle}", turno.turnoDetalle)
-    .replaceAll("{direccion}", turno.direccion?.trim() || "(sin dirección)");
+  const message = buildPanelWhatsAppMessage(messageTemplate, {
+    nombre: turno.nombre,
+    profesional: PROFESIONAL_DEFAULT,
+    turnoDetalle: turno.turnoDetalle,
+    direccion: turno.direccion,
+  });
   return `https://wa.me/${normalized}?text=${encodeURIComponent(message)}`;
 }
 
@@ -166,7 +168,7 @@ export function PanelTurnosDashboard() {
   const [showHidden, setShowHidden] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [mensajeTemplate, setMensajeTemplate] = useState(
-    "Hola {nombre}, soy {profesional}. Te escribo por tu reserva ({turnoDetalle}). Dirección: {direccion}",
+    "Hola {nombre}, soy {profesional}. Te escribo por tu reserva ({turnoDetalle}). ¿Te va bien ese día?",
   );
 
   const grid = useMemo(() => buildPanelMonthGrid(year, month), [year, month]);
@@ -597,6 +599,10 @@ export function PanelTurnosDashboard() {
                           onChange={(e) => setMensajeTemplate(e.target.value)}
                           className="mt-1 h-10 w-full rounded-xl border border-white/10 bg-[#141f14] px-3 text-[13px] text-[#e8f0e9] outline-none"
                         />
+                        <p className="mt-1.5 text-[11px] leading-relaxed text-[#a8c4a8]/50">
+                          Variables: {"{nombre}"}, {"{profesional}"}, {"{turnoDetalle}"} (fecha, horario y
+                          dirección si hay). {"{direccion}"} solo si no está ya en el detalle.
+                        </p>
                       </label>
                     </div>
                   ) : null}

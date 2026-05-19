@@ -204,6 +204,37 @@ export function buildTurnoDetalle(
   return `${fechaFmt} · ${input.horario} · ${dir}`;
 }
 
+/** Evita repetir la dirección si ya está en turnoDetalle (fecha · horario · dirección). */
+export function buildPanelWhatsAppMessage(
+  template: string,
+  vars: {
+    nombre: string;
+    profesional: string;
+    turnoDetalle: string;
+    direccion?: string;
+  },
+): string {
+  const detalle = vars.turnoDetalle.replace(/\s+/g, " ").trim();
+  const dir = vars.direccion?.replace(/\s+/g, " ").trim() ?? "";
+  const dirYaEnDetalle = Boolean(dir && detalle.includes(dir));
+  const detalleWa = dir && !dirYaEnDetalle ? `${detalle} · ${dir}` : detalle;
+  const dirWa = dirYaEnDetalle || !dir ? "" : dir;
+
+  let message = template
+    .replaceAll("{nombre}", vars.nombre.trim())
+    .replaceAll("{profesional}", vars.profesional.trim())
+    .replaceAll("{turnoDetalle}", detalleWa)
+    .replaceAll("{direccion}", dirWa);
+
+  message = message
+    .replace(/\.\s*Dirección:\s*$/gi, ".")
+    .replace(/\s+Dirección:\s*$/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+
+  return message;
+}
+
 export function buildTurnoCodigo(): string {
   const random = Math.floor(Math.random() * 9000) + 1000;
   return `T-${Date.now().toString().slice(-6)}-${random}`;
