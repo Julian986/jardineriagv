@@ -20,10 +20,12 @@ Para probar webhooks en local, `APP_BASE_URL` tiene que ser una URL **pública H
 4. En MongoDB, colección `mp_webhook_events`: entradas con `outcome` (`confirmed`, `already_confirmed`, `not_approved`, etc.).
 5. El turno debe pasar a `estado: "confirmed"` **solo** si el pago figura `approved` en la API de MP y el monto coincide con `montoTotalVisitaArs`.
 
-## 3. back_urls (solo UX)
+## 3. back_urls y confirmación al volver
 
-1. Tras pagar, volvé con éxito a `/reservar?mp=success`.
-2. Confirmá que el mensaje informativo se muestra y que **el estado en Mongo sigue siendo la fuente de verdad** (no confiar en la URL para confirmar).
+1. Tras pagar, Mercado Pago redirige a `/reservar?mp=success&payment_id=…` (también `collection_id`).
+2. La página llama a `POST /api/reservas/confirm-payment` con ese `payment_id` para marcar el turno como `confirmed` sin depender solo del webhook (útil en local o si la notificación demoró).
+3. En el panel, turnos `pending_payment` tienen el botón **Verificar pago MP** (`POST /api/panel-turnos/turnos/[id]/sync-payment`).
+4. En producción, el webhook en `{APP_BASE_URL}/api/webhooks/mercadopago` sigue siendo el canal principal; la confirmación al volver es respaldo.
 
 ## 4. Idempotencia
 

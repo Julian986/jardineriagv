@@ -2,10 +2,11 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { extractPaymentIdFromReturnUrl } from "@/lib/mercadopago/return-url";
+import { getReservaVisitaMontoArsPublic } from "@/lib/mercadopago/config";
 import {
   DIAS_SEMANA_RESERVA_PERMITIDOS,
   HORARIO_OPTIONS,
-  RESERVA_VISITA_MONTO_ARS,
   TurnoCreateSchema,
 } from "@/lib/turnos";
 
@@ -30,7 +31,7 @@ const initialForm: FormFields = {
 
 const montoVisitaFormateado = `$${new Intl.NumberFormat("es-AR", {
   maximumFractionDigits: 0,
-}).format(RESERVA_VISITA_MONTO_ARS)}`;
+}).format(getReservaVisitaMontoArsPublic())}`;
 
 const WEEKDAY_HEADERS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
 
@@ -84,7 +85,12 @@ export default function ReservarPage() {
   const [touched, setTouched] = useState<TouchedState>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [mpReturnHint, setMpReturnHint] = useState<"success" | "failure" | "pending" | null>(null);
+  const [mpReturnHint, setMpReturnHint] = useState<"success" | "failure" | "pending" | null>(
+    null,
+  );
+  const [mpConfirmStatus, setMpConfirmStatus] = useState<
+    "idle" | "syncing" | "confirmed" | "pending" | "failed"
+  >("idle");
 
   const [cursorMonth, setCursorMonth] = useState(() => {
     const n = new Date();
@@ -96,10 +102,51 @@ export default function ReservarPage() {
   const horariosDisponibles = useMemo(() => HORARIO_OPTIONS, []);
 
   useEffect(() => {
-    const p = new URLSearchParams(window.location.search).get("mp");
-    if (p === "success" || p === "failure" || p === "pending") {
-      setMpReturnHint(p);
+    const params = new URLSearchParams(window.location.search);
+    const mp = params.get("mp");
+    if (mp === "success" || mp === "failure" || mp === "pending") {
+      setMpReturnHint(mp);
     }
+
+    if (mp !== "success" && mp !== "pending") return;
+
+    const paymentId = extractPaymentIdFromReturnUrl(params);
+    if (!paymentId) return;
+
+    let cancelled = false;
+
+    async function tryConfirm(attempt: number) {
+      setMpConfirmStatus("syncing");
+      try {
+        const res = await fetch("/api/reservas/confirm-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ paymentId }),
+        });
+        const data = (await res.json()) as { ok?: boolean; outcome?: string };
+        if (cancelled) return;
+        if (data.ok) {
+          setMpConfirmStatus("confirmed");
+          return;
+        }
+        if (data.outcome === "not_approved" && mp === "pending" && attempt < 4) {
+          window.setTimeout(() => void tryConfirm(attempt + 1), 2000);
+          return;
+        }
+        if (attempt < 3) {
+          window.setTimeout(() => void tryConfirm(attempt + 1), 1500);
+          return;
+        }
+        setMpConfirmStatus("pending");
+      } catch {
+        if (!cancelled) setMpConfirmStatus("failed");
+      }
+    }
+
+    void tryConfirm(0);
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -279,11 +326,21 @@ export default function ReservarPage() {
           Agendar visita
         </h1>
 
-        {mpReturnHint === "success" && (
+        {mpReturnHint === "success" && mpConfirmStatus === "confirmed" && (
+          <p className="mt-4 rounded-xl border border-[#bbf7d0] bg-[#f0fdf4] px-4 py-3 text-[14px] leading-relaxed text-[#14532d]">
+            <strong>Pago confirmado.</strong> Tu visita quedó registrada. Te contactaremos por WhatsApp.
+          </p>
+        )}
+        {mpReturnHint === "success" && mpConfirmStatus === "syncing" && (
           <p className="mt-4 rounded-xl border border-[#bfdbfe] bg-[#eff6ff] px-4 py-3 text-[14px] leading-relaxed text-[#1e3a8a]">
-            Si completaste el pago en Mercado Pago, la confirmación de la visita se registra automáticamente
-            cuando el pago figure como aprobado (puede demorar unos segundos). Te contactaremos por WhatsApp.
-            Esta pantalla no confirma el pago por sí sola.
+            Verificando el pago con Mercado Pago…
+          </p>
+        )}
+        {mpReturnHint === "success" &&
+          (mpConfirmStatus === "pending" || mpConfirmStatus === "failed" || mpConfirmStatus === "idle") && (
+          <p className="mt-4 rounded-xl border border-[#bfdbfe] bg-[#eff6ff] px-4 py-3 text-[14px] leading-relaxed text-[#1e3a8a]">
+            Si completaste el pago, la confirmación puede demorar unos segundos. Revisá el panel de turnos o
+            contactanos si el estado no se actualiza.
           </p>
         )}
         {mpReturnHint === "failure" && (

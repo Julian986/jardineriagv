@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 import { getDb } from "@/lib/mongodb";
 import { getAppBaseUrl } from "@/lib/mercadopago/config";
 import { mpCreatePreference } from "@/lib/mercadopago/api";
-import { RESERVA_VISITA_MONTO_ARS } from "@/lib/turnos";
+import { getReservaVisitaMontoArs } from "@/lib/mercadopago/config";
 
 type RouteContext = {
   params: Promise<{ id: string }>;
@@ -51,7 +51,7 @@ export async function POST(_request: Request, context: RouteContext) {
     return NextResponse.json({ ok: false, error: "Reserva sin referencia de pago" }, { status: 500 });
   }
 
-  const monto = Number(turno.montoTotalVisitaArs ?? RESERVA_VISITA_MONTO_ARS);
+  const monto = Number(turno.montoTotalVisitaArs ?? getReservaVisitaMontoArs());
   const title = "Visita y asesoramiento — Jardinería GV";
   const description =
     typeof turno.turnoDetalle === "string" && turno.turnoDetalle.trim().length > 0

@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import { getDb } from "@/lib/mongodb";
 import { mpGetPayment } from "@/lib/mercadopago/api";
 import type { MpPaymentResource } from "@/lib/mercadopago/types";
-import { RESERVA_VISITA_MONTO_ARS } from "@/lib/turnos";
+import { getReservaVisitaMontoArs } from "@/lib/mercadopago/config";
 
 export type PaymentConfirmationOutcome =
   | "confirmed"
@@ -20,11 +20,7 @@ export function buildMpExternalReference(turnoId: ObjectId): string {
 
 function expectedAmountArs(turno: { montoTotalVisitaArs?: number }): number {
   const n = Number(turno.montoTotalVisitaArs);
-  return Number.isFinite(n) && n > 0 ? n : RESERVA_VISITA_MONTO_ARS;
-}
-
-function roundMoney(n: number): number {
-  return Math.round(n * 100) / 100;
+  return Number.isFinite(n) && n > 0 ? n : getReservaVisitaMontoArs();
 }
 
 export async function processApprovedPaymentForTurno(
@@ -114,18 +110,18 @@ export async function processApprovedPaymentForTurno(
   const turnoId = turno._id as ObjectId;
   const expected = expectedAmountArs(turno as { montoTotalVisitaArs?: number });
   const paid = Number(payment.transaction_amount);
-  if (!Number.isFinite(paid) || roundMoney(paid) !== roundMoney(expected)) {
+  if (Number.isFinite(paid) && paid > 0 && Math.round(paid) !== Math.round(expected)) {
     await audit.insertOne({
       createdAt: new Date(),
       paymentId: mpId,
       transport: auditPayload.transport,
       rawSnippet: auditPayload.rawSnippet.slice(0, 16_000),
-      outcome: "amount_mismatch",
+      outcome: "amount_mismatch_logged",
       turnoId,
       expected,
       received: paid,
+      detail: "Se confirma igual si el pago está approved (como marcelo_ponzio).",
     });
-    return { outcome: "amount_mismatch" };
   }
 
   if (turno.estado === "confirmed") {

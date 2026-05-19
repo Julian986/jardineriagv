@@ -58,6 +58,32 @@ export async function mpCreatePreference(
   return json;
 }
 
+export async function mpSearchPaymentsByExternalReference(
+  externalReference: string,
+): Promise<MpPaymentResource[]> {
+  const q = new URLSearchParams({
+    external_reference: externalReference,
+    sort: "date_created",
+    criteria: "desc",
+  });
+  const res = await fetch(`${MP_API}/v1/payments/search?${q.toString()}`, {
+    method: "GET",
+    headers: authHeaders(),
+  });
+
+  const json = (await res.json().catch(() => ({}))) as {
+    results?: MpPaymentResource[];
+    message?: string;
+  };
+
+  if (!res.ok) {
+    const msg = typeof json.message === "string" ? json.message : `HTTP ${res.status}`;
+    throw new Error(`Mercado Pago payments search: ${msg}`);
+  }
+
+  return Array.isArray(json.results) ? json.results : [];
+}
+
 export async function mpGetPayment(paymentId: string): Promise<MpPaymentResource> {
   const res = await fetch(`${MP_API}/v1/payments/${encodeURIComponent(paymentId)}`, {
     method: "GET",

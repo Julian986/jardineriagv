@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getDb } from "@/lib/mongodb";
 import { isPanelSessionValid, PANEL_SESSION_COOKIE } from "@/lib/panel-auth";
+import { getReservaVisitaMontoArs } from "@/lib/mercadopago/config";
 import {
-  RESERVA_VISITA_MONTO_ARS,
   PanelTurnoCreateSchema,
   buildTurnoCodigo,
   buildTurnoDetalle,
@@ -42,6 +42,7 @@ export async function POST(request: Request) {
   }
 
   const input: PanelTurnoCreateInput = parsed.data;
+  const montoArs = getReservaVisitaMontoArs();
   const now = new Date();
   const turnoDetalle = buildTurnoDetalle({
     fechaPreferida: input.fechaPreferida,
@@ -58,9 +59,9 @@ export async function POST(request: Request) {
     horario: input.horario,
     turnoDetalle,
     turnoCodigo: buildTurnoCodigo(),
-    precioReferenciaArs: RESERVA_VISITA_MONTO_ARS,
-    montoTotalVisitaArs: RESERVA_VISITA_MONTO_ARS,
-    montoReservaAlAgendarArs: RESERVA_VISITA_MONTO_ARS,
+    precioReferenciaArs: montoArs,
+    montoTotalVisitaArs: montoArs,
+    montoReservaAlAgendarArs: montoArs,
     aceptaPagoReserva: false,
     estado: "confirmed",
     origen: "panel" as const,

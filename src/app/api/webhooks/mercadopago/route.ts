@@ -1,6 +1,8 @@
-import { after } from "next/server";
+import { NextResponse } from "next/server";
 import { extractPaymentIdsFromWebhook } from "@/lib/mercadopago/webhook-parser";
 import { processApprovedPaymentForTurno } from "@/lib/reservas/mercadopago-confirmation";
+
+export const dynamic = "force-dynamic";
 
 function logMp(line: string, extra?: Record<string, unknown>) {
   if (extra) {
@@ -10,7 +12,11 @@ function logMp(line: string, extra?: Record<string, unknown>) {
   }
 }
 
-async function processNotificationPayload(method: string, requestUrl: string, rawBody: string) {
+async function processNotificationPayload(
+  method: string,
+  requestUrl: string,
+  rawBody: string,
+) {
   const url = new URL(requestUrl);
   const ids = extractPaymentIdsFromWebhook(method, url, rawBody);
   if (ids.length === 0) {
@@ -35,19 +41,26 @@ async function processNotificationPayload(method: string, requestUrl: string, ra
   }
 }
 
-export async function POST(request: Request) {
+async function handle(request: Request, method: string) {
   const url = request.url;
-  const text = await request.text();
-  after(() => {
-    void processNotificationPayload("POST", url, text);
-  });
-  return new Response("OK", { status: 200 });
+  let rawBody = "";
+  if (method === "POST") {
+    rawBody = await request.text();
+  }
+
+  try {
+    await processNotificationPayload(method, url, rawBody);
+  } catch (e) {
+    console.error("[mp-webhook]", e);
+  }
+
+  return new NextResponse(null, { status: 200 });
+}
+
+export async function POST(request: Request) {
+  return handle(request, "POST");
 }
 
 export async function GET(request: Request) {
-  const url = request.url;
-  after(() => {
-    void processNotificationPayload("GET", url, "");
-  });
-  return new Response("OK", { status: 200 });
+  return handle(request, "GET");
 }

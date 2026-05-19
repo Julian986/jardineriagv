@@ -39,10 +39,6 @@ const MOTIVO_VALUES = [
   "decoracion_plantas_macetas",
 ] as const;
 
-/** Monto que el cliente acepta abonar al agendar la visita (ARS). */
-export const RESERVA_VISITA_MONTO_ARS = 30;
-// Real 25_000;
-
 const msg = {
   nombreReq: "Ingresá tu nombre y apellido.",
   nombreMin: "El nombre debe tener al menos 3 letras.",

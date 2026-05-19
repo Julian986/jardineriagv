@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import { getDb } from "@/lib/mongodb";
+import { getReservaVisitaMontoArs } from "@/lib/mercadopago/config";
 import {
-  RESERVA_VISITA_MONTO_ARS,
   TurnoCreateSchema,
   buildTurnoCodigo,
   buildTurnoDetalle,
@@ -35,6 +35,7 @@ export async function POST(request: Request) {
   }
 
   const input: TurnoCreateInput = parsed.data;
+  const montoArs = getReservaVisitaMontoArs();
   const now = new Date();
   const turnoDetalle = buildTurnoDetalle(input);
   const _id = new ObjectId();
@@ -51,9 +52,9 @@ export async function POST(request: Request) {
     horario: input.horario,
     turnoDetalle,
     turnoCodigo: buildTurnoCodigo(),
-    precioReferenciaArs: RESERVA_VISITA_MONTO_ARS,
-    montoTotalVisitaArs: RESERVA_VISITA_MONTO_ARS,
-    montoReservaAlAgendarArs: RESERVA_VISITA_MONTO_ARS,
+    precioReferenciaArs: montoArs,
+    montoTotalVisitaArs: montoArs,
+    montoReservaAlAgendarArs: montoArs,
     aceptaPagoReserva: true,
     estado: "pending_payment" as const,
     checkoutProvider: "mercadopago_checkout_pro" as const,
