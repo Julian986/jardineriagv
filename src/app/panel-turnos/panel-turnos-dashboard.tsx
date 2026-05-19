@@ -497,19 +497,21 @@ export function PanelTurnosDashboard() {
                             </span>
                           </p>
                           <div className="mt-2 flex flex-wrap items-center gap-2">
-                            <StatusBadge estado={turno.estado} />
-                            {turno.estado === "pending_payment" ? (
-                              <button
-                                type="button"
-                                disabled={syncingPaymentId === turno.id}
-                                onClick={() => void syncMercadoPagoPayment(turno.id)}
-                                className="inline-flex cursor-pointer items-center rounded-full bg-amber-500/14 px-2.5 py-1 text-[11px] font-semibold text-amber-200/95 ring-1 ring-amber-400/30 hover:bg-amber-500/22 disabled:opacity-50"
-                              >
-                                {syncingPaymentId === turno.id
-                                  ? "Verificando…"
-                                  : "Verificar pago MP"}
-                              </button>
-                            ) : null}
+                            <div className="inline-flex shrink-0 items-center gap-1.5">
+                              <StatusBadge estado={turno.estado} />
+                              {turno.estado === "pending_payment" ? (
+                                <button
+                                  type="button"
+                                  disabled={syncingPaymentId === turno.id}
+                                  onClick={() => void syncMercadoPagoPayment(turno.id)}
+                                  className="inline-flex cursor-pointer items-center rounded-md border border-amber-400/40 bg-amber-950/30 px-2 py-0.5 text-[10px] font-medium leading-tight text-amber-50/90 hover:bg-amber-500/25 disabled:cursor-not-allowed disabled:opacity-50"
+                                >
+                                  {syncingPaymentId === turno.id
+                                    ? "Verificando…"
+                                    : "Verificar pago MP"}
+                                </button>
+                              ) : null}
+                            </div>
                             {turno.origen === "panel" ? (
                               <span className="inline-block rounded-full bg-sky-500/14 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-sky-200/95">
                                 Manual
