@@ -145,7 +145,7 @@ const MADERA_PRODUCTO = {
   tituloSecundario: "Artesanía en madera recuperada.",
   desc: "Damos una segunda vida a maderas nobles para crear piezas únicas que cuentan una historia. Cada mueble es fabricado a mano, respetando las vetas, texturas y marcas del tiempo que hacen de cada diseño algo irrepetible.",
   tagline: "♻️ Piezas únicas, 100% sustentables.",
-  img: "/colocacion de cerco vivo/portada.png",
+  img: "/madera.webp",
 };
 
 // ── Ícono WhatsApp (reutilizable) ─────────────────────────────────────────────
