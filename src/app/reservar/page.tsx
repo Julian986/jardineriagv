@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { extractPaymentIdFromReturnUrl } from "@/lib/mercadopago/return-url";
+import { event as gaEvent } from "@/lib/gtag";
 import { getReservaVisitaMontoArsPublic } from "@/lib/mercadopago/config";
 import {
   DIAS_SEMANA_RESERVA_PERMITIDOS,
@@ -321,6 +322,12 @@ export default function ReservarPage() {
         );
         return;
       }
+
+      gaEvent("reserva_iniciada", {
+        event_category: "reservar",
+        event_label: "redirect_mercadopago",
+        value: 1,
+      });
 
       window.location.assign(prefJson.initPoint);
     } catch {
