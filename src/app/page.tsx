@@ -10,6 +10,7 @@ const WA_HREF =
 
 /** CTA principal hacia /reservar (hero + navegación). */
 const CTA_RESERVAR_LABEL = "Empecemos a diseñar tu espacio";
+const CTA_HEADER_MOBILE = "Reservar";
 
 // Imágenes del carrusel hero — carpeta `public/ultimas imagenes2`
 const HERO_IMAGES = [
@@ -156,14 +157,14 @@ function WAIcon({ className = "h-5 w-5" }: { className?: string }) {
   );
 }
 
-// ── Sticky WhatsApp (mobile) ──────────────────────────────────────────────────
+// ── Sticky WhatsApp (flotante) ────────────────────────────────────────────────
 function StickyWA() {
   return (
     <a
       href={WA_HREF}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-5 right-4 z-50 flex items-center gap-2 rounded-full bg-[#25d366] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 transition-transform hover:scale-105 active:scale-95 md:hidden"
+      className="fixed bottom-5 right-4 z-50 flex items-center gap-2 rounded-full bg-[#25d366] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 transition-transform hover:scale-105 active:scale-95 md:bottom-6 md:right-6"
       aria-label="Escribinos por WhatsApp"
     >
       <WAIcon />
@@ -233,8 +234,6 @@ function HeroCarousel() {
 
 // ── Componente principal ──────────────────────────────────────────────────────
 export default function Home() {
-  const [navOpen, setNavOpen] = useState(false);
-
   return (
     <>
       <StickyWA />
@@ -248,69 +247,16 @@ export default function Home() {
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-6 text-sm font-medium text-white/80 md:flex">
-            <a href="#servicios" className="transition-colors hover:text-white">Servicios</a>
-            <a href="#trabajos" className="transition-colors hover:text-white">Trabajos</a>
-            <a href="#sobre-guillermo" className="transition-colors hover:text-white">Sobre Guillermo</a>
-            <a
-              href={WA_HREF}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-white/70 transition-colors hover:text-white"
-            >
-              <WAIcon className="h-4 w-4" /> WhatsApp
-            </a>
-            <Link
-              href="/reservar"
-              className="max-w-[200px] rounded-full bg-[#c4933f] px-3 py-1.5 text-center text-[11px] font-semibold leading-snug text-white transition-opacity hover:opacity-90 sm:max-w-none sm:px-4 sm:text-xs md:text-sm"
-            >
-              {CTA_RESERVAR_LABEL}
-            </Link>
-          </nav>
-
-          <button
-            className="flex h-9 w-9 items-center justify-center rounded-md text-white md:hidden"
-            onClick={() => setNavOpen((v) => !v)}
-            aria-label="Abrir menú"
+          <Link
+            href="/reservar"
+            className="shrink-0 rounded-full bg-[#c4933f] px-3 py-1.5 text-center text-xs font-semibold leading-snug text-white transition-opacity hover:opacity-90 sm:px-4 sm:text-sm"
           >
-            {navOpen ? (
-              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
-          </button>
+            <span className="md:hidden">{CTA_HEADER_MOBILE}</span>
+            <span className="hidden max-w-[200px] leading-snug md:inline lg:max-w-none">
+              {CTA_RESERVAR_LABEL}
+            </span>
+          </Link>
         </div>
-
-        {navOpen && (
-          <div className="border-t border-white/10 bg-[#2d5016] px-4 pb-4 md:hidden">
-            <nav className="flex flex-col gap-3 pt-3 text-base font-medium text-white/90">
-              <a href="#servicios"       onClick={() => setNavOpen(false)} className="py-1">Servicios</a>
-              <a href="#trabajos"        onClick={() => setNavOpen(false)} className="py-1">Trabajos realizados</a>
-              <a href="#por-que"         onClick={() => setNavOpen(false)} className="py-1">¿Por qué elegirnos?</a>
-              <a href="#sobre-guillermo" onClick={() => setNavOpen(false)} className="py-1">Sobre Guillermo</a>
-              <Link
-                href="/reservar"
-                className="mt-1 flex items-center justify-center rounded-full bg-[#c4933f] px-4 py-2.5 text-center text-sm font-semibold leading-snug text-white"
-                onClick={() => setNavOpen(false)}
-              >
-                {CTA_RESERVAR_LABEL}
-              </Link>
-              <a
-                href={WA_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 rounded-full border border-white/30 px-4 py-2.5 text-white/80"
-                onClick={() => setNavOpen(false)}
-              >
-                <WAIcon className="h-4 w-4" /> WhatsApp
-              </a>
-            </nav>
-          </div>
-        )}
       </header>
 
       <main className="overflow-x-hidden">
@@ -813,15 +759,27 @@ export default function Home() {
 
         {/* ── FOOTER ── */}
         <footer className="bg-[#1e3a0c] px-4 py-8 text-center text-sm text-white/50">
-          <p>© {new Date().getFullYear()} JarderíaGV · Bahía Blanca</p>
-          <p className="mt-1">
+          <p>© {new Date().getFullYear()} JardineríaGV · Bahía Blanca</p>
+          <p className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+            <Link href="/" className="underline-offset-2 hover:text-white/80 hover:underline">
+              Inicio
+            </Link>
+            <span aria-hidden className="text-white/25">
+              ·
+            </span>
+            <Link href="/reservar" className="underline-offset-2 hover:text-white/80 hover:underline">
+              Reservar
+            </Link>
+            <span aria-hidden className="text-white/25">
+              ·
+            </span>
             <a
               href={WA_HREF}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline hover:text-white/80"
+              className="underline-offset-2 hover:text-white/80 hover:underline"
             >
-              Contacto por WhatsApp
+              WhatsApp
             </a>
           </p>
         </footer>
