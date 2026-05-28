@@ -4,10 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import { event as gaEvent } from "@/lib/gtag";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
+import { WHATSAPP_HREF } from "@/lib/whatsapp";
 
 // ── Constantes ────────────────────────────────────────────────────────────────
-const WA_HREF =
-  "https://wa.me/5492914315080?text=Hola%20Guillermo%2C%20quisiera%20coordinar%20una%20visita%20para%20ver%20mi%20jard%C3%ADn%20y%20pedir%20presupuesto.";
+const WA_HREF = WHATSAPP_HREF;
 
 /** CTA principal hacia /reservar (hero + navegación). */
 const CTA_RESERVAR_LABEL = "Empecemos a diseñar tu espacio";
@@ -197,17 +198,15 @@ function WAIcon({ className = "h-5 w-5" }: { className?: string }) {
 // ── Sticky WhatsApp (flotante) ────────────────────────────────────────────────
 function StickyWA() {
   return (
-    <a
-      href={WA_HREF}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={() => trackCta("whatsapp_click", "sticky_button")}
+    <WhatsAppLink
+      location="sticky_button"
+      page="home"
       className="fixed bottom-5 right-4 z-50 flex items-center gap-2 rounded-full bg-[#25d366] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 transition-transform hover:scale-105 active:scale-95 md:bottom-6 md:right-6"
       aria-label="Escribinos por WhatsApp"
     >
       <WAIcon />
       WhatsApp
-    </a>
+    </WhatsAppLink>
   );
 }
 
@@ -703,14 +702,13 @@ export default function Home() {
                 Trabajo solo, con mucho cuidado y sin apuro. Cada jardín es diferente, y me tomo el
                 tiempo para entender lo que necesitás antes de arrancar. Lo que prometo, lo cumplo.
               </p>
-              <a
-                href={WA_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
+              <WhatsAppLink
+                location="sobre_mi"
+                page="home"
                 className="inline-flex items-center gap-2 rounded-full bg-[#2d5016] px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
               >
                 <WAIcon className="h-4 w-4" /> Escribime directamente
-              </a>
+              </WhatsAppLink>
             </div>
           </div>
         </section>
@@ -787,15 +785,13 @@ export default function Home() {
               >
                 {CTA_RESERVAR_LABEL}
               </Link>
-              <a
-                href={WA_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackCta("whatsapp_click", "cta_final")}
+              <WhatsAppLink
+                location="cta_final"
+                page="home"
                 className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-white/40 px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
               >
                 <WAIcon className="h-4 w-4" /> Prefiero hablar primero
-              </a>
+              </WhatsAppLink>
             </div>
             <p className="mt-5 text-sm text-white/50">
               Sin compromiso · Confirmación en menos de 24 hs
@@ -823,15 +819,13 @@ export default function Home() {
             <span aria-hidden className="text-white/25">
               ·
             </span>
-            <a
-              href={WA_HREF}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackCta("whatsapp_click", "footer")}
+            <WhatsAppLink
+              location="footer"
+              page="home"
               className="underline-offset-2 hover:text-white/80 hover:underline"
             >
               WhatsApp
-            </a>
+            </WhatsAppLink>
           </p>
         </footer>
       </main>

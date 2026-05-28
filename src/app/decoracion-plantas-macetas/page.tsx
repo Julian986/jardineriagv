@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { HistoryBackLink } from "@/components/HistoryBackLink";
-
-const WA_HREF =
-  "https://wa.me/5492914315080?text=Hola%20Guillermo%2C%20quisiera%20coordinar%20una%20visita%20para%20ver%20mi%20jard%C3%ADn%20y%20pedir%20presupuesto.";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 
 const CTA_RESERVAR_LABEL = "Empecemos a diseñar tu espacio";
 
@@ -89,14 +87,13 @@ export default function DecoracionPlantasMacetasPage() {
                 >
                   {CTA_RESERVAR_LABEL}
                 </Link>
-                <a
-                  href={WA_HREF}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <WhatsAppLink
+                  location="hero"
+                  page="macetas"
                   className="inline-flex justify-center rounded-full border-2 border-white/40 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
                 >
                   Consultar por WhatsApp
-                </a>
+                </WhatsAppLink>
               </div>
             </div>
           </div>
@@ -144,14 +141,13 @@ export default function DecoracionPlantasMacetasPage() {
           >
             ← Volver al inicio
           </HistoryBackLink>
-          <a
-            href={WA_HREF}
-            target="_blank"
-            rel="noopener noreferrer"
+          <WhatsAppLink
+            location="footer"
+            page="macetas"
             className="text-center text-sm font-medium text-[#2d5016] underline underline-offset-2 hover:opacity-80 sm:text-right"
           >
             Consultar por WhatsApp →
-          </a>
+          </WhatsAppLink>
         </div>
       </div>
     </main>
