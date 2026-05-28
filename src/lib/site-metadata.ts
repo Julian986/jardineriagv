@@ -40,8 +40,22 @@ export function buildSiteMetadata(): Metadata {
 
   return {
     metadataBase,
-    title: defaultTitle,
+    title: {
+      default: defaultTitle,
+      template: "%s | Jardinería GV",
+    },
     description: defaultDescription,
+    alternates: {
+      canonical: "/",
+    },
+    keywords: [
+      "jardinería bahía blanca",
+      "diseño de jardines bahía blanca",
+      "mantenimiento de jardines",
+      "riego automático",
+      "parquización",
+      "jardinero en bahía blanca",
+    ],
     icons,
     openGraph: {
       title: defaultTitle,

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
+import { event as gaEvent } from "@/lib/gtag";
 
 // ── Constantes ────────────────────────────────────────────────────────────────
 const WA_HREF =
@@ -11,6 +12,8 @@ const WA_HREF =
 /** CTA principal hacia /reservar (hero + navegación). */
 const CTA_RESERVAR_LABEL = "Empecemos a diseñar tu espacio";
 const CTA_HEADER_MOBILE = "Reservar";
+const SITE_URL =
+  process.env.NEXT_PUBLIC_APP_BASE_URL?.trim().replace(/\/+$/, "") || "https://jardineriagv.com";
 
 // Imágenes del carrusel hero — carpeta `public/ultimas imagenes2`
 const HERO_IMAGES = [
@@ -148,6 +151,40 @@ const MADERA_PRODUCTO = {
   img: "/madera.webp",
 };
 
+const HOME_SCHEMA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "@id": `${SITE_URL}/#business`,
+      name: "Jardinería GV",
+      image: `${SITE_URL}/opengraph-image`,
+      areaServed: "Bahía Blanca",
+      telephone: "+5492914315080",
+      url: SITE_URL,
+      sameAs: ["https://wa.me/5492914315080"],
+    },
+    {
+      "@type": "Service",
+      "@id": `${SITE_URL}/#servicio-diseno`,
+      serviceType: "Diseño y parquización de jardines",
+      provider: { "@id": `${SITE_URL}/#business` },
+      areaServed: "Bahía Blanca",
+    },
+    {
+      "@type": "Service",
+      "@id": `${SITE_URL}/#servicio-mantenimiento`,
+      serviceType: "Mantenimiento de jardines y poda",
+      provider: { "@id": `${SITE_URL}/#business` },
+      areaServed: "Bahía Blanca",
+    },
+  ],
+};
+
+function trackCta(action: string, location: string) {
+  gaEvent(action, { location, page: "home" });
+}
+
 // ── Ícono WhatsApp (reutilizable) ─────────────────────────────────────────────
 function WAIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
@@ -164,6 +201,7 @@ function StickyWA() {
       href={WA_HREF}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => trackCta("whatsapp_click", "sticky_button")}
       className="fixed bottom-5 right-4 z-50 flex items-center gap-2 rounded-full bg-[#25d366] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 transition-transform hover:scale-105 active:scale-95 md:bottom-6 md:right-6"
       aria-label="Escribinos por WhatsApp"
     >
@@ -236,6 +274,7 @@ function HeroCarousel() {
 export default function Home() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_SCHEMA) }} />
       <StickyWA />
 
       {/* ── HEADER ── */}
@@ -249,6 +288,7 @@ export default function Home() {
 
           <Link
             href="/reservar"
+            onClick={() => trackCta("reservar_click", "header")}
             className="shrink-0 rounded-full bg-[#c4933f] px-3 py-1.5 text-center text-xs font-semibold leading-snug text-white transition-opacity hover:opacity-90 sm:px-4 sm:text-sm"
           >
             <span className="md:hidden">{CTA_HEADER_MOBILE}</span>
@@ -285,6 +325,7 @@ export default function Home() {
             <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Link
                 href="/reservar"
+                onClick={() => trackCta("reservar_click", "hero")}
                 className="flex w-full items-center justify-center rounded-full bg-[#c4933f] px-5 py-3.5 text-center text-sm font-bold leading-snug text-white shadow-xl transition-opacity hover:opacity-90 sm:w-auto sm:px-7 sm:text-base"
               >
                 {CTA_RESERVAR_LABEL}
@@ -347,6 +388,7 @@ export default function Home() {
                 <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:justify-start">
                   <Link
                     href="/reservar"
+                    onClick={() => trackCta("reservar_click", "macetas_card")}
                     className="inline-flex justify-center rounded-full bg-[#c4933f] px-5 py-2.5 text-center text-sm font-semibold text-white transition-opacity hover:opacity-90"
                   >
                     {CTA_RESERVAR_LABEL}
@@ -392,6 +434,7 @@ export default function Home() {
                 <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:ml-auto md:justify-end">
                   <Link
                     href="/reservar"
+                    onClick={() => trackCta("reservar_click", "parquizacion_card")}
                     className="inline-flex justify-center rounded-full bg-[#c4933f] px-5 py-2.5 text-center text-sm font-semibold text-white transition-opacity hover:opacity-90"
                   >
                     {CTA_RESERVAR_LABEL}
@@ -437,6 +480,7 @@ export default function Home() {
                 <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                   <Link
                     href="/reservar"
+                    onClick={() => trackCta("reservar_click", "madera_card")}
                     className="inline-flex justify-center rounded-full bg-[#c4933f] px-5 py-2.5 text-center text-sm font-semibold text-white transition-opacity hover:opacity-90"
                   >
                     {CTA_RESERVAR_LABEL}
@@ -617,7 +661,7 @@ export default function Home() {
                       </svg>
                     ))}
                   </div>
-                  <p className="text-sm leading-relaxed text-[#333]">"{t.texto}"</p>
+                  <p className="text-sm leading-relaxed text-[#333]">&quot;{t.texto}&quot;</p>
                   <div className="mt-auto border-t border-[#e4ead8] pt-3">
                     <p className="text-sm font-semibold text-[#1c1c1c]">{t.nombre}</p>
                     <p className="text-xs text-[#888]">{t.barrio}</p>
@@ -738,6 +782,7 @@ export default function Home() {
             <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Link
                 href="/reservar"
+                onClick={() => trackCta("reservar_click", "cta_final")}
                 className="flex w-full items-center justify-center rounded-full bg-[#c4933f] px-8 py-4 text-base font-bold text-white shadow-xl transition-opacity hover:opacity-90 sm:w-auto"
               >
                 {CTA_RESERVAR_LABEL}
@@ -746,6 +791,7 @@ export default function Home() {
                 href={WA_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackCta("whatsapp_click", "cta_final")}
                 className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-white/40 px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
               >
                 <WAIcon className="h-4 w-4" /> Prefiero hablar primero
@@ -767,7 +813,11 @@ export default function Home() {
             <span aria-hidden className="text-white/25">
               ·
             </span>
-            <Link href="/reservar" className="underline-offset-2 hover:text-white/80 hover:underline">
+            <Link
+              href="/reservar"
+              onClick={() => trackCta("reservar_click", "footer")}
+              className="underline-offset-2 hover:text-white/80 hover:underline"
+            >
               Reservar
             </Link>
             <span aria-hidden className="text-white/25">
@@ -777,6 +827,7 @@ export default function Home() {
               href={WA_HREF}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackCta("whatsapp_click", "footer")}
               className="underline-offset-2 hover:text-white/80 hover:underline"
             >
               WhatsApp

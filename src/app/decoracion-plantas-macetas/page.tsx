@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { HistoryBackLink } from "@/components/HistoryBackLink";
 
 const WA_HREF =
   "https://wa.me/5492914315080?text=Hola%20Guillermo%2C%20quisiera%20coordinar%20una%20visita%20para%20ver%20mi%20jard%C3%ADn%20y%20pedir%20presupuesto.";
@@ -47,16 +48,15 @@ export default function DecoracionPlantasMacetasPage() {
       <div className="border-b border-[#e4ead8] bg-[#2d5016] text-white">
         <div className="mx-auto max-w-6xl px-4 pb-10 pt-4 md:pb-14 md:pt-5">
           <div className="mb-6 flex justify-start md:mb-8">
-            <Link
-              href="/"
-              aria-label="Volver al inicio"
+            <HistoryBackLink
+              aria-label="Volver"
               className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white transition hover:bg-white/15"
             >
               <span aria-hidden className="text-sm leading-none">
                 ←
               </span>
               Volver
-            </Link>
+            </HistoryBackLink>
           </div>
           <div className="flex flex-col gap-8 md:flex-row md:items-center md:gap-12">
             <div className="relative mx-auto h-56 w-full max-w-md shrink-0 overflow-hidden rounded-2xl md:mx-0 md:h-72 md:w-96">
@@ -138,12 +138,12 @@ export default function DecoracionPlantasMacetasPage() {
         </div>
 
         <div className="flex flex-col gap-3 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <Link
-            href="/"
+          <HistoryBackLink
+            aria-label="Volver al inicio"
             className="text-center text-sm font-medium text-[#2d5016] underline underline-offset-2 hover:opacity-80 sm:text-left"
           >
             ← Volver al inicio
-          </Link>
+          </HistoryBackLink>
           <a
             href={WA_HREF}
             target="_blank"

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { HistoryBackLink } from "@/components/HistoryBackLink";
 import { extractPaymentIdFromReturnUrl } from "@/lib/mercadopago/return-url";
 import { event as gaEvent } from "@/lib/gtag";
 import { getReservaVisitaMontoArsPublic } from "@/lib/mercadopago/config";
@@ -343,16 +344,16 @@ export default function ReservarPage() {
     <main className="mx-auto min-h-screen max-w-3xl px-4 py-10">
       <div className="rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,246,241,0.96))] p-6 shadow-[0_18px_46px_rgba(31,41,55,0.08)] md:p-8">
         <div className="mb-5">
-          <Link
-            href="/"
+          <HistoryBackLink
             aria-label="Volver al inicio"
+            onClick={() => gaEvent("volver_inicio_click", { location: "reservar_header" })}
             className="inline-flex items-center gap-2 rounded-full border border-[#1f5d38]/20 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#1f5d38] transition hover:bg-[#f0fdf4]"
           >
             <span aria-hidden className="text-sm leading-none">
               ←
             </span>
             Volver
-          </Link>
+          </HistoryBackLink>
         </div>
         <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#2b6a3c]">
           Reserva de visita
@@ -647,16 +648,23 @@ export default function ReservarPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
+                onClick={() =>
+                  gaEvent("pagar_reservar_click", {
+                    location: "reservar_form",
+                    has_fecha_preferida: Boolean(form.fechaPreferida),
+                    horario: form.horario,
+                  })
+                }
                 className="rounded-full bg-[#1f5d38] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_28px_rgba(31,93,56,0.2)] transition hover:bg-[#18492c] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isSubmitting ? "Redirigiendo…" : "Pagar y reservar"}
               </button>
-              <Link
-                href="/"
+              <HistoryBackLink
+                onClick={() => gaEvent("volver_inicio_click", { location: "reservar_footer" })}
                 className="rounded-full border border-[#1f5d38]/20 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[#1f5d38]"
               >
                 Volver
-              </Link>
+              </HistoryBackLink>
             </div>
           </div>
         </form>
