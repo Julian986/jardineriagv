@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from "react";
 import { event as gaEvent } from "@/lib/gtag";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
+import { TITULO_BIODIVERSIDAD, TITULO_PROYECTO_NAPOSTA } from "@/lib/biodiversidad-titulos";
 
 // ── Constantes ────────────────────────────────────────────────────────────────
 const WA_HREF = WHATSAPP_HREF;
@@ -150,6 +151,15 @@ const MADERA_PRODUCTO = {
   desc: "Damos una segunda vida a maderas nobles para crear piezas únicas que cuentan una historia. Cada mueble es fabricado a mano, respetando las vetas, texturas y marcas del tiempo que hacen de cada diseño algo irrepetible.",
   tagline: "♻️ Piezas únicas, 100% sustentables.",
   img: "/madera.webp",
+};
+
+const BIODIVERSIDAD_PRODUCTO = {
+  id: "biodiversidad",
+  detailHref: "/proteccion-biodiversidad",
+  icon: "🌿",
+  titulo: TITULO_BIODIVERSIDAD,
+  desc: TITULO_PROYECTO_NAPOSTA,
+  img: "/biodiversidad.webp",
 };
 
 const HOME_SCHEMA = {
@@ -342,7 +352,7 @@ export default function Home() {
         </section>
 
         {/* ══════════════════════════════════════════════════
-            2. MACETAS → PARQUIZACIÓN → MADERA (después del hero)
+            2. MACETAS → PARQUIZACIÓN → MADERA → BIODIVERSIDAD (después del hero)
         ══════════════════════════════════════════════════ */}
         <section
           className="border-b border-[#e4ead8] bg-[#fafaf7] px-4 py-12 md:py-16"
@@ -450,7 +460,7 @@ export default function Home() {
 
             <article
               id={MADERA_PRODUCTO.id}
-              className="flex flex-col gap-6 rounded-2xl border border-[#e4ead8] bg-white p-6 shadow-sm md:flex-row md:items-center md:gap-10 md:p-8"
+              className="mb-12 flex flex-col gap-6 rounded-2xl border border-[#e4ead8] bg-white p-6 shadow-sm md:mb-14 md:flex-row md:items-center md:gap-10 md:p-8"
             >
               <div className="relative mx-auto h-52 w-full max-w-md shrink-0 overflow-hidden rounded-xl bg-[#f0f5ea] md:mx-0 md:h-56 md:w-80 md:max-w-none">
                 <Image
@@ -491,6 +501,48 @@ export default function Home() {
                   >
                     Próximamente
                   </span>
+                </div>
+              </div>
+            </article>
+
+            <article
+              id={BIODIVERSIDAD_PRODUCTO.id}
+              className="flex flex-col gap-6 rounded-2xl border border-[#e4ead8] bg-white p-6 shadow-sm md:flex-row-reverse md:items-center md:gap-10 md:p-8"
+            >
+              <div className="relative mx-auto h-52 w-full max-w-md shrink-0 overflow-hidden rounded-xl bg-[#f0f5ea] md:mx-0 md:h-56 md:w-80 md:max-w-none">
+                <Image
+                  src={BIODIVERSIDAD_PRODUCTO.img}
+                  alt={BIODIVERSIDAD_PRODUCTO.titulo}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 320px"
+                />
+              </div>
+              <div className="flex-1 text-center md:text-right">
+                <span className="text-3xl" aria-hidden>
+                  {BIODIVERSIDAD_PRODUCTO.icon}
+                </span>
+                <h2 className="mt-2 text-balance text-xl font-bold leading-snug text-[#2d5016] md:text-2xl">
+                  {BIODIVERSIDAD_PRODUCTO.titulo}
+                </h2>
+                <p className="mt-2 text-[15px] leading-relaxed text-[#555] md:ml-auto md:max-w-xl">
+                  {BIODIVERSIDAD_PRODUCTO.desc}
+                </p>
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:ml-auto md:justify-end">
+                  <Link
+                    href="/reservar"
+                    onClick={() => trackCta("reservar_click", "biodiversidad_card")}
+                    className="inline-flex justify-center rounded-full bg-[#c4933f] px-5 py-2.5 text-center text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                  >
+                    {CTA_RESERVAR_LABEL}
+                  </Link>
+                  <Link
+                    href={BIODIVERSIDAD_PRODUCTO.detailHref}
+                    onClick={() => trackCta("ver_mas_click", "biodiversidad_card")}
+                    className="inline-flex justify-center rounded-full border-2 border-[#2d5016] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#f0f5ea]"
+                  >
+                    Ver más
+                  </Link>
                 </div>
               </div>
             </article>
