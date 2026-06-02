@@ -23,13 +23,6 @@
   box-sizing: border-box;
 }
 
-/* Suave solo si el usuario no pidió reducir movimiento (mejor a11y). */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
 body {
   margin: 0;
   background: #f7f8f8;

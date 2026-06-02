@@ -404,6 +404,7 @@ export default function Home() {
                   </Link>
                   <Link
                     href={MACETAS_PRODUCTO.detailHref}
+                    scroll
                     className="inline-flex justify-center rounded-full border-2 border-[#2d5016] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#f0f5ea]"
                   >
                     Ver más
@@ -450,6 +451,7 @@ export default function Home() {
                   </Link>
                   <Link
                     href={PARQUIZACION_PRODUCTO.detailHref}
+                    scroll
                     className="inline-flex justify-center rounded-full border-2 border-[#2d5016] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#f0f5ea]"
                   >
                     Ver más
@@ -538,6 +540,7 @@ export default function Home() {
                   </Link>
                   <Link
                     href={BIODIVERSIDAD_PRODUCTO.detailHref}
+                    scroll
                     onClick={() => trackCta("ver_mas_click", "biodiversidad_card")}
                     className="inline-flex justify-center rounded-full border-2 border-[#2d5016] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#f0f5ea]"
                   >
