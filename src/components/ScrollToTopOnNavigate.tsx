@@ -42,6 +42,15 @@ function saveScroll(pathname: string, y: number) {
   }
 }
 
+function scrollToHashIfPresent() {
+  const hash = window.location.hash;
+  if (!hash) return false;
+  const target = document.querySelector(hash);
+  if (!(target instanceof HTMLElement)) return false;
+  target.scrollIntoView({ behavior: "auto", block: "start" });
+  return true;
+}
+
 /**
  * Navegación adelante: arriba al instante (sin animación).
  * Atrás/adelante del historial: restaura la posición guardada.
@@ -80,7 +89,11 @@ export function ScrollToTopOnNavigate() {
       saveScroll(prev, window.scrollY);
     }
 
-    instantScrollTo(0);
+    if (!scrollToHashIfPresent()) {
+      instantScrollTo(0);
+    } else {
+      requestAnimationFrame(() => scrollToHashIfPresent());
+    }
     previousPathname.current = pathname;
   }, [pathname]);
 

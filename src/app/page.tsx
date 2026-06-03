@@ -7,6 +7,11 @@ import { event as gaEvent } from "@/lib/gtag";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import { TITULO_BIODIVERSIDAD, TITULO_PROYECTO_NAPOSTA } from "@/lib/biodiversidad-titulos";
+import {
+  EVENTO_CUMPLE_RAIZ_DATOS,
+  EVENTO_CUMPLE_RAIZ_TITULO,
+  EVENTO_ETIQUETA,
+} from "@/lib/biodiversidad-evento";
 
 // ── Constantes ────────────────────────────────────────────────────────────────
 const WA_HREF = WHATSAPP_HREF;
@@ -530,6 +535,37 @@ export default function Home() {
                 <p className="mt-2 text-[15px] leading-relaxed text-[#555] md:ml-auto md:max-w-xl">
                   {BIODIVERSIDAD_PRODUCTO.desc}
                 </p>
+                <div className="mt-4 rounded-xl border border-[#c8d9b8] bg-[#f0f5ea] p-4 text-left md:ml-auto md:max-w-xl">
+                  <span className="inline-block rounded-full bg-[#2d5016] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-white">
+                    {EVENTO_ETIQUETA}
+                  </span>
+                  <p className="mt-3 text-[15px] font-semibold leading-snug text-[#2d5016]">
+                    {EVENTO_CUMPLE_RAIZ_TITULO}
+                  </p>
+                  <div className="mt-3 overflow-hidden rounded-lg border border-[#e4ead8]/80 bg-white/90">
+                    {EVENTO_CUMPLE_RAIZ_DATOS.map((dato, index) => (
+                      <div
+                        key={dato.etiqueta}
+                        className={`px-3 py-2.5 ${index > 0 ? "border-t border-[#e4ead8]/70" : ""}`}
+                      >
+                        <p className="text-[11px] font-semibold uppercase tracking-wide text-[#2d5016]/75">
+                          {dato.etiqueta}
+                        </p>
+                        <p className="mt-1 text-[15px] font-semibold leading-snug text-[#1c1c1c] md:text-base">
+                          {dato.valor}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  {/* <Link
+                    href={`${BIODIVERSIDAD_PRODUCTO.detailHref}#${EVENTO_CUMPLE_RAIZ_ANCHOR_ID}`}
+                    scroll
+                    onClick={() => trackCta("ver_eventos_click", "biodiversidad_card")}
+                    className="mt-3 inline-flex w-full justify-center rounded-full border-2 border-[#2d5016] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#e4ead8]/40 sm:w-auto"
+                  >
+                    {EVENTO_VER_PROXIMO_EVENTO}
+                  </Link> */}
+                </div>
                 <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:ml-auto md:justify-end">
                   <Link
                     href="/reservar"

@@ -8,6 +8,16 @@ import {
   PROYECTO_NAPOSTA_INTRO,
   PROYECTO_NAPOSTA_SECCIONES,
 } from "@/lib/biodiversidad-naposta-contenido";
+import {
+  EVENTO_CUMPLE_RAIZ_ANCHOR_ID,
+  EVENTO_CUMPLE_RAIZ_DATOS,
+  EVENTO_CUMPLE_RAIZ_DESCRIPCION,
+  EVENTO_CUMPLE_RAIZ_MAPS_URL,
+  EVENTO_CUMPLE_RAIZ_TITULO,
+  EVENTO_CUMPLE_RAIZ_WHATSAPP_HREF,
+  EVENTO_ETIQUETA,
+  EVENTO_DETAIL_HERO_LINK,
+} from "@/lib/biodiversidad-evento";
 
 const CTA_RESERVAR_LABEL = "Empecemos a diseñar tu espacio";
 
@@ -59,9 +69,7 @@ export default function ProteccionBiodiversidadPage() {
               <h1 className="mt-2 text-balance text-2xl font-bold leading-snug text-[#e8b46a] md:text-3xl lg:text-4xl">
                 {TITULO_PROYECTO_NAPOSTA}
               </h1>
-              <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/85 md:text-lg">
-                {PROYECTO_NAPOSTA_INTRO}
-              </p>
+
               <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
                   href="/reservar"
@@ -77,6 +85,22 @@ export default function ProteccionBiodiversidadPage() {
                   Consultar por WhatsApp
                 </WhatsAppLink>
               </div>
+
+              <div
+                className="mt-8 max-w-2xl border-t border-white/25 pt-6 text-center md:mt-6 md:pt-5 md:text-left"
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/60">
+                  {EVENTO_ETIQUETA}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-white/80 md:mt-1.5 md:text-[15px]">
+                  <Link
+                    href={`#${EVENTO_CUMPLE_RAIZ_ANCHOR_ID}`}
+                    className="font-semibold text-[#e8b46a] underline decoration-[#e8b46a]/50 underline-offset-[3px] transition-colors hover:text-[#f5d9a8] hover:decoration-[#f5d9a8]"
+                  >
+                    {EVENTO_DETAIL_HERO_LINK}
+                  </Link>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -90,6 +114,9 @@ export default function ProteccionBiodiversidadPage() {
           >
             Estrategias del proyecto
           </h2>
+          <p className="mt-4 text-[17px] leading-relaxed text-[#333] md:text-lg">
+            {PROYECTO_NAPOSTA_INTRO}
+          </p>
 
           <div className="mt-8 space-y-12">
             {PROYECTO_NAPOSTA_SECCIONES.map((seccion) => (
@@ -121,6 +148,55 @@ export default function ProteccionBiodiversidadPage() {
             >
               Consultar sobre el Río Napostá
             </WhatsAppLink>
+          </div>
+        </section>
+
+        <section
+          id={EVENTO_CUMPLE_RAIZ_ANCHOR_ID}
+          className="mb-12 scroll-mt-6"
+          aria-labelledby="evento-heading"
+        >
+          <h2 id="evento-heading" className="text-2xl font-bold text-[#2d5016] md:text-3xl">
+            {EVENTO_ETIQUETA}
+          </h2>
+          <p className="mt-2 text-lg font-semibold leading-snug text-[#1c1c1c] md:text-xl">
+            {EVENTO_CUMPLE_RAIZ_TITULO}
+          </p>
+          <p className="mt-4 text-[17px] leading-relaxed text-[#333] md:text-lg">
+            {EVENTO_CUMPLE_RAIZ_DESCRIPCION}
+          </p>
+
+          <h3 className="mt-8 text-lg font-bold text-[#2d5016]">📅 Datos del Evento</h3>
+          <div className="mt-6 grid gap-6 sm:grid-cols-3">
+            {EVENTO_CUMPLE_RAIZ_DATOS.map((dato) => (
+              <article key={dato.etiqueta} className={CARD_CLASS}>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-[#2d5016]/75">
+                  {dato.etiqueta}
+                </p>
+                <p className="mt-2 text-lg font-semibold leading-snug text-[#1c1c1c] md:text-xl">
+                  {dato.valor}
+                </p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <WhatsAppLink
+              location="evento_section"
+              page="biodiversidad"
+              href={EVENTO_CUMPLE_RAIZ_WHATSAPP_HREF}
+              className="inline-flex justify-center rounded-full border-2 border-[#2d5016] bg-white px-6 py-3 text-sm font-semibold text-[#2d5016] shadow-sm transition-colors hover:bg-[#f0f5ea]"
+            >
+              Consultar sobre el evento
+            </WhatsAppLink>
+            <a
+              href={EVENTO_CUMPLE_RAIZ_MAPS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex justify-center rounded-full border-2 border-[#2d5016]/40 bg-[#f0f5ea] px-6 py-3 text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#e4ead8]/60"
+            >
+              Ver ubicación en el mapa
+            </a>
           </div>
         </section>
 
