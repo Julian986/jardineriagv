@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { extractPaymentIdsFromWebhook } from "@/lib/mercadopago/webhook-parser";
+import { processApprovedPaymentForMaderaPedido } from "@/lib/madera/mercadopago-confirmation";
 import { processApprovedPaymentForTurno } from "@/lib/reservas/mercadopago-confirmation";
 
 export const dynamic = "force-dynamic";
@@ -33,7 +34,15 @@ async function processNotificationPayload(
         transport: method,
         rawSnippet: snippet,
       });
-      logMp(`payment ${paymentId}`, { outcome: r.outcome, message: r.message });
+      if (r.outcome === "turno_not_found") {
+        const m = await processApprovedPaymentForMaderaPedido(paymentId, {
+          transport: method,
+          rawSnippet: snippet,
+        });
+        logMp(`payment ${paymentId} (madera)`, { outcome: m.outcome, message: m.message });
+      } else {
+        logMp(`payment ${paymentId}`, { outcome: r.outcome, message: r.message });
+      }
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       console.error(`[mp-webhook] error payment ${paymentId}`, msg);

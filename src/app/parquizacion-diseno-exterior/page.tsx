@@ -88,12 +88,12 @@ export default function ParquizacionDisenoExteriorPage() {
                 {INTRO}
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <Link
+                {/* <Link
                   href="/reservar"
                   className="inline-flex justify-center rounded-full bg-[#c4933f] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
                 >
                   {CTA_RESERVAR_LABEL}
-                </Link>
+                </Link> */}
                 <WhatsAppLink
                   location="hero"
                   page="parquizacion"
@@ -128,14 +128,14 @@ export default function ParquizacionDisenoExteriorPage() {
           </div>
         </section>
 
-        <div className="mb-12 flex flex-col items-center gap-4 border-b border-[#e4ead8] pb-12">
+        {/* <div className="mb-12 flex flex-col items-center gap-4 border-b border-[#e4ead8] pb-12">
           <Link
             href="/reservar"
             className="inline-flex justify-center rounded-full bg-[#c4933f] px-8 py-3.5 text-base font-semibold text-white shadow-md transition-opacity hover:opacity-90"
           >
             {CTA_RESERVAR_LABEL}
           </Link>
-        </div>
+        </div> */}
 
         <div className="flex flex-col gap-3 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <HistoryBackLink

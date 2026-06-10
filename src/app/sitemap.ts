@@ -21,10 +21,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${base}/muebles-madera-recuperada`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
       url: `${base}/proteccion-biodiversidad`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
+    },
+    {
+      url: `${base}/proximo-evento`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.65,
+    },
+    {
+      url: `${base}/proyecto-rio-naposta`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.65,
     },
   ];
 }

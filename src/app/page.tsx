@@ -6,7 +6,15 @@ import { useState, useEffect, useCallback } from "react";
 import { event as gaEvent } from "@/lib/gtag";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
+import { RUTA_MADERA } from "@/lib/madera-contenido";
 import { TITULO_BIODIVERSIDAD, TITULO_PROYECTO_NAPOSTA } from "@/lib/biodiversidad-titulos";
+import {
+  CTA_VER_EVENTO,
+  CTA_VER_PROYECTO,
+  RUTA_BIODIVERSIDAD_HUB,
+  RUTA_EVENTO,
+  RUTA_PROYECTO,
+} from "@/lib/biodiversidad-rutas";
 import {
   EVENTO_CUMPLE_RAIZ_DATOS,
   EVENTO_CUMPLE_RAIZ_TITULO,
@@ -151,6 +159,7 @@ const PARQUIZACION_PRODUCTO = {
 
 const MADERA_PRODUCTO = {
   id: "madera",
+  detailHref: RUTA_MADERA,
   tituloPrincipal: "MUEBLES CON HISTORIA:",
   tituloSecundario: "Artesanía en madera recuperada.",
   desc: "Damos una segunda vida a maderas nobles para crear piezas únicas que cuentan una historia. Cada mueble es fabricado a mano, respetando las vetas, texturas y marcas del tiempo que hacen de cada diseño algo irrepetible.",
@@ -160,10 +169,9 @@ const MADERA_PRODUCTO = {
 
 const BIODIVERSIDAD_PRODUCTO = {
   id: "biodiversidad",
-  detailHref: "/proteccion-biodiversidad",
+  detailHref: RUTA_BIODIVERSIDAD_HUB,
   icon: "🌿",
   titulo: TITULO_BIODIVERSIDAD,
-  desc: TITULO_PROYECTO_NAPOSTA,
   img: "/biodiversidad.webp",
 };
 
@@ -337,13 +345,13 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <Link
+              {/* <Link
                 href="/reservar"
                 onClick={() => trackCta("reservar_click", "hero")}
                 className="flex w-full items-center justify-center rounded-full bg-[#c4933f] px-5 py-3.5 text-center text-sm font-bold leading-snug text-white shadow-xl transition-opacity hover:opacity-90 sm:w-auto sm:px-7 sm:text-base"
               >
                 {CTA_RESERVAR_LABEL}
-              </Link>
+              </Link> */}
            {/* <a
                 href={WA_HREF}
                 target="_blank"
@@ -495,19 +503,21 @@ export default function Home() {
                 </p>
                 <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                   <Link
-                    href="/reservar"
-                    onClick={() => trackCta("reservar_click", "madera_card")}
+                    href={MADERA_PRODUCTO.detailHref}
+                    scroll
+                    onClick={() => trackCta("ver_mas_click", "madera_card")}
+                    className="inline-flex justify-center rounded-full border-2 border-[#2d5016] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#f0f5ea]"
+                  >
+                    Ver más
+                  </Link>
+                  <Link
+                    href={`${MADERA_PRODUCTO.detailHref}#comprar`}
+                    scroll
+                    onClick={() => trackCta("madera_comprar_click", "madera_card")}
                     className="inline-flex justify-center rounded-full bg-[#c4933f] px-5 py-2.5 text-center text-sm font-semibold text-white transition-opacity hover:opacity-90"
                   >
-                    {CTA_RESERVAR_LABEL}
+                    Comprar con Mercado Pago
                   </Link>
-                  <span
-                    className="inline-flex cursor-default select-none items-center justify-center rounded-full border border-[#cfd9c4] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#5a6b52] shadow-sm"
-                    title="Catálogo y más información cuando tengamos las fotos de los muebles"
-                    aria-disabled="true"
-                  >
-                    Próximamente
-                  </span>
                 </div>
               </div>
             </article>
@@ -532,9 +542,6 @@ export default function Home() {
                 <h2 className="mt-2 text-balance text-xl font-bold leading-snug text-[#2d5016] md:text-2xl">
                   {BIODIVERSIDAD_PRODUCTO.titulo}
                 </h2>
-                <p className="mt-2 text-[15px] leading-relaxed text-[#555] md:ml-auto md:max-w-xl">
-                  {BIODIVERSIDAD_PRODUCTO.desc}
-                </p>
                 <div className="mt-4 rounded-xl border border-[#c8d9b8] bg-[#f0f5ea] p-4 text-left md:ml-auto md:max-w-xl">
                   <span className="inline-block rounded-full bg-[#2d5016] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-white">
                     {EVENTO_ETIQUETA}
@@ -557,23 +564,32 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                  {/* <Link
-                    href={`${BIODIVERSIDAD_PRODUCTO.detailHref}#${EVENTO_CUMPLE_RAIZ_ANCHOR_ID}`}
+                  <Link
+                    href={RUTA_EVENTO}
                     scroll
-                    onClick={() => trackCta("ver_eventos_click", "biodiversidad_card")}
+                    onClick={() => trackCta("ver_evento_click", "biodiversidad_card")}
                     className="mt-3 inline-flex w-full justify-center rounded-full border-2 border-[#2d5016] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#e4ead8]/40 sm:w-auto"
                   >
-                    {EVENTO_VER_PROXIMO_EVENTO}
-                  </Link> */}
+                    {CTA_VER_EVENTO}
+                  </Link>
+                </div>
+                <div className="mt-4 rounded-xl border border-[#e4ead8] bg-white p-4 text-left md:ml-auto md:max-w-xl">
+                  <span className="inline-block rounded-full border border-[#2d5016]/25 bg-[#f0f5ea] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[#2d5016]">
+                    Proyecto
+                  </span>
+                  <p className="mt-3 text-[15px] font-semibold leading-snug text-[#2d5016]">
+                    {TITULO_PROYECTO_NAPOSTA}
+                  </p>
+                  <Link
+                    href={RUTA_PROYECTO}
+                    scroll
+                    onClick={() => trackCta("ver_proyecto_click", "biodiversidad_card")}
+                    className="mt-3 inline-flex w-full justify-center rounded-full border-2 border-[#2d5016] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#f0f5ea] sm:w-auto"
+                  >
+                    {CTA_VER_PROYECTO}
+                  </Link>
                 </div>
                 <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:ml-auto md:justify-end">
-                  <Link
-                    href="/reservar"
-                    onClick={() => trackCta("reservar_click", "biodiversidad_card")}
-                    className="inline-flex justify-center rounded-full bg-[#c4933f] px-5 py-2.5 text-center text-sm font-semibold text-white transition-opacity hover:opacity-90"
-                  >
-                    {CTA_RESERVAR_LABEL}
-                  </Link>
                   <Link
                     href={BIODIVERSIDAD_PRODUCTO.detailHref}
                     scroll
@@ -869,13 +885,13 @@ export default function Home() {
               </>
             )}
             <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <Link
+             {/*  <Link
                 href="/reservar"
                 onClick={() => trackCta("reservar_click", "cta_final")}
                 className="flex w-full items-center justify-center rounded-full bg-[#c4933f] px-8 py-4 text-base font-bold text-white shadow-xl transition-opacity hover:opacity-90 sm:w-auto"
               >
                 {CTA_RESERVAR_LABEL}
-              </Link>
+              </Link> */}
               <WhatsAppLink
                 location="cta_final"
                 page="home"

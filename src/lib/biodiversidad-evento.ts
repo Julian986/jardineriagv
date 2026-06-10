@@ -16,7 +16,7 @@ export const EVENTO_CUMPLE_RAIZ_DESCRIPCION =
   "Nuestro hijo cumple su primer año y queremos celebrarlo sembrando vida para concientizar sobre la huella de carbono humana. Nos reuniremos en el Parque Público de Cuyo junto al Club Andino Bahía Blanca en un evento abierto a toda la comunidad. No te preocupes por el trabajo pesado: nuestro equipo se encargará de plantar los árboles. Tu presencia es el verdadero regalo. ¡Vení a celebrar la vida y la naturaleza con nosotros!";
 
 export const EVENTO_CUMPLE_RAIZ_DATOS = [
-  { etiqueta: "Fecha", valor: "Viernes 19 de Junio de 2026." },
+  { etiqueta: "Fecha", valor: "Viernes 19 de Junio." },
   { etiqueta: "Horario", valor: "De 15:30 a 18:00 h." },
   { etiqueta: "Lugar", valor: "Parque Público de Cuyo." },
 ] as const;
