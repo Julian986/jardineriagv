@@ -50,7 +50,7 @@ export default function MueblesMaderaRecuperadaPage() {
           <div className="flex flex-col gap-8 md:flex-row md:items-center md:gap-12">
             <div className="relative mx-auto h-56 w-full max-w-md shrink-0 overflow-hidden rounded-2xl md:mx-0 md:h-72 md:w-96">
               <Image
-                src="/madera_detail.jpeg"
+                src="/madera_detail.webp"
                 alt={`${MADERA_PRODUCTO_TITULO} instalados en un ambiente`}
                 fill
                 className="object-cover"
