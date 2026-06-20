@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { markBackNavigation } from "@/lib/navigation-scroll";
 
 type HistoryBackLinkProps = {
   /** Si no hay historial (ej. entró directo a la página), navega acá. */
@@ -31,6 +32,7 @@ export function HistoryBackLink({
         if (event.defaultPrevented) return;
 
         if (typeof window !== "undefined" && window.history.length > 1) {
+          markBackNavigation();
           router.back();
           return;
         }

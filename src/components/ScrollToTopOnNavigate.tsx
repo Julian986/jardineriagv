@@ -2,45 +2,21 @@
 
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-
-const SCROLL_STORAGE_PREFIX = "jardineriagv-scroll:";
-
-function scrollStorageKey(pathname: string) {
-  return `${SCROLL_STORAGE_PREFIX}${pathname}`;
-}
-
-function instantScrollTo(y: number) {
-  const html = document.documentElement;
-  const body = document.body;
-  const prevHtml = html.style.scrollBehavior;
-  const prevBody = body.style.scrollBehavior;
-  html.style.scrollBehavior = "auto";
-  body.style.scrollBehavior = "auto";
-  window.scrollTo(0, y);
-  html.scrollTop = y;
-  body.scrollTop = y;
-  html.style.scrollBehavior = prevHtml;
-  body.style.scrollBehavior = prevBody;
-}
-
-function readSavedScroll(pathname: string): number | null {
-  try {
-    const raw = sessionStorage.getItem(scrollStorageKey(pathname));
-    if (raw == null) return null;
-    const y = Number.parseInt(raw, 10);
-    return Number.isFinite(y) ? y : null;
-  } catch {
-    return null;
-  }
-}
-
-function saveScroll(pathname: string, y: number) {
-  try {
-    sessionStorage.setItem(scrollStorageKey(pathname), String(Math.round(y)));
-  } catch {
-    /* ignore quota / private mode */
-  }
-}
+import {
+  clearBackNavigationPending,
+  clearSuppressScrollToTopIfLeaving,
+  getCurrentScrollY,
+  HOME_PATH,
+  instantScrollTo,
+  isBackNavigationPending,
+  markSuppressScrollToTop,
+  readSavedScroll,
+  restoreHomeScroll,
+  restoreScrollForPath,
+  saveHomeScroll,
+  saveScroll,
+  shouldSuppressScrollToTop,
+} from "@/lib/navigation-scroll";
 
 function scrollToHashIfPresent() {
   const hash = window.location.hash;
@@ -51,14 +27,57 @@ function scrollToHashIfPresent() {
   return true;
 }
 
+function isInternalNavigationAnchor(anchor: HTMLAnchorElement, pathname: string) {
+  if (anchor.target === "_blank") return false;
+
+  const href = anchor.getAttribute("href");
+  if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) {
+    return false;
+  }
+
+  let url: URL;
+  try {
+    url = new URL(href, window.location.href);
+  } catch {
+    return false;
+  }
+
+  if (url.origin !== window.location.origin) return false;
+  if (url.pathname === pathname && url.hash) return false;
+
+  return true;
+}
+
+function persistScrollForInternalAnchor(
+  event: MouseEvent | PointerEvent,
+  pathname: string,
+) {
+  if (event.defaultPrevented || event.button !== 0) return;
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+
+  const anchor = target.closest("a[href]");
+  if (!(anchor instanceof HTMLAnchorElement)) return;
+  if (!isInternalNavigationAnchor(anchor, pathname)) return;
+
+  const y = getCurrentScrollY();
+  saveScroll(pathname, y);
+  if (pathname === HOME_PATH) {
+    saveHomeScroll(y);
+  }
+}
+
 /**
  * Navegación adelante: arriba al instante (sin animación).
- * Atrás/adelante del historial: restaura la posición guardada.
+ * Atrás (Volver / historial): restaura la posición guardada.
  */
 export function ScrollToTopOnNavigate() {
   const pathname = usePathname();
   const previousPathname = useRef<string | null>(null);
   const isHistoryTraversal = useRef(false);
+  const restoreHomeAfterPaint = useRef(false);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -71,22 +90,70 @@ export function ScrollToTopOnNavigate() {
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
+  useEffect(() => {
+    const onPointerDownCapture = (event: PointerEvent) => {
+      persistScrollForInternalAnchor(event, pathname);
+    };
+    const onClickCapture = (event: MouseEvent) => {
+      persistScrollForInternalAnchor(event, pathname);
+    };
+
+    document.addEventListener("pointerdown", onPointerDownCapture, true);
+    document.addEventListener("click", onClickCapture, true);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDownCapture, true);
+      document.removeEventListener("click", onClickCapture, true);
+    };
+  }, [pathname]);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = getCurrentScrollY();
+        saveScroll(pathname, y);
+        if (pathname === HOME_PATH) {
+          saveHomeScroll(y);
+        }
+        ticking = false;
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [pathname]);
+
   useLayoutEffect(() => {
     const prev = previousPathname.current;
+    clearSuppressScrollToTopIfLeaving(pathname);
 
-    if (isHistoryTraversal.current) {
+    const isBack = isHistoryTraversal.current || isBackNavigationPending();
+
+    if (isBack) {
       isHistoryTraversal.current = false;
-      const saved = readSavedScroll(pathname);
-      if (saved != null) {
-        instantScrollTo(saved);
-        requestAnimationFrame(() => instantScrollTo(saved));
+      clearBackNavigationPending();
+      markSuppressScrollToTop(pathname);
+      restoreScrollForPath(pathname);
+      if (pathname === HOME_PATH) {
+        restoreHomeAfterPaint.current = true;
       }
       previousPathname.current = pathname;
       return;
     }
 
+    if (shouldSuppressScrollToTop(pathname)) {
+      previousPathname.current = pathname;
+      return;
+    }
+
     if (prev != null && prev !== pathname) {
-      saveScroll(prev, window.scrollY);
+      const saved = readSavedScroll(prev);
+      if (saved == null) {
+        saveScroll(prev, getCurrentScrollY());
+      }
     }
 
     if (!scrollToHashIfPresent()) {
@@ -95,6 +162,13 @@ export function ScrollToTopOnNavigate() {
       requestAnimationFrame(() => scrollToHashIfPresent());
     }
     previousPathname.current = pathname;
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!restoreHomeAfterPaint.current || pathname !== HOME_PATH) return;
+
+    restoreHomeAfterPaint.current = false;
+    restoreHomeScroll();
   }, [pathname]);
 
   return null;
