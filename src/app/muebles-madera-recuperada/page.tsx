@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { HistoryBackLink } from "@/components/HistoryBackLink";
 import { MaderaCheckoutForm } from "@/components/MaderaCheckoutForm";
+import { TerekuaMvpBlock } from "@/components/TerekuaMvpBlock";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 import {
   MADERA_INTRO_HOME,
@@ -181,6 +182,8 @@ export default function MueblesMaderaRecuperadaPage() {
             {MADERA_PINOTEA_CIERRE}
           </p>
         </section>
+
+        <TerekuaMvpBlock location="madera_mvp" page="madera" className="mb-12" />
 
         <MaderaCheckoutForm />
 

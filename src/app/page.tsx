@@ -15,6 +15,7 @@ import {
   RUTA_EVENTO,
   RUTA_PROYECTO,
 } from "@/lib/biodiversidad-rutas";
+import { TerekuaMvpBlock } from "@/components/TerekuaMvpBlock";
 import {
   EVENTO_CUMPLE_RAIZ_DATOS,
   EVENTO_CUMPLE_RAIZ_TITULO,
@@ -601,6 +602,12 @@ export default function Home() {
                 </div>
               </div>
             </article>
+          </div>
+        </section>
+
+        <section className="border-b border-[#e4ead8] bg-[#fafaf7] px-4 pb-12 md:pb-16">
+          <div className="mx-auto max-w-6xl">
+            <TerekuaMvpBlock location="home_mvp" page="home" />
           </div>
         </section>
 

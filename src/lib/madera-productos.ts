@@ -15,7 +15,7 @@ export const MADERA_VARIANTES = [
     id: "estante-pinotea-2-5cm",
     anchoCm: 13,
     espesorCm: 2.5,
-    medidasLabel: "13 cm de ancho × 2,5 cm de espesor",
+    medidasLabel: "15 cm de ancho × 2,5 cm de espesor",
   },
 ] as const;
 
