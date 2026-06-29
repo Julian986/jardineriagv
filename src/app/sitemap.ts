@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
+import { RUTA_PROYECTO } from "@/lib/biodiversidad-rutas";
 import { siteMetadataBase } from "@/lib/site-metadata";
-
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteMetadataBase().toString().replace(/\/$/, "");
   const now = new Date();
@@ -27,22 +27,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: `${base}/proteccion-biodiversidad`,
+      url: `${base}${RUTA_PROYECTO}`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
+      priority: 0.75,
+    },    {
       url: `${base}/proximo-evento`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.65,
-    },
-    {
-      url: `${base}/proyecto-rio-naposta`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.65,
+      priority: 0.5,
     },
   ];
 }

@@ -1,5 +1,9 @@
 import Image from "next/image";
 import {
+  REDESIGN_GALLERY_4COL_SIZES,
+  REDESIGN_IMAGE_QUALITY,
+} from "@/lib/redesign-image";
+import {
   MACETAS_GALERIA_IMAGENES,
   MACETAS_GALERIA_TITULO,
 } from "@/lib/macetas-redesign-contenido";
@@ -28,7 +32,8 @@ export function MacetasGallery() {
                 alt={img.alt}
                 fill
                 className="object-cover"
-                sizes="(max-width: 768px) 72vw, 25vw"
+                quality={REDESIGN_IMAGE_QUALITY}
+                sizes={REDESIGN_GALLERY_4COL_SIZES}
               />
             </div>
           ))}

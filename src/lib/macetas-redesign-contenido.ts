@@ -1,7 +1,9 @@
 export const TITULO_MACETAS = "Decoración con plantas y macetas";
 
-export const MACETAS_HERO_IMAGEN = "/decoracion.webp";
-export const MACETAS_FEATURE_IMAGEN = "/canteros con plantas/portada.png";
+export const MACETAS_HERO_IMAGEN_MOBILE = "/decoracion.webp";
+export const MACETAS_HERO_IMAGEN_DESKTOP = "/planta.jpg";
+export const MACETAS_FEATURE_IMAGEN_MOBILE = "/canteros con plantas/portada.png";
+export const MACETAS_FEATURE_IMAGEN_DESKTOP = "/ultimas imagenes/3.webp";
 
 export const MACETAS_HERO_BADGE = "Servicio";
 export const MACETAS_HERO_TITULO_LINEA1 = "Decoración con plantas";

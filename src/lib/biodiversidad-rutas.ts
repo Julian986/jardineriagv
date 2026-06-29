@@ -1,6 +1,9 @@
 export const RUTA_BIODIVERSIDAD_HUB = "/proteccion-biodiversidad";
 export const RUTA_EVENTO = "/proximo-evento";
-export const RUTA_PROYECTO = "/proyecto-rio-naposta";
+/** Destino canónico del contenido de biodiversidad (proyecto Canal Maldonado). */
+export const RUTA_PROYECTO = "/proyecto-canal-maldonado";
+/** URL anterior del proyecto; redirige a RUTA_PROYECTO. */
+export const RUTA_PROYECTO_LEGACY = "/proyecto-rio-naposta";
 
 export const CTA_VER_EVENTO = "Ver evento";
 export const CTA_VER_PROYECTO = "Ver proyecto";

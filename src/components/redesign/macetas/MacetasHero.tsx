@@ -1,10 +1,11 @@
-import Image from "next/image";
 import { ArrowLeft, Home, MapPin, Sparkles } from "lucide-react";
 import { HistoryBackLink } from "@/components/HistoryBackLink";
+import { RedesignResponsiveFillImage } from "@/components/redesign/RedesignResponsiveFillImage";
 import {
   MACETAS_HERO_BADGE,
   MACETAS_HERO_DESCRIPCION,
-  MACETAS_HERO_IMAGEN,
+  MACETAS_HERO_IMAGEN_DESKTOP,
+  MACETAS_HERO_IMAGEN_MOBILE,
   MACETAS_HERO_TITULO_LINEA1,
   MACETAS_HERO_TITULO_LINEA2,
   MACETAS_META,
@@ -19,13 +20,12 @@ const META_ICONS = {
 export function MacetasHero() {
   return (
     <section className="relative flex min-h-[420px] flex-col justify-end overflow-hidden md:min-h-[520px] lg:min-h-[560px]">
-      <Image
-        src={MACETAS_HERO_IMAGEN}
+      <RedesignResponsiveFillImage
+        mobileSrc={MACETAS_HERO_IMAGEN_MOBILE}
+        desktopSrc={MACETAS_HERO_IMAGEN_DESKTOP}
         alt="Decoración con plantas y macetas"
-        fill
         priority
-        className="object-cover"
-        sizes="100vw"
+        variant="hero"
       />
       <div
         className="absolute inset-0 bg-gradient-to-t from-[#1a2f14]/95 via-[#1a2f14]/55 to-[#1a2f14]/25"

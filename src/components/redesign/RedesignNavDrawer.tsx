@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Mail, Sprout, TreePine, Users, X } from "lucide-react";
+import { Sprout, TreePine, Users, X } from "lucide-react";
 import { BrandLogo } from "@/components/redesign/BrandLogo";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { REDesign_NAV_LINKS } from "@/lib/redesign/navigation";
@@ -13,7 +13,6 @@ const NAV_ICONS = {
   sprout: Sprout,
   tree: TreePine,
   users: Users,
-  mail: Mail,
 } as const;
 
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -91,7 +90,7 @@ export function RedesignNavDrawer({ open, onClose, page }: RedesignNavDrawerProp
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#3f5f34] text-white transition-colors hover:bg-[#4a6b3e]"
+              className="inline-flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#3f5f34] text-white transition-colors hover:bg-[#4a6b3e]"
               aria-label="Cerrar menú"
             >
               <X className="h-5 w-5" strokeWidth={2.25} />
@@ -101,7 +100,7 @@ export function RedesignNavDrawer({ open, onClose, page }: RedesignNavDrawerProp
 
         <nav className="flex flex-col gap-8 pt-8" aria-label="Menú principal">
           {REDesign_NAV_LINKS.map((item) => {
-            const Icon = NAV_ICONS[item.icon];
+            const Icon = item.icon === "whatsapp" ? null : NAV_ICONS[item.icon];
             return (
               <Link
                 key={item.label}
@@ -109,11 +108,17 @@ export function RedesignNavDrawer({ open, onClose, page }: RedesignNavDrawerProp
                 onClick={onClose}
                 className="group flex items-center gap-4 text-[1.05rem] font-semibold leading-none text-white transition-opacity hover:opacity-85"
               >
-                <Icon
-                  className="h-[22px] w-[22px] shrink-0 text-[#c4933f] transition-transform group-hover:scale-105"
-                  strokeWidth={2}
-                  aria-hidden
-                />
+                {item.icon === "whatsapp" ? (
+                  <WhatsAppIcon className="h-[22px] w-[22px] shrink-0 text-[#c4933f] transition-transform group-hover:scale-105" />
+                ) : (
+                  Icon && (
+                    <Icon
+                      className="h-[22px] w-[22px] shrink-0 text-[#c4933f] transition-transform group-hover:scale-105"
+                      strokeWidth={2}
+                      aria-hidden
+                    />
+                  )
+                )}
                 {item.label}
               </Link>
             );

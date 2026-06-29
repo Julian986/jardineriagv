@@ -1,16 +1,9 @@
 import type { Metadata } from "next";
-import { BiodiversidadHero } from "@/components/BiodiversidadHero";
 import { BiodiversidadPageFooter } from "@/components/BiodiversidadPageFooter";
-import { WhatsAppLink } from "@/components/WhatsAppLink";
 import {
-  EVENTO_CUMPLE_RAIZ_DATOS,
   EVENTO_CUMPLE_RAIZ_DESCRIPCION,
-  EVENTO_CUMPLE_RAIZ_MAPS_URL,
-  EVENTO_CUMPLE_RAIZ_TITULO,
-  EVENTO_CUMPLE_RAIZ_WHATSAPP_HREF,
   EVENTO_ETIQUETA,
 } from "@/lib/biodiversidad-evento";
-import { CARD_BIODIVERSIDAD_CLASS } from "@/lib/biodiversidad-rutas";
 
 export const metadata: Metadata = {
   title: `${EVENTO_ETIQUETA} | JardineríaGV`,
@@ -20,7 +13,7 @@ export const metadata: Metadata = {
 export default function ProximoEventoPage() {
   return (
     <main className="min-h-screen bg-[#fafaf7] text-[#1c1c1c]">
-      <BiodiversidadHero
+      {/* <BiodiversidadHero
         label={EVENTO_ETIQUETA}
         title={EVENTO_CUMPLE_RAIZ_TITULO}
         actions={
@@ -71,9 +64,10 @@ export default function ProximoEventoPage() {
           >
             Ver ubicación en el mapa
           </a>
-        </div>
+        </div> */}
 
-        <div className="mt-12">
+      <div className="mx-auto max-w-3xl px-4 py-12 md:py-16">
+        <div>
           <BiodiversidadPageFooter />
         </div>
       </div>

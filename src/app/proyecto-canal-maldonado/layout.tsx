@@ -6,7 +6,7 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-export default function ProyectoRioNapostaLayout({
+export default function ProyectoCanalMaldonadoLayout({
   children,
 }: {
   children: React.ReactNode;

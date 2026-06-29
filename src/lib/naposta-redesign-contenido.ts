@@ -1,17 +1,19 @@
 import { PROYECTO_NAPOSTA_SECCIONES } from "@/lib/biodiversidad-naposta-contenido";
 import { TITULO_PROYECTO_NAPOSTA } from "@/lib/biodiversidad-titulos";
 
-export const NAPOSTA_HERO_IMAGEN = "/biodiversidad.webp";
-export const NAPOSTA_FEATURE_IMAGEN = "/decoracion.webp";
+export const NAPOSTA_HERO_IMAGEN_MOBILE = "/biodiversidad.webp";
+export const NAPOSTA_HERO_IMAGEN_DESKTOP = "/biodiversidad.webp";
+export const NAPOSTA_FEATURE_IMAGEN_MOBILE = "/decoracion.webp";
+export const NAPOSTA_FEATURE_IMAGEN_DESKTOP = "/ultimas imagenes/5.webp";
 
 export const NAPOSTA_HERO_BADGE = "Proyecto destacado";
 export const NAPOSTA_HERO_TITULO_LINEA1 = "Proyecto Sostenible";
-export const NAPOSTA_HERO_TITULO_LINEA2 = "Río Napostá";
+export const NAPOSTA_HERO_TITULO_LINEA2 = "Canal Maldonado";
 export const NAPOSTA_HERO_DESCRIPCION =
-  "Ingeniería ecológica, sustentabilidad y paisajismo autóctono para una integración armónica con el entorno natural.";
+  "Canal de alivio del Río Napostá. Ingeniería ecológica, sustentabilidad y paisajismo autóctono para una integración armónica con el entorno natural.";
 
 export const NAPOSTA_INTRO =
-  "A continuación se detallan las estrategias clave de ingeniería ecológica, sustentabilidad y paisajismo autóctono para lograr una integración armónica con el entorno natural del Río Napostá.";
+  "A continuación se detallan las estrategias clave de ingeniería ecológica, sustentabilidad y paisajismo autóctono para lograr una integración armónica con el entorno natural del Canal Maldonado.";
 
 export const NAPOSTA_META = [
   { icon: "pin" as const, label: "Bahía Blanca, Argentina" },
@@ -28,7 +30,7 @@ export const NAPOSTA_STATS = [
 export const NAPOSTA_PILARES_SECTION_LABEL = "Estrategias";
 export const NAPOSTA_PILARES_TITULO = "Pilares del proyecto";
 export const NAPOSTA_PILARES_SUBTITULO =
-  "Los fundamentos que guían nuestra intervención ecológica en el Napostá.";
+  "Los fundamentos que guían nuestra intervención ecológica en el Canal Maldonado.";
 
 const PILAR_RESUMEN: Record<number, string> = {
   0: "Rediseño de taludes verdes y bermas para favorecer el flujo natural del agua y prevenir la erosión.",
@@ -59,7 +61,7 @@ export const NAPOSTA_PILARES = PROYECTO_NAPOSTA_SECCIONES.map((seccion, index) =
 
 export const NAPOSTA_GALERIA_TITULO = "Galería del proyecto";
 export const NAPOSTA_GALERIA_IMAGENES = [
-  { src: "/biodiversidad.webp", alt: "Entorno del Río Napostá" },
+  { src: "/biodiversidad.webp", alt: "Entorno del Canal Maldonado" },
   { src: "/parquizacion.webp", alt: "Paisaje y vegetación nativa" },
   { src: "/ultimas imagenes/3.webp", alt: "Jardinería y biodiversidad local" },
   { src: "/ultimas imagenes2/laone.webp", alt: "Proyecto paisajístico en Bahía Blanca" },

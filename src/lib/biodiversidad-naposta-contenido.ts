@@ -1,4 +1,4 @@
-/** Descripción oficial del proyecto Río Napostá (texto del cliente). */
+/** Descripción oficial del proyecto Canal Maldonado (texto del cliente). */
 
 export const PROYECTO_NAPOSTA_INTRO =
   "A continuación se detallan las estrategias clave de ingeniería ecológica, sustentabilidad y paisajismo autóctono para lograrlo:";

@@ -2,32 +2,23 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { Playfair_Display } from "next/font/google";
 import { useState, useEffect, useCallback } from "react";
 import { event as gaEvent } from "@/lib/gtag";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
+import { RedesignFooter } from "@/components/redesign/RedesignFooter";
+import { RedesignHeader } from "@/components/redesign/RedesignHeader";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import { RUTA_MADERA } from "@/lib/madera-contenido";
 import { TITULO_BIODIVERSIDAD, TITULO_PROYECTO_NAPOSTA } from "@/lib/biodiversidad-titulos";
-import {
-  CTA_VER_EVENTO,
-  CTA_VER_PROYECTO,
-  RUTA_BIODIVERSIDAD_HUB,
-  RUTA_EVENTO,
-  RUTA_PROYECTO,
-} from "@/lib/biodiversidad-rutas";
+import { RUTA_PROYECTO } from "@/lib/biodiversidad-rutas";
 import { TerekuaMvpBlock } from "@/components/TerekuaMvpBlock";
-import {
-  EVENTO_CUMPLE_RAIZ_DATOS,
-  EVENTO_CUMPLE_RAIZ_TITULO,
-  EVENTO_ETIQUETA,
-} from "@/lib/biodiversidad-evento";
 
 // ── Constantes ────────────────────────────────────────────────────────────────
 const WA_HREF = WHATSAPP_HREF;
 
 /** CTA principal hacia /reservar (hero + navegación). */
 const CTA_RESERVAR_LABEL = "Empecemos a diseñar tu espacio";
-const CTA_HEADER_MOBILE = "Reservar";
 const SITE_URL =
   process.env.NEXT_PUBLIC_APP_BASE_URL?.trim().replace(/\/+$/, "") || "https://jardineriagv.com";
 
@@ -170,9 +161,10 @@ const MADERA_PRODUCTO = {
 
 const BIODIVERSIDAD_PRODUCTO = {
   id: "biodiversidad",
-  detailHref: RUTA_BIODIVERSIDAD_HUB,
+  detailHref: RUTA_PROYECTO,
   icon: "🌿",
   titulo: TITULO_BIODIVERSIDAD,
+  resumen: TITULO_PROYECTO_NAPOSTA,
   img: "/biodiversidad.webp",
 };
 
@@ -209,6 +201,12 @@ const HOME_SCHEMA = {
 function trackCta(action: string, location: string) {
   gaEvent(action, { location, page: "home" });
 }
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
 
 // ── Ícono WhatsApp (reutilizable) ─────────────────────────────────────────────
 function WAIcon({ className = "h-5 w-5" }: { className?: string }) {
@@ -298,29 +296,9 @@ export default function Home() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_SCHEMA) }} />
+      <div className={playfair.variable}>
+      <RedesignHeader page="home" />
       <StickyWA />
-
-      {/* ── HEADER ── */}
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-[#2d5016]/95 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-lg font-bold tracking-tight text-white">
-              Jardinería<span className="text-[#c4933f]">GV</span>
-            </span>
-          </Link>
-
-          <Link
-            href="/reservar"
-            onClick={() => trackCta("reservar_click", "header")}
-            className="shrink-0 rounded-full bg-[#c4933f] px-3 py-1.5 text-center text-xs font-semibold leading-snug text-white transition-opacity hover:opacity-90 sm:px-4 sm:text-sm"
-          >
-            <span className="md:hidden">{CTA_HEADER_MOBILE}</span>
-            <span className="hidden max-w-[200px] leading-snug md:inline lg:max-w-none">
-              {CTA_RESERVAR_LABEL}
-            </span>
-          </Link>
-        </div>
-      </header>
 
       <main className="overflow-x-hidden">
 
@@ -366,7 +344,7 @@ export default function Home() {
         </section>
 
         {/* ══════════════════════════════════════════════════
-            2. MACETAS → PARQUIZACIÓN → MADERA → BIODIVERSIDAD (después del hero)
+            2. MACETAS → PARQUIZACIÓN → MADERA → TEREKUA → BIODIVERSIDAD (después del hero)
         ══════════════════════════════════════════════════ */}
         <section
           className="border-b border-[#e4ead8] bg-[#fafaf7] px-4 py-12 md:py-16"
@@ -511,17 +489,21 @@ export default function Home() {
                   >
                     Ver más
                   </Link>
-                  <Link
+                  {/* <Link
                     href={`${MADERA_PRODUCTO.detailHref}#comprar`}
                     scroll
                     onClick={() => trackCta("madera_comprar_click", "madera_card")}
                     className="inline-flex justify-center rounded-full bg-[#c4933f] px-5 py-2.5 text-center text-sm font-semibold text-white transition-opacity hover:opacity-90"
                   >
                     Comprar con Mercado Pago
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             </article>
+
+            <div className="mb-12 md:mb-14">
+              <TerekuaMvpBlock location="home_mvp" page="home" />
+            </div>
 
             <article
               id={BIODIVERSIDAD_PRODUCTO.id}
@@ -543,53 +525,9 @@ export default function Home() {
                 <h2 className="mt-2 text-balance text-xl font-bold leading-snug text-[#2d5016] md:text-2xl">
                   {BIODIVERSIDAD_PRODUCTO.titulo}
                 </h2>
-                <div className="mt-4 rounded-xl border border-[#c8d9b8] bg-[#f0f5ea] p-4 text-left md:ml-auto md:max-w-xl">
-                  <span className="inline-block rounded-full bg-[#2d5016] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-white">
-                    {EVENTO_ETIQUETA}
-                  </span>
-                  <p className="mt-3 text-[15px] font-semibold leading-snug text-[#2d5016]">
-                    {EVENTO_CUMPLE_RAIZ_TITULO}
-                  </p>
-                  <div className="mt-3 overflow-hidden rounded-lg border border-[#e4ead8]/80 bg-white/90">
-                    {EVENTO_CUMPLE_RAIZ_DATOS.map((dato, index) => (
-                      <div
-                        key={dato.etiqueta}
-                        className={`px-3 py-2.5 ${index > 0 ? "border-t border-[#e4ead8]/70" : ""}`}
-                      >
-                        <p className="text-[11px] font-semibold uppercase tracking-wide text-[#2d5016]/75">
-                          {dato.etiqueta}
-                        </p>
-                        <p className="mt-1 text-[15px] font-semibold leading-snug text-[#1c1c1c] md:text-base">
-                          {dato.valor}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                  <Link
-                    href={RUTA_EVENTO}
-                    scroll
-                    onClick={() => trackCta("ver_evento_click", "biodiversidad_card")}
-                    className="mt-3 inline-flex w-full justify-center rounded-full border-2 border-[#2d5016] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#e4ead8]/40 sm:w-auto"
-                  >
-                    {CTA_VER_EVENTO}
-                  </Link>
-                </div>
-                <div className="mt-4 rounded-xl border border-[#e4ead8] bg-white p-4 text-left md:ml-auto md:max-w-xl">
-                  <span className="inline-block rounded-full border border-[#2d5016]/25 bg-[#f0f5ea] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[#2d5016]">
-                    Proyecto
-                  </span>
-                  <p className="mt-3 text-[15px] font-semibold leading-snug text-[#2d5016]">
-                    {TITULO_PROYECTO_NAPOSTA}
-                  </p>
-                  <Link
-                    href={RUTA_PROYECTO}
-                    scroll
-                    onClick={() => trackCta("ver_proyecto_click", "biodiversidad_card")}
-                    className="mt-3 inline-flex w-full justify-center rounded-full border-2 border-[#2d5016] bg-white px-5 py-2.5 text-center text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#f0f5ea] sm:w-auto"
-                  >
-                    {CTA_VER_PROYECTO}
-                  </Link>
-                </div>
+                <p className="mt-3 text-[15px] leading-relaxed text-[#555] md:ml-auto md:max-w-xl">
+                  {BIODIVERSIDAD_PRODUCTO.resumen}
+                </p>
                 <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:ml-auto md:justify-end">
                   <Link
                     href={BIODIVERSIDAD_PRODUCTO.detailHref}
@@ -602,12 +540,6 @@ export default function Home() {
                 </div>
               </div>
             </article>
-          </div>
-        </section>
-
-        <section className="border-b border-[#e4ead8] bg-[#fafaf7] px-4 pb-12 md:pb-16">
-          <div className="mx-auto max-w-6xl">
-            <TerekuaMvpBlock location="home_mvp" page="home" />
           </div>
         </section>
 
@@ -912,37 +844,10 @@ export default function Home() {
             </p>
           </div>
         </section>
-
-        {/* ── FOOTER ── */}
-        <footer className="bg-[#1e3a0c] px-4 py-8 text-center text-sm text-white/50">
-          <p>© {new Date().getFullYear()} JardineríaGV · Bahía Blanca</p>
-          <p className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-            <Link href="/" className="underline-offset-2 hover:text-white/80 hover:underline">
-              Inicio
-            </Link>
-            <span aria-hidden className="text-white/25">
-              ·
-            </span>
-            <Link
-              href="/reservar"
-              onClick={() => trackCta("reservar_click", "footer")}
-              className="underline-offset-2 hover:text-white/80 hover:underline"
-            >
-              Reservar
-            </Link>
-            <span aria-hidden className="text-white/25">
-              ·
-            </span>
-            <WhatsAppLink
-              location="footer"
-              page="home"
-              className="underline-offset-2 hover:text-white/80 hover:underline"
-            >
-              WhatsApp
-            </WhatsAppLink>
-          </p>
-        </footer>
       </main>
+
+      <RedesignFooter />
+      </div>
     </>
   );
 }

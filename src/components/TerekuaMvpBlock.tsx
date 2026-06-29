@@ -31,24 +31,24 @@ export function TerekuaMvpBlock({ location, page, className = "" }: TerekuaMvpBl
       </div>
       <div className="p-6">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
-          <div className="relative mx-auto h-24 w-full max-w-[220px] shrink-0 sm:mx-0 sm:h-28 sm:w-48">
+          <div className="relative mx-auto h-32 w-full max-w-[280px] shrink-0 sm:mx-0 sm:h-36 sm:w-60">
             <Image
               src={TEREKUA_LOGO_PATH}
               alt="Terekua"
               fill
               className="object-contain object-center sm:object-left"
-              sizes="(max-width: 640px) 220px, 192px"
+              sizes="(max-width: 640px) 280px, 240px"
             />
           </div>
           <div className="min-w-0 flex-1 text-center sm:text-left">
-            {!configured ? (
+            {/* {!configured ? (
               <span className="inline-block rounded-full border border-[#c4933f]/40 bg-[#fff8eb] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#8a5a12]">
                 Vista previa
               </span>
-            ) : null}
+            ) : null} */}
             <h2
               id={`terekua-${location}-heading`}
-              className={`text-xl font-bold text-[#2d5016] ${configured ? "mt-0" : "mt-3"}`}
+              className="text-xl font-bold text-[#2d5016]"
             >
               {TEREKUA_MVP_TITULO}
             </h2>

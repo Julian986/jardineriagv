@@ -19,6 +19,7 @@ export function HistoryBackLink({
   children,
   type = "button",
   onClick,
+  className,
   ...rest
 }: HistoryBackLinkProps) {
   const router = useRouter();
@@ -26,6 +27,7 @@ export function HistoryBackLink({
   return (
     <button
       type={type}
+      className={[className, "cursor-pointer"].filter(Boolean).join(" ")}
       {...rest}
       onClick={(event) => {
         onClick?.(event);
