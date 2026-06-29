@@ -8,6 +8,7 @@ import { event as gaEvent } from "@/lib/gtag";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { RedesignFooter } from "@/components/redesign/RedesignFooter";
 import { RedesignHeader } from "@/components/redesign/RedesignHeader";
+import { NavMenuProvider, useNavMenuOptional } from "@/components/redesign/NavMenuContext";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import { RUTA_MADERA } from "@/lib/madera-contenido";
 import { TITULO_BIODIVERSIDAD, TITULO_PROYECTO_NAPOSTA } from "@/lib/biodiversidad-titulos";
@@ -219,6 +220,9 @@ function WAIcon({ className = "h-5 w-5" }: { className?: string }) {
 
 // ── Sticky WhatsApp (flotante) ────────────────────────────────────────────────
 function StickyWA() {
+  const navMenu = useNavMenuOptional();
+  if (navMenu?.open) return null;
+
   return (
     <WhatsAppLink
       location="sticky_button"
@@ -297,6 +301,7 @@ export default function Home() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_SCHEMA) }} />
       <div className={playfair.variable}>
+      <NavMenuProvider>
       <RedesignHeader page="home" />
       <StickyWA />
 
@@ -847,6 +852,7 @@ export default function Home() {
       </main>
 
       <RedesignFooter />
+      </NavMenuProvider>
       </div>
     </>
   );

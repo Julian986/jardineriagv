@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { Menu } from "lucide-react";
 import { BrandLogo } from "@/components/redesign/BrandLogo";
+import { useNavMenu } from "@/components/redesign/NavMenuContext";
 import { RedesignNavDrawer } from "@/components/redesign/RedesignNavDrawer";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 
@@ -11,7 +11,7 @@ type RedesignHeaderProps = {
 };
 
 export function RedesignHeader({ page }: RedesignHeaderProps) {
-  const [open, setOpen] = useState(false);
+  const { open, setOpen } = useNavMenu();
 
   return (
     <>

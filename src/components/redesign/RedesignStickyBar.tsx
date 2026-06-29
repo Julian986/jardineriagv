@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
+import { useNavMenuOptional } from "@/components/redesign/NavMenuContext";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 
 type RedesignStickyBarProps = {
@@ -9,6 +10,9 @@ type RedesignStickyBarProps = {
 };
 
 export function RedesignStickyBar({ page }: RedesignStickyBarProps) {
+  const navMenu = useNavMenuOptional();
+  if (navMenu?.open) return null;
+
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-4 pb-4 md:pb-5">
       <div className="pointer-events-auto mx-auto flex max-w-md gap-3 rounded-full bg-white/90 p-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-md">
