@@ -22,7 +22,7 @@ export const NAPOSTA_META = [
 ] as const;
 
 export const NAPOSTA_STATS = [
-  { valor: "12km", label: "Tramo intervenido" },
+  { valor: "6,5km", label: "Tramo intervenido" },
   { valor: "48+", label: "Especies nativas" },
   { valor: "3", label: "Estrategias clave" },
 ] as const;
