@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import {
   TEREKUA_CTA_LABEL,
   TEREKUA_LOGO_PATH,
@@ -8,6 +9,7 @@ import {
   TEREKUA_MVP_TITULO,
   isTerekuaPartnerConfigured,
 } from "@/lib/terekua";
+import { TIENDA_CTA_LABEL, RUTA_TIENDA } from "@/lib/tienda-routes";
 import { TerekuaLink } from "@/components/TerekuaLink";
 
 type TerekuaMvpBlockProps = {
@@ -57,16 +59,24 @@ export function TerekuaMvpBlock({ location, page, className = "" }: TerekuaMvpBl
               Encontrá insumos, herramientas y productos para jardín y hogar en{" "}
               <span className="font-semibold text-[#2d5016]">terekua.com.ar</span>.
             </p>
-            <TerekuaLink
-              location={location}
-              page={page}
-              className="mt-5 inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#2d5016] bg-[#f0f5ea] px-6 py-3 text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#e4ead8]/60"
-            >
-              {TEREKUA_CTA_LABEL}
-              <span aria-hidden className="text-base leading-none">
-                ↗
-              </span>
-            </TerekuaLink>
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <Link
+                href={RUTA_TIENDA}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2d5016] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              >
+                {TIENDA_CTA_LABEL}
+              </Link>
+              <TerekuaLink
+                location={location}
+                page={page}
+                className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#2d5016] bg-[#f0f5ea] px-6 py-3 text-sm font-semibold text-[#2d5016] transition-colors hover:bg-[#e4ead8]/60"
+              >
+                {TEREKUA_CTA_LABEL}
+                <span aria-hidden className="text-base leading-none">
+                  ↗
+                </span>
+              </TerekuaLink>
+            </div>
             <p className="mt-3 text-[12px] leading-relaxed text-[#888]">
               {configured ? TEREKUA_MVP_NOTA : TEREKUA_MVP_PREVIEW_NOTA}
             </p>

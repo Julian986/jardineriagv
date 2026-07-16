@@ -324,8 +324,7 @@ export default function Home() {
             </h1>
 
             <p className="mx-auto mb-8 max-w-xl text-lg leading-relaxed text-white/85 drop-shadow md:text-xl">
-              nuestra pasión por la naturaleza nos impulsa a diseñar paisajes que respiran y
-              evolucionan con el tiempo
+              Paisajes que respiran y evolucionan con el tiempo
             </p>
 
             <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -360,9 +359,8 @@ export default function Home() {
               id="productos-complemento-heading"
               className="mx-auto mb-10 max-w-3xl text-center text-[15px] leading-relaxed text-[#555]"
             >
-              En JardineríaGV cada proyecto es un compromiso con la durabilidad y la estética.
-              Porque entendemos que un rincón verde no es solo decoración; es una inversión en
-              calidad de vida y bienestar.
+              Un rincón verde no es solo decoración; es una inversión en calidad de vida y
+              bienestar.
             </p>
 
             <article

@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { Sprout, TreePine, Users, X } from "lucide-react";
 import { BrandLogo } from "@/components/redesign/BrandLogo";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
+import { lockBodyScroll } from "@/lib/body-scroll-lock";
 import { REDesign_NAV_LINKS } from "@/lib/redesign/navigation";
 
 const DRAWER_TRANSITION_MS = 280;
@@ -48,12 +49,9 @@ export function RedesignNavDrawer({ open, onClose, page }: RedesignNavDrawerProp
     return () => window.clearTimeout(timer);
   }, [open]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!mounted) return;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return lockBodyScroll();
   }, [mounted]);
 
   if (!mounted) return null;

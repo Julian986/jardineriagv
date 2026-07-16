@@ -1,15 +1,11 @@
 import { MACETAS_INTRO, MACETAS_STATS } from "@/lib/macetas-redesign-contenido";
 
 export function MacetasIntroStats() {
-  const introParts = MACETAS_INTRO.split("curaduría exclusiva");
-
   return (
     <section className="bg-[#fafaf7] px-4 py-10 md:px-6 md:py-14">
       <div className="mx-auto max-w-6xl">
         <p className="mx-auto max-w-3xl text-center text-[16px] leading-relaxed text-[#555] md:text-lg">
-          {introParts[0]}
-          <strong className="font-semibold text-[#2d4a22]">curaduría exclusiva</strong>
-          {introParts[1]}
+          {MACETAS_INTRO}
         </p>
 
         <div className="mt-8 grid grid-cols-3 gap-3 md:mt-10 md:gap-5">

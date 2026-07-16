@@ -17,8 +17,7 @@ export const MACETAS_META = [
   { icon: "sparkles" as const, label: "A medida" },
 ] as const;
 
-export const MACETAS_INTRO =
-  "Trabajamos con una curaduría exclusiva de macetas y especies vegetales adaptadas tanto para interiores con luz controlada como para exteriores exigentes.";
+export const MACETAS_INTRO = "Contamos tu proyecto y lo cotizamos";
 
 export const MACETAS_STATS = [
   { valor: "4", label: "Servicios integrados" },
