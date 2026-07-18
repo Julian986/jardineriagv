@@ -1,8 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { formatArs } from "@/lib/madera/pricing";
 import type { TiendaProductoDemo } from "@/lib/tienda-demo";
+import { getTiendaCuotaArs } from "@/lib/tienda-demo";
+import { rutaProductoTienda } from "@/lib/tienda-routes";
 import { useTiendaCart } from "@/components/tienda/TiendaCartContext";
 
 type TiendaProductCardProps = {
@@ -11,13 +14,12 @@ type TiendaProductCardProps = {
 
 export function TiendaProductCard({ producto }: TiendaProductCardProps) {
   const { addProduct } = useTiendaCart();
-  const cuota = producto.cuotas
-    ? Math.ceil(producto.precioArs / producto.cuotas)
-    : null;
+  const cuota = getTiendaCuotaArs(producto);
+  const href = rutaProductoTienda(producto.slug);
 
   return (
     <article className="group flex flex-col">
-      <div className="overflow-hidden rounded-sm border border-[#e8e8e8] bg-white">
+      <Link href={href} className="block overflow-hidden rounded-sm border border-[#e8e8e8] bg-white">
         <div className="bg-[#2d4a22] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.08em] text-white sm:text-[11px]">
           {producto.categoriaLabel} <span aria-hidden>&gt;&gt;&gt;</span>
         </div>
@@ -31,12 +33,14 @@ export function TiendaProductCard({ producto }: TiendaProductCardProps) {
           />
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#c4933f]/80" aria-hidden />
         </div>
-      </div>
+      </Link>
 
       <div className="mt-3 flex flex-1 flex-col px-0.5">
-        <h3 className="line-clamp-2 text-[13px] leading-snug text-[#333] sm:text-sm">
-          {producto.nombre}
-        </h3>
+        <Link href={href}>
+          <h3 className="line-clamp-2 text-[13px] leading-snug text-[#333] transition-colors group-hover:text-[#2d4a22] sm:text-sm">
+            {producto.nombre}
+          </h3>
+        </Link>
         <p className="mt-2 text-lg font-bold text-[#1a1a1a] sm:text-xl">
           {formatArs(producto.precioArs)}
         </p>

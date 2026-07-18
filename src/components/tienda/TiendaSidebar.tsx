@@ -48,7 +48,7 @@ export function TiendaSidebar({ categoriaActiva }: TiendaSidebarProps) {
 
 export function TiendaCategoryPills({ categoriaActiva }: TiendaSidebarProps) {
   return (
-    <div className="mb-6 flex gap-2 overflow-x-auto pb-1 lg:hidden">
+    <div className="mt-5 mb-2 flex gap-2 overflow-x-auto pb-3 lg:hidden">
       <Link
         href={RUTA_TIENDA}
         className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold ${

@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
-import { Sprout, TreePine, Users, X } from "lucide-react";
+import { ShoppingBag, Sprout, TreePine, Users, X } from "lucide-react";
 import { BrandLogo } from "@/components/redesign/BrandLogo";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { lockBodyScroll } from "@/lib/body-scroll-lock";
@@ -13,6 +13,7 @@ const DRAWER_TRANSITION_MS = 280;
 const NAV_ICONS = {
   sprout: Sprout,
   tree: TreePine,
+  store: ShoppingBag,
   users: Users,
 } as const;
 

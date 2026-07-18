@@ -1,6 +1,6 @@
 # Plan — Ecommerce Jardinería GV
 
-**Estado:** en desarrollo (paso 1 — catálogo base)  
+**Estado:** en desarrollo (paso 4 — página de producto)  
 **Fecha:** julio 2026  
 **Cliente:** Guillermo (Guille)  
 **Plan contratado:** Opción 1 — Tienda Online Esencial ($60.000 ARS)  
@@ -28,7 +28,7 @@ La captura de Terekua es el **layout objetivo** del catálogo: header de tienda,
 1. **Paso 1 (hecho):** `/tienda` — catálogo base como la imagen, datos demo, botón en home.  
 2. **Paso 2 (hecho):** carrito drawer tipo Terekua (agregar, cantidades, eliminar, persistencia local).  
 3. Paso 3: pulir carrito / catálogo (detalles visuales).  
-4. Paso 4: página de producto.  
+4. **Paso 4 (en curso):** página de producto `/tienda/[slug]`.  
 5. Paso 5: checkout Mercado Pago (“Iniciar compra”).  
 6. Paso 6: panel admin + datos reales.
 

@@ -48,3 +48,12 @@ select,
 button {
   font: inherit;
 }
+
+@keyframes tiendaFade {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}

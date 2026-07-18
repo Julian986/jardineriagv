@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Playfair_Display } from "next/font/google";
 import { TiendaCategoryPills, TiendaSidebar } from "@/components/tienda/TiendaSidebar";
+import { TiendaCatalogTitle } from "@/components/tienda/TiendaCatalogTitle";
 import { TiendaProductCard } from "@/components/tienda/TiendaProductCard";
 import { TiendaShell } from "@/components/tienda/TiendaShell";
-import { getTiendaProductosDemo } from "@/lib/tienda-demo";
+import { getTiendaCategoriaBySlug, getTiendaProductosDemo } from "@/lib/tienda-demo";
 import { RUTA_TIENDA } from "@/lib/tienda-routes";
 
 const playfair = Playfair_Display({
@@ -25,29 +26,18 @@ type TiendaPageProps = {
 export default async function TiendaPage({ searchParams }: TiendaPageProps) {
   const { categoria } = await searchParams;
   const productos = getTiendaProductosDemo(categoria);
+  const categoriaActiva = categoria ? getTiendaCategoriaBySlug(categoria) : null;
 
   return (
     <div className={playfair.variable}>
       <TiendaShell>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
-          <nav className="text-xs text-[#888]" aria-label="Migas de pan">
-            <Link href="/" className="hover:text-[#2d4a22]">
-              Inicio
-            </Link>
-            <span className="mx-1.5" aria-hidden>
-              &gt;
-            </span>
-            <span className="text-[#444]">Productos</span>
-          </nav>
-
-          <div className="mt-6 flex gap-10">
+          <div className="flex gap-10">
             <TiendaSidebar categoriaActiva={categoria} />
 
             <div className="min-w-0 flex-1">
               <div className="flex items-end justify-between gap-4">
-                <h1 className="font-display text-3xl font-bold text-[#1a1a1a] sm:text-4xl">
-                  Productos
-                </h1>
+                <TiendaCatalogTitle title={categoriaActiva?.nombre ?? "Productos"} />
               </div>
 
               <TiendaCategoryPills categoriaActiva={categoria} />
@@ -66,11 +56,6 @@ export default async function TiendaPage({ searchParams }: TiendaPageProps) {
                   ))}
                 </div>
               )}
-
-              <p className="mt-10 text-center text-xs text-[#999]">
-                Catálogo en vista previa — los productos se cargarán desde el panel de
-                administración.
-              </p>
             </div>
           </div>
         </div>

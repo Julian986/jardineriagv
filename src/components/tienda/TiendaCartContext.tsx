@@ -19,13 +19,22 @@ import {
 } from "@/lib/tienda-cart";
 import { lockBodyScroll } from "@/lib/body-scroll-lock";
 
+export type TiendaCartToastData = {
+  id: number;
+  nombre: string;
+  imagen: string;
+  cantidad: number;
+};
+
 type TiendaCartContextValue = {
   items: TiendaCartItem[];
   itemCount: number;
   subtotalArs: number;
   isOpen: boolean;
+  toast: TiendaCartToastData | null;
   openCart: () => void;
   closeCart: () => void;
+  dismissToast: () => void;
   addProduct: (producto: TiendaProductoDemo, cantidad?: number) => void;
   removeItem: (productoId: string) => void;
   setQuantity: (productoId: string, cantidad: number) => void;
@@ -49,6 +58,7 @@ function readStoredCart(): TiendaCartItem[] {
 export function TiendaCartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<TiendaCartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [toast, setToast] = useState<TiendaCartToastData | null>(null);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -65,6 +75,8 @@ export function TiendaCartProvider({ children }: { children: ReactNode }) {
     if (!isOpen) return;
     return lockBodyScroll();
   }, [isOpen]);
+
+  const dismissToast = useCallback(() => setToast(null), []);
 
   const addProduct = useCallback((producto: TiendaProductoDemo, cantidad = 1) => {
     const qty = Math.max(1, Math.floor(cantidad));
@@ -89,7 +101,12 @@ export function TiendaCartProvider({ children }: { children: ReactNode }) {
         },
       ];
     });
-    setIsOpen(true);
+    setToast({
+      id: Date.now(),
+      nombre: producto.nombre,
+      imagen: producto.imagen,
+      cantidad: qty,
+    });
   }, []);
 
   const removeItem = useCallback((productoId: string) => {
@@ -114,14 +131,27 @@ export function TiendaCartProvider({ children }: { children: ReactNode }) {
       itemCount,
       subtotalArs,
       isOpen,
+      toast,
       openCart: () => setIsOpen(true),
       closeCart: () => setIsOpen(false),
+      dismissToast,
       addProduct,
       removeItem,
       setQuantity,
       clearCart,
     }),
-    [items, itemCount, subtotalArs, isOpen, addProduct, removeItem, setQuantity, clearCart],
+    [
+      items,
+      itemCount,
+      subtotalArs,
+      isOpen,
+      toast,
+      dismissToast,
+      addProduct,
+      removeItem,
+      setQuantity,
+      clearCart,
+    ],
   );
 
   return <TiendaCartContext.Provider value={value}>{children}</TiendaCartContext.Provider>;

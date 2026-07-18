@@ -36,9 +36,12 @@ export function TiendaShell({ children }: TiendaShellProps) {
         <TiendaHeader />
         <main>{children}</main>
         <footer className="border-t border-[#eee] bg-[#fafafa] px-4 py-6 text-center text-sm text-[#666]">
-          <Link href="/" className="font-medium text-[#2d4a22] hover:underline">
-            ← Volver a Jardinería GV
-          </Link>
+          <p>
+            <Link href="/" className="font-medium text-[#2d4a22] hover:underline">
+              ← Volver a Jardinería GV
+            </Link>
+          </p>
+          <p className="mt-1 text-xs text-[#999]">Salís de la tienda y volvés al sitio principal</p>
         </footer>
         <TiendaWhatsAppFab />
       </div>

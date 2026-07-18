@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Minus, Plus, X } from "lucide-react";
+import { Minus, Plus, Trash2, X } from "lucide-react";
 import { formatArs } from "@/lib/madera/pricing";
 import { RUTA_TIENDA } from "@/lib/tienda-routes";
 import { useTiendaCart } from "@/components/tienda/TiendaCartContext";
@@ -81,9 +81,10 @@ export function TiendaCartDrawer() {
                       <button
                         type="button"
                         onClick={() => removeItem(item.productoId)}
-                        className="shrink-0 cursor-pointer text-xs text-[#888] underline underline-offset-2 hover:text-[#333]"
+                        className="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-[#999] transition-colors hover:bg-[#f8ecec] hover:text-[#b42318]"
+                        aria-label={`Eliminar ${item.nombre}`}
                       >
-                        Eliminar
+                        <Trash2 className="h-4 w-4" strokeWidth={2} />
                       </button>
                     </div>
                     <div className="mt-3 flex items-center justify-between gap-3">
