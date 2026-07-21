@@ -10,7 +10,6 @@ import { RedesignFooter } from "@/components/redesign/RedesignFooter";
 import { RedesignHeader } from "@/components/redesign/RedesignHeader";
 import { NavMenuProvider, useNavMenuOptional } from "@/components/redesign/NavMenuContext";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
-import { RUTA_MADERA } from "@/lib/madera-contenido";
 import { TITULO_BIODIVERSIDAD, TITULO_PROYECTO_NAPOSTA } from "@/lib/biodiversidad-titulos";
 import { RUTA_PROYECTO } from "@/lib/biodiversidad-rutas";
 import { TerekuaMvpBlock } from "@/components/TerekuaMvpBlock";
@@ -150,7 +149,7 @@ const PARQUIZACION_PRODUCTO = {
   img: "/parquizacion.webp",
 };
 
-const MADERA_PRODUCTO = {
+/* const MADERA_PRODUCTO = {
   id: "madera",
   detailHref: RUTA_MADERA,
   tituloPrincipal: "MUEBLES CON HISTORIA:",
@@ -158,7 +157,7 @@ const MADERA_PRODUCTO = {
   desc: "Damos una segunda vida a maderas nobles para crear piezas únicas que cuentan una historia. Cada mueble es fabricado a mano, respetando las vetas, texturas y marcas del tiempo que hacen de cada diseño algo irrepetible.",
   tagline: "♻️ Piezas únicas, 100% sustentables.",
   img: "/madera.webp",
-};
+}; */
 
 const BIODIVERSIDAD_PRODUCTO = {
   id: "biodiversidad",
@@ -455,6 +454,7 @@ export default function Home() {
               </div>
             </article>
 
+            {/* Sección madera — ocultada temporalmente
             <article
               id={MADERA_PRODUCTO.id}
               className="mb-12 flex flex-col gap-6 rounded-2xl border border-[#e4ead8] bg-white p-6 shadow-sm md:mb-14 md:flex-row md:items-center md:gap-10 md:p-8"
@@ -492,17 +492,10 @@ export default function Home() {
                   >
                     Ver más
                   </Link>
-                  {/* <Link
-                    href={`${MADERA_PRODUCTO.detailHref}#comprar`}
-                    scroll
-                    onClick={() => trackCta("madera_comprar_click", "madera_card")}
-                    className="inline-flex justify-center rounded-full bg-[#c4933f] px-5 py-2.5 text-center text-sm font-semibold text-white transition-opacity hover:opacity-90"
-                  >
-                    Comprar con Mercado Pago
-                  </Link> */}
                 </div>
               </div>
             </article>
+            */}
 
             <div className="mb-12 md:mb-14">
               <TerekuaMvpBlock location="home_mvp" page="home" />
