@@ -1,10 +1,21 @@
 import { NextResponse } from "next/server";
-import { requirePanelSession } from "@/lib/tienda/panel-session";
+import { isTiendaStatsUnlocked, requirePanelSession } from "@/lib/tienda/panel-session";
 import { getTiendaStats } from "@/lib/tienda/stats";
 
 export async function GET(request: Request) {
   const auth = await requirePanelSession();
   if (!auth.ok) return auth.response;
+
+  if (!(await isTiendaStatsUnlocked())) {
+    return NextResponse.json(
+      {
+        ok: false,
+        code: "locked",
+        error: "Estadísticas bloqueadas. Desbloqueá la función Premium para ver los datos reales.",
+      },
+      { status: 403 },
+    );
+  }
 
   const { searchParams } = new URL(request.url);
   const now = new Date();

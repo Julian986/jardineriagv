@@ -261,7 +261,7 @@ Login panel → Productos: listar / crear / editar / desactivar
            → Pedidos: ver listado, estado de pago, datos del comprador
 ```
 
-**Estado actual:** `/panel-tienda` con login compartido (misma cookie que turnos), ABM de productos y categorías, subida de fotos con recorte/zoom (`/api/tienda/upload` → Vercel Blob o `public/uploads` en local). Catálogo `/tienda` lee Mongo. Pedidos en panel: pendiente (tras MP).
+**Estado actual:** `/panel-tienda` con ABM, upload con crop, checkout MP y `/tienda/gracias`. Estadísticas Premium en `/panel-tienda/estadisticas` (preview bloqueado; se activa con `PANEL_TIENDA_STATS_PASSWORD`).
 
 ### 7.3 Imágenes de productos (MVP)
 
