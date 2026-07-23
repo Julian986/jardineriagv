@@ -1,12 +1,13 @@
 import Link from "next/link";
-import { TIENDA_CATEGORIAS_DEMO } from "@/lib/tienda-demo";
 import { RUTA_TIENDA } from "@/lib/tienda-routes";
+import type { TiendaCategoria } from "@/lib/tienda/types";
 
 type TiendaSidebarProps = {
   categoriaActiva?: string | null;
+  categorias: TiendaCategoria[];
 };
 
-export function TiendaSidebar({ categoriaActiva }: TiendaSidebarProps) {
+export function TiendaSidebar({ categoriaActiva, categorias }: TiendaSidebarProps) {
   return (
     <aside className="hidden w-56 shrink-0 lg:block xl:w-64">
       <h2 className="text-sm font-bold text-[#1a1a1a]">Filtrar por</h2>
@@ -26,7 +27,7 @@ export function TiendaSidebar({ categoriaActiva }: TiendaSidebarProps) {
               Todas
             </Link>
           </li>
-          {TIENDA_CATEGORIAS_DEMO.map((cat) => (
+          {categorias.map((cat) => (
             <li key={cat.id}>
               <Link
                 href={`${RUTA_TIENDA}?categoria=${cat.slug}`}
@@ -46,7 +47,7 @@ export function TiendaSidebar({ categoriaActiva }: TiendaSidebarProps) {
   );
 }
 
-export function TiendaCategoryPills({ categoriaActiva }: TiendaSidebarProps) {
+export function TiendaCategoryPills({ categoriaActiva, categorias }: TiendaSidebarProps) {
   return (
     <div className="mt-5 mb-2 flex gap-2 overflow-x-auto pb-3 lg:hidden">
       <Link
@@ -59,7 +60,7 @@ export function TiendaCategoryPills({ categoriaActiva }: TiendaSidebarProps) {
       >
         Todas
       </Link>
-      {TIENDA_CATEGORIAS_DEMO.map((cat) => (
+      {categorias.map((cat) => (
         <Link
           key={cat.id}
           href={`${RUTA_TIENDA}?categoria=${cat.slug}`}

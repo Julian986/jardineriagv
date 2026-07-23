@@ -6,13 +6,15 @@ import { TiendaProductBuyBox } from "@/components/tienda/TiendaProductBuyBox";
 import { TiendaProductCard } from "@/components/tienda/TiendaProductCard";
 import { TiendaProductGallery } from "@/components/tienda/TiendaProductGallery";
 import { TiendaShell } from "@/components/tienda/TiendaShell";
+import { getCategoriaBySlug } from "@/lib/tienda/categorias";
 import {
-  getTiendaCategoriaBySlug,
-  getTiendaProductoBySlug,
-  getTiendaProductosRelacionados,
-  TIENDA_PRODUCTOS_DEMO,
-} from "@/lib/tienda-demo";
+  getProductoBySlug,
+  getProductosRelacionados,
+} from "@/lib/tienda/productos";
+import { seedTiendaIfEmpty } from "@/lib/tienda/seed";
 import { RUTA_TIENDA } from "@/lib/tienda-routes";
+
+export const dynamic = "force-dynamic";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -24,29 +26,41 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
-  return TIENDA_PRODUCTOS_DEMO.map((p) => ({ slug: p.slug }));
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const producto = getTiendaProductoBySlug(slug);
-  if (!producto) {
+  try {
+    await seedTiendaIfEmpty();
+    const producto = await getProductoBySlug(slug, { soloActivos: true });
+    if (!producto) {
+      return { title: "Producto | Tienda Jardinería GV" };
+    }
+    return {
+      title: `${producto.nombre} | Tienda Jardinería GV`,
+      description: producto.descripcion[0] ?? producto.nombre,
+    };
+  } catch {
     return { title: "Producto | Tienda Jardinería GV" };
   }
-  return {
-    title: `${producto.nombre} | Tienda Jardinería GV`,
-    description: producto.descripcion[0] ?? producto.nombre,
-  };
 }
 
 export default async function TiendaProductoPage({ params }: PageProps) {
   const { slug } = await params;
-  const producto = getTiendaProductoBySlug(slug);
+
+  let producto = null;
+  try {
+    await seedTiendaIfEmpty();
+    producto = await getProductoBySlug(slug, { soloActivos: true });
+  } catch (error) {
+    console.error("[tienda producto]", error);
+    notFound();
+  }
+
   if (!producto) notFound();
 
-  const categoria = getTiendaCategoriaBySlug(producto.categoriaSlug);
-  const relacionados = getTiendaProductosRelacionados(producto);
+  const categoria = producto.categoriaSlug
+    ? await getCategoriaBySlug(producto.categoriaSlug)
+    : null;
+  const relacionados = await getProductosRelacionados(producto);
   const imagenes =
     producto.imagenes?.length > 0 ? producto.imagenes : [producto.imagen];
 

@@ -10,7 +10,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { TiendaProductoDemo } from "@/lib/tienda-demo";
+import type { TiendaProducto } from "@/lib/tienda/types";
 import {
   TIENDA_CART_STORAGE_KEY,
   calcTiendaCartItemCount,
@@ -35,7 +35,7 @@ type TiendaCartContextValue = {
   openCart: () => void;
   closeCart: () => void;
   dismissToast: () => void;
-  addProduct: (producto: TiendaProductoDemo, cantidad?: number) => void;
+  addProduct: (producto: TiendaProducto, cantidad?: number) => void;
   removeItem: (productoId: string) => void;
   setQuantity: (productoId: string, cantidad: number) => void;
   clearCart: () => void;
@@ -78,7 +78,7 @@ export function TiendaCartProvider({ children }: { children: ReactNode }) {
 
   const dismissToast = useCallback(() => setToast(null), []);
 
-  const addProduct = useCallback((producto: TiendaProductoDemo, cantidad = 1) => {
+  const addProduct = useCallback((producto: TiendaProducto, cantidad = 1) => {
     const qty = Math.max(1, Math.floor(cantidad));
     setItems((prev) => {
       const existing = prev.find((item) => item.productoId === producto.id);

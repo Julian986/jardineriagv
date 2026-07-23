@@ -1,6 +1,6 @@
 # Plan — Ecommerce Jardinería GV
 
-**Estado:** en desarrollo (paso 4 — página de producto)  
+**Estado:** en desarrollo (paso 6 — panel admin)  
 **Fecha:** julio 2026  
 **Cliente:** Guillermo (Guille)  
 **Plan contratado:** Opción 1 — Tienda Online Esencial ($60.000 ARS)  
@@ -28,9 +28,9 @@ La captura de Terekua es el **layout objetivo** del catálogo: header de tienda,
 1. **Paso 1 (hecho):** `/tienda` — catálogo base como la imagen, datos demo, botón en home.  
 2. **Paso 2 (hecho):** carrito drawer tipo Terekua (agregar, cantidades, eliminar, persistencia local).  
 3. Paso 3: pulir carrito / catálogo (detalles visuales).  
-4. **Paso 4 (en curso):** página de producto `/tienda/[slug]`.  
-5. Paso 5: checkout Mercado Pago (“Iniciar compra”).  
-6. Paso 6: panel admin + datos reales.
+4. **Paso 4 (hecho):** página de producto `/tienda/[slug]`.  
+5. **Paso 5 (hecho):** checkout + Mercado Pago tienda (`pending` → preference → webhook → `/tienda/gracias`).  
+6. **Paso 6 (en curso):** panel admin `/panel-tienda` — ABM, upload con crop, estadísticas de ventas.
 
 ---
 
@@ -260,6 +260,8 @@ Login panel → Productos: listar / crear / editar / desactivar
            → Categorías: listar / crear / editar / ordenar
            → Pedidos: ver listado, estado de pago, datos del comprador
 ```
+
+**Estado actual:** `/panel-tienda` con login compartido (misma cookie que turnos), ABM de productos y categorías, subida de fotos con recorte/zoom (`/api/tienda/upload` → Vercel Blob o `public/uploads` en local). Catálogo `/tienda` lee Mongo. Pedidos en panel: pendiente (tras MP).
 
 ### 7.3 Imágenes de productos (MVP)
 

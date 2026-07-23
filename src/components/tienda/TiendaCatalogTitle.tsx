@@ -27,13 +27,24 @@ export function TiendaCatalogTitle({ title }: TiendaCatalogTitleProps) {
     return () => window.clearTimeout(swap);
   }, [title, displayed]);
 
+  const isCatalogRoot = displayed === "Productos";
+
   return (
-    <h1
-      className={`font-display text-3xl font-bold text-[#1a1a1a] transition-opacity duration-[800ms] ease-out motion-reduce:transition-none sm:text-4xl ${
+    <div
+      className={`transition-opacity duration-[800ms] ease-out motion-reduce:transition-none ${
         visible ? "opacity-100" : "opacity-0"
       }`}
     >
-      {displayed}
-    </h1>
+      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#c4933f] sm:text-xs">
+        {isCatalogRoot ? "Jardinería GV" : "Catálogo"}
+      </p>
+      <h1 className="mt-1.5 font-display text-[2rem] font-bold leading-[1.1] tracking-tight text-[#2d4a22] sm:text-4xl md:text-[2.75rem]">
+        {displayed}
+      </h1>
+      <span
+        className="mt-3 block h-1 w-12 rounded-full bg-[#c4933f] sm:w-14"
+        aria-hidden
+      />
+    </div>
   );
 }

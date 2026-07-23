@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, X } from "lucide-react";
 import { formatArs } from "@/lib/madera/pricing";
-import { RUTA_TIENDA } from "@/lib/tienda-routes";
+import { RUTA_CHECKOUT, RUTA_TIENDA } from "@/lib/tienda-routes";
 import { useTiendaCart } from "@/components/tienda/TiendaCartContext";
 
 const DRAWER_TRANSITION_MS = 280;
@@ -138,16 +138,15 @@ export function TiendaCartDrawer() {
                 </div>
               </div>
 
-              <button
-                type="button"
-                disabled
-                title="Checkout con Mercado Pago — próximo paso"
-                className="mt-5 w-full cursor-not-allowed rounded-md bg-[#2d4a22]/60 py-3.5 text-sm font-bold text-white"
+              <Link
+                href={RUTA_CHECKOUT}
+                onClick={closeCart}
+                className="mt-5 flex w-full items-center justify-center rounded-md bg-[#2d4a22] py-3.5 text-sm font-bold text-white transition-colors hover:bg-[#243c1c]"
               >
                 Iniciar compra
-              </button>
+              </Link>
               <p className="mt-2 text-center text-[11px] text-[#888]">
-                El pago con Mercado Pago se habilita en el próximo paso.
+                Completá tus datos y prepará el pago en el checkout.
               </p>
 
               <Link

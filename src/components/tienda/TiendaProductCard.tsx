@@ -3,13 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatArs } from "@/lib/madera/pricing";
-import type { TiendaProductoDemo } from "@/lib/tienda-demo";
-import { getTiendaCuotaArs } from "@/lib/tienda-demo";
+import { getTiendaCuotaArs, type TiendaProducto } from "@/lib/tienda/types";
 import { rutaProductoTienda } from "@/lib/tienda-routes";
 import { useTiendaCart } from "@/components/tienda/TiendaCartContext";
 
 type TiendaProductCardProps = {
-  producto: TiendaProductoDemo;
+  producto: TiendaProducto;
 };
 
 export function TiendaProductCard({ producto }: TiendaProductCardProps) {

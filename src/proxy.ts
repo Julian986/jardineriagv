@@ -14,9 +14,22 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  if (pathname.startsWith("/panel-tienda/login")) {
+    if (isAuthenticated) {
+      return NextResponse.redirect(new URL("/panel-tienda", request.url));
+    }
+    return NextResponse.next();
+  }
+
   if (pathname.startsWith("/panel-turnos")) {
     if (!isAuthenticated) {
       return NextResponse.redirect(new URL("/panel-turnos/login", request.url));
+    }
+  }
+
+  if (pathname.startsWith("/panel-tienda")) {
+    if (!isAuthenticated) {
+      return NextResponse.redirect(new URL("/panel-tienda/login", request.url));
     }
   }
 
@@ -24,6 +37,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/panel-turnos/:path*"],
+  matcher: ["/panel-turnos/:path*", "/panel-tienda/:path*"],
 };
-

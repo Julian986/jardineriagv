@@ -8,11 +8,11 @@ import { formatArs } from "@/lib/madera/pricing";
 import {
   getTiendaCuotaArs,
   getTiendaPrecioTransferencia,
-  type TiendaProductoDemo,
-} from "@/lib/tienda-demo";
+  type TiendaProducto,
+} from "@/lib/tienda/types";
 
 type TiendaProductBuyBoxProps = {
-  producto: TiendaProductoDemo;
+  producto: TiendaProducto;
 };
 
 export function TiendaProductBuyBox({ producto }: TiendaProductBuyBoxProps) {

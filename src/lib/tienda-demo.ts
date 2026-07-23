@@ -1,4 +1,4 @@
-/** Datos de demostración hasta que exista el panel admin. */
+/** Datos de demostración — fuente del seed inicial del panel (`seedTiendaIfEmpty`). */
 
 export type TiendaCategoriaDemo = {
   id: string;
@@ -205,32 +205,4 @@ export const TIENDA_PRODUCTOS_DEMO: TiendaProductoDemo[] = [
   },
 ];
 
-export function getTiendaProductosDemo(categoriaSlug?: string | null) {
-  if (!categoriaSlug) return TIENDA_PRODUCTOS_DEMO;
-  return TIENDA_PRODUCTOS_DEMO.filter((p) => p.categoriaSlug === categoriaSlug);
-}
-
-export function getTiendaProductoBySlug(slug: string) {
-  return TIENDA_PRODUCTOS_DEMO.find((p) => p.slug === slug) ?? null;
-}
-
-export function getTiendaCategoriaBySlug(slug: string) {
-  return TIENDA_CATEGORIAS_DEMO.find((c) => c.slug === slug) ?? null;
-}
-
-export function getTiendaProductosRelacionados(producto: TiendaProductoDemo, limit = 4) {
-  return TIENDA_PRODUCTOS_DEMO.filter(
-    (p) => p.categoriaSlug === producto.categoriaSlug && p.id !== producto.id,
-  ).slice(0, limit);
-}
-
-export function getTiendaPrecioTransferencia(producto: TiendaProductoDemo) {
-  const pct = producto.descuentoTransferenciaPct;
-  if (!pct || pct <= 0) return null;
-  return Math.round(producto.precioArs * (1 - pct / 100));
-}
-
-export function getTiendaCuotaArs(producto: TiendaProductoDemo) {
-  if (!producto.cuotas) return null;
-  return Math.ceil(producto.precioArs / producto.cuotas);
-}
+/** Solo usado por el seed; la tienda pública lee Mongo. */

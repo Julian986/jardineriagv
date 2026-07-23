@@ -26,6 +26,9 @@ mapa.md
 .DS_Store
 *.pem
 
+# uploads locales de la tienda (dev sin Vercel Blob)
+/public/uploads/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

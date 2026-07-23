@@ -10,10 +10,11 @@ const linkClass =
 
 export function TiendaHeaderBackLink() {
   const pathname = usePathname();
-  const enFichaProducto =
+  // Ficha de producto, checkout u otras subrutas de /tienda
+  const enSubrutaTienda =
     pathname.startsWith(`${RUTA_TIENDA}/`) && pathname !== RUTA_TIENDA;
 
-  if (enFichaProducto) {
+  if (enSubrutaTienda) {
     return (
       <Link
         href={RUTA_TIENDA}

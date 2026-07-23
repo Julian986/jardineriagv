@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { extractPaymentIdsFromWebhook } from "@/lib/mercadopago/webhook-parser";
 import { processApprovedPaymentForMaderaPedido } from "@/lib/madera/mercadopago-confirmation";
 import { processApprovedPaymentForTurno } from "@/lib/reservas/mercadopago-confirmation";
+import { processApprovedPaymentForTiendaPedido } from "@/lib/tienda/mercadopago-confirmation";
 
 export const dynamic = "force-dynamic";
 
@@ -39,7 +40,15 @@ async function processNotificationPayload(
           transport: method,
           rawSnippet: snippet,
         });
-        logMp(`payment ${paymentId} (madera)`, { outcome: m.outcome, message: m.message });
+        if (m.outcome === "pedido_not_found" || m.outcome === "missing_external_reference") {
+          const t = await processApprovedPaymentForTiendaPedido(paymentId, {
+            transport: method,
+            rawSnippet: snippet,
+          });
+          logMp(`payment ${paymentId} (tienda)`, { outcome: t.outcome, message: t.message });
+        } else {
+          logMp(`payment ${paymentId} (madera)`, { outcome: m.outcome, message: m.message });
+        }
       } else {
         logMp(`payment ${paymentId}`, { outcome: r.outcome, message: r.message });
       }
