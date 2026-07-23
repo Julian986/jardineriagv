@@ -35,10 +35,16 @@ export function TiendaCatalogTitle({ title }: TiendaCatalogTitleProps) {
         visible ? "opacity-100" : "opacity-0"
       }`}
     >
-      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#c4933f] sm:text-xs">
-        {isCatalogRoot ? "Jardinería GV" : "Catálogo"}
-      </p>
-      <h1 className="mt-1.5 font-display text-[2rem] font-bold leading-[1.1] tracking-tight text-[#2d4a22] sm:text-4xl md:text-[2.75rem]">
+      {!isCatalogRoot ? (
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#c4933f] sm:text-xs">
+          Catálogo
+        </p>
+      ) : null}
+      <h1
+        className={`font-display text-[2rem] font-bold leading-[1.1] tracking-tight text-[#2d4a22] sm:text-4xl md:text-[2.75rem] ${
+          isCatalogRoot ? "" : "mt-1.5"
+        }`}
+      >
         {displayed}
       </h1>
       <span

@@ -27,12 +27,17 @@ function extFromType(type: string) {
   return "jpg";
 }
 
-/** Sube a Vercel Blob si hay token; si no, guarda en public/uploads/tienda (dev/local). */
+/**
+ * Sube a Vercel Blob si hay token.
+ * En local sin token: guarda en public/uploads/tienda.
+ * En Vercel / producción serverless: Blob es obligatorio (el filesystem es de solo lectura).
+ */
 export async function uploadTiendaImage(file: File): Promise<{ url: string; storage: "blob" | "local" }> {
   assertTiendaImageFile(file);
   const ext = extFromType(file.type);
   const filename = buildFilename(ext);
-  const token = process.env.BLOB_READ_WRITE_TOKEN;
+  const token = process.env.BLOB_READ_WRITE_TOKEN?.trim();
+  const onVercel = Boolean(process.env.VERCEL);
 
   if (token) {
     const blob = await put(`tienda/${filename}`, file, {
@@ -41,6 +46,12 @@ export async function uploadTiendaImage(file: File): Promise<{ url: string; stor
       contentType: file.type,
     });
     return { url: blob.url, storage: "blob" };
+  }
+
+  if (onVercel || process.env.NODE_ENV === "production") {
+    throw new Error(
+      "Falta configurar BLOB_READ_WRITE_TOKEN en Vercel. Sin eso no se pueden subir imágenes en producción.",
+    );
   }
 
   const dir = path.join(process.cwd(), "public", "uploads", "tienda");
