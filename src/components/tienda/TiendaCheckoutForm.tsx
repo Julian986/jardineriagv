@@ -236,8 +236,7 @@ export function TiendaCheckoutForm() {
 
             <div>
               <label htmlFor="checkout-notas" className="mb-1.5 block text-sm font-semibold text-[#333]">
-                Dirección{" "}
-                <span className="font-normal text-[#888]">(opcional)</span>
+                Dirección
               </label>
               <textarea
                 id="checkout-notas"
@@ -246,7 +245,7 @@ export function TiendaCheckoutForm() {
                 value={notas}
                 onChange={(e) => setNotas(e.target.value)}
                 className={`${INPUT} resize-y`}
-                placeholder="Barrio, referencia o cualquier detalle útil"
+                placeholder="Calle, número, barrio y referencia"
               />
               <p className="mt-1.5 text-xs text-[#888]">
                 Coordinamos entrega o retiro por WhatsApp después de la compra.

@@ -29,7 +29,11 @@ export const TiendaCheckoutSchema = z.object({
     .refine((v) => v === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), {
       message: "Ingresá un email válido.",
     }),
-  notas: z.string().trim().max(500, "La nota es demasiado larga.").optional(),
+  notas: z
+    .string()
+    .trim()
+    .min(5, "Ingresá tu dirección.")
+    .max(500, "La dirección es demasiado larga."),
   entrega: z.enum(["retiro", "envio"], {
     message: "Elegí cómo querés recibir el pedido.",
   }),
@@ -52,7 +56,7 @@ export function normalizeTiendaCheckoutInput(raw: {
     nombre: raw.nombre,
     celular: raw.celular,
     email: raw.email.trim() || "",
-    notas: raw.notas.trim() || undefined,
+    notas: raw.notas.trim(),
     entrega: raw.entrega,
   };
 }
