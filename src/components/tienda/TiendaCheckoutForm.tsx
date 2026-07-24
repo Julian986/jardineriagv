@@ -236,7 +236,7 @@ export function TiendaCheckoutForm() {
 
             <div>
               <label htmlFor="checkout-notas" className="mb-1.5 block text-sm font-semibold text-[#333]">
-                Notas o dirección orientativa{" "}
+                Dirección{" "}
                 <span className="font-normal text-[#888]">(opcional)</span>
               </label>
               <textarea
