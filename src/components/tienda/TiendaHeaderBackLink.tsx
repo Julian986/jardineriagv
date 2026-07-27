@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { trackTiendaClick } from "@/lib/tienda/analytics";
 import { RUTA_TIENDA } from "@/lib/tienda-routes";
 
 const linkClass =
@@ -20,6 +21,9 @@ export function TiendaHeaderBackLink() {
         href={RUTA_TIENDA}
         className={linkClass}
         title="Volver al catálogo de productos"
+        onClick={() =>
+          trackTiendaClick({ button: "volver_productos", location: "header" })
+        }
       >
         <ArrowLeft className="h-3.5 w-3.5 shrink-0" aria-hidden />
         <span>Productos</span>
@@ -28,7 +32,14 @@ export function TiendaHeaderBackLink() {
   }
 
   return (
-    <Link href="/" className={linkClass} title="Volver al sitio de Jardinería GV">
+    <Link
+      href="/"
+      className={linkClass}
+      title="Volver al sitio de Jardinería GV"
+      onClick={() =>
+        trackTiendaClick({ button: "volver_sitio", location: "header" })
+      }
+    >
       <ArrowLeft className="h-3.5 w-3.5 shrink-0" aria-hidden />
       <span className="sm:hidden">Sitio</span>
       <span className="hidden sm:inline">Sitio web</span>

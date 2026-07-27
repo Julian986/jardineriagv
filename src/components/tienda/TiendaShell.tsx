@@ -5,6 +5,7 @@ import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { useTiendaCart } from "@/components/tienda/TiendaCartContext";
 import { TiendaHeader } from "@/components/tienda/TiendaHeader";
 import { TiendaProviders } from "@/components/tienda/TiendaProviders";
+import { trackTiendaClick } from "@/lib/tienda/analytics";
 
 function TiendaWhatsAppFab() {
   const { isOpen } = useTiendaCart();
@@ -37,7 +38,13 @@ export function TiendaShell({ children }: TiendaShellProps) {
         <main>{children}</main>
         <footer className="border-t border-[#eee] bg-[#fafafa] px-4 py-6 text-center text-sm text-[#666]">
           <p>
-            <Link href="/" className="font-medium text-[#2d4a22] hover:underline">
+            <Link
+              href="/"
+              className="font-medium text-[#2d4a22] hover:underline"
+              onClick={() =>
+                trackTiendaClick({ button: "volver_sitio", location: "tienda_footer" })
+              }
+            >
               ← Volver a Jardinería GV
             </Link>
           </p>

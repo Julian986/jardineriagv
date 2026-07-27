@@ -9,11 +9,15 @@ type WhatsAppLinkProps = ComponentProps<"a"> & {
   location: string;
   /** Página donde aparece el enlace (ej. home, macetas). */
   page: string;
+  product_id?: string;
+  product_name?: string;
 };
 
 export function WhatsAppLink({
   location,
   page,
+  product_id,
+  product_name,
   href = WHATSAPP_HREF,
   onClick,
   target = "_blank",
@@ -30,6 +34,8 @@ export function WhatsAppLink({
         gaEvent("whatsapp_click", {
           location,
           page,
+          product_id,
+          product_name,
           transport_type: "beacon",
         });
         onClick?.(event);

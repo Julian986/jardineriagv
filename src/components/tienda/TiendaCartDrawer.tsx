@@ -4,6 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, X } from "lucide-react";
 import { formatArs } from "@/lib/madera/pricing";
+import {
+  trackBeginCheckout,
+  trackRemoveFromCart,
+  trackTiendaClick,
+} from "@/lib/tienda/analytics";
 import { RUTA_CHECKOUT, RUTA_TIENDA } from "@/lib/tienda-routes";
 import { useTiendaCart } from "@/components/tienda/TiendaCartContext";
 
@@ -52,7 +57,10 @@ export function TiendaCartDrawer() {
             <p className="text-[15px] text-[#555]">El carrito de compras está vacío.</p>
             <Link
               href={RUTA_TIENDA}
-              onClick={closeCart}
+              onClick={() => {
+                closeCart();
+                trackTiendaClick({ button: "ver_productos", location: "cart_empty" });
+              }}
               className="mt-6 text-sm font-semibold text-[#2d4a22] underline underline-offset-2"
             >
               Ver productos
@@ -80,7 +88,10 @@ export function TiendaCartDrawer() {
                       <p className="line-clamp-2 text-sm leading-snug text-[#333]">{item.nombre}</p>
                       <button
                         type="button"
-                        onClick={() => removeItem(item.productoId)}
+                        onClick={() => {
+                          trackRemoveFromCart({ item, location: "cart_drawer" });
+                          removeItem(item.productoId);
+                        }}
                         className="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-[#999] transition-colors hover:bg-[#f8ecec] hover:text-[#b42318]"
                         aria-label={`Eliminar ${item.nombre}`}
                       >
@@ -140,7 +151,14 @@ export function TiendaCartDrawer() {
 
               <Link
                 href={RUTA_CHECKOUT}
-                onClick={closeCart}
+                onClick={() => {
+                  trackBeginCheckout({
+                    items,
+                    value: subtotalArs,
+                    location: "cart_drawer",
+                  });
+                  closeCart();
+                }}
                 className="mt-5 flex w-full items-center justify-center rounded-md bg-[#2d4a22] py-3.5 text-sm font-bold text-white transition-colors hover:bg-[#243c1c]"
               >
                 Iniciar compra
@@ -151,7 +169,10 @@ export function TiendaCartDrawer() {
 
               <Link
                 href={RUTA_TIENDA}
-                onClick={closeCart}
+                onClick={() => {
+                  closeCart();
+                  trackTiendaClick({ button: "ver_mas_productos", location: "cart_drawer" });
+                }}
                 className="mt-4 block text-center text-sm font-medium text-[#2d4a22] underline underline-offset-2"
               >
                 Ver más productos

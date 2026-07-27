@@ -5,6 +5,7 @@ import { Minus, Plus, ShieldCheck, RefreshCw, Truck } from "lucide-react";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { useTiendaCart } from "@/components/tienda/TiendaCartContext";
 import { formatArs } from "@/lib/madera/pricing";
+import { trackAddToCart } from "@/lib/tienda/analytics";
 import {
   getTiendaCuotaArs,
   getTiendaPrecioTransferencia,
@@ -87,7 +88,14 @@ export function TiendaProductBuyBox({ producto }: TiendaProductBuyBoxProps) {
 
         <button
           type="button"
-          onClick={() => addProduct(producto, cantidad)}
+          onClick={() => {
+            addProduct(producto, cantidad);
+            trackAddToCart({
+              location: "product_detail",
+              producto,
+              quantity: cantidad,
+            });
+          }}
           className="flex h-14 w-full items-center justify-center rounded-md bg-[#2d4a22] px-6 text-sm font-bold text-white transition-all hover:bg-[#243c1c] active:scale-[0.99] sm:min-w-0 sm:flex-1"
         >
           Agregar al carrito
@@ -98,6 +106,8 @@ export function TiendaProductBuyBox({ producto }: TiendaProductBuyBoxProps) {
         href={`https://wa.me/5492914315080?text=${waText}`}
         location="producto_detail"
         page="tienda"
+        product_id={producto.id}
+        product_name={producto.nombre}
         className="mt-3 flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#25d366] px-6 text-sm font-bold text-white transition-opacity hover:opacity-90"
       >
         <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden>

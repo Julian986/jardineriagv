@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CheckCircle2, Clock3, XCircle } from "lucide-react";
 import { useTiendaCart } from "@/components/tienda/TiendaCartContext";
 import { extractPaymentIdFromReturnUrl } from "@/lib/mercadopago/return-url";
+import { trackPurchase, trackTiendaClick } from "@/lib/tienda/analytics";
 import { RUTA_CHECKOUT, RUTA_TIENDA } from "@/lib/tienda-routes";
 
 type Status = "loading" | "confirmed" | "pending" | "failed" | "unknown";
@@ -13,6 +14,7 @@ export function TiendaGraciasClient() {
   const { clearCart } = useTiendaCart();
   const [status, setStatus] = useState<Status>("loading");
   const [pedidoId, setPedidoId] = useState<string | null>(null);
+  const purchaseTracked = useRef(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -57,6 +59,18 @@ export function TiendaGraciasClient() {
 
     setStatus("unknown");
   }, [clearCart]);
+
+  useEffect(() => {
+    if (purchaseTracked.current) return;
+    if (status !== "confirmed" && status !== "pending") return;
+    if (!pedidoId) return;
+    purchaseTracked.current = true;
+    trackPurchase({
+      transaction_id: pedidoId,
+      status,
+    });
+  }, [status, pedidoId]);
+
   const copy = {
     loading: {
       icon: Clock3,
@@ -109,6 +123,9 @@ export function TiendaGraciasClient() {
         {status === "failed" ? (
           <Link
             href={RUTA_CHECKOUT}
+            onClick={() =>
+              trackTiendaClick({ button: "volver_checkout", location: "gracias" })
+            }
             className="inline-flex h-11 items-center justify-center rounded-full bg-[#2d4a22] px-6 text-sm font-bold text-white"
           >
             Volver al checkout
@@ -116,6 +133,9 @@ export function TiendaGraciasClient() {
         ) : null}
         <Link
           href={RUTA_TIENDA}
+          onClick={() =>
+            trackTiendaClick({ button: "volver_tienda", location: "gracias" })
+          }
           className="inline-flex h-11 items-center justify-center rounded-full border border-[#2d4a22] px-6 text-sm font-bold text-[#2d4a22]"
         >
           Volver a la tienda

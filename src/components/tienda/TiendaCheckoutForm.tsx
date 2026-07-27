@@ -18,6 +18,10 @@ import {
   calcTiendaCheckoutAmounts,
   getTiendaMpCheckoutFeeRatePublic,
 } from "@/lib/tienda/pedido";
+import {
+  trackContinueToPayment,
+  trackTiendaClick,
+} from "@/lib/tienda/analytics";
 import { RUTA_TIENDA, rutaProductoTienda } from "@/lib/tienda-routes";
 
 const FIELD_ERROR = "mt-1.5 text-[13px] leading-snug font-medium text-[#b91c1c]";
@@ -147,6 +151,13 @@ export function TiendaCheckoutForm() {
         return;
       }
 
+      trackContinueToPayment({
+        items,
+        value: pendingData.amounts?.montoTotalCobroArs ?? amounts.montoTotalCobroArs,
+        entrega: parsed.data.entrega,
+        pedido_id: pendingData.id,
+      });
+
       window.location.href = prefData.initPoint;
     } catch {
       setSubmitError("Error de conexión. Intentá de nuevo.");
@@ -163,6 +174,9 @@ export function TiendaCheckoutForm() {
         </p>
         <Link
           href={RUTA_TIENDA}
+          onClick={() =>
+            trackTiendaClick({ button: "ver_productos", location: "checkout_empty" })
+          }
           className="mt-6 inline-flex rounded-full bg-[#2d4a22] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#243c1c]"
         >
           Ver productos
@@ -371,6 +385,9 @@ export function TiendaCheckoutForm() {
 
         <Link
           href={RUTA_TIENDA}
+          onClick={() =>
+            trackTiendaClick({ button: "seguir_comprando", location: "checkout" })
+          }
           className="mt-3 block text-center text-sm font-medium text-[#2d4a22] underline-offset-2 hover:underline"
         >
           Seguir comprando

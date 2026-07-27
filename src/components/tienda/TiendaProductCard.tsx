@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatArs } from "@/lib/madera/pricing";
 import { getTiendaCuotaArs, type TiendaProducto } from "@/lib/tienda/types";
+import { trackAddToCart, trackTiendaClick } from "@/lib/tienda/analytics";
 import { rutaProductoTienda } from "@/lib/tienda-routes";
 import { useTiendaCart } from "@/components/tienda/TiendaCartContext";
 
@@ -18,7 +19,18 @@ export function TiendaProductCard({ producto }: TiendaProductCardProps) {
 
   return (
     <article className="group flex flex-col">
-      <Link href={href} className="block overflow-hidden rounded-sm border border-[#e8e8e8] bg-white">
+      <Link
+        href={href}
+        className="block overflow-hidden rounded-sm border border-[#e8e8e8] bg-white"
+        onClick={() =>
+          trackTiendaClick({
+            button: "ver_producto",
+            location: "catalog_card",
+            product_id: producto.id,
+            product_name: producto.nombre,
+          })
+        }
+      >
         <div className="bg-[#2d4a22] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.08em] text-white sm:text-[11px]">
           {producto.categoriaLabel} <span aria-hidden>&gt;&gt;&gt;</span>
         </div>
@@ -35,7 +47,17 @@ export function TiendaProductCard({ producto }: TiendaProductCardProps) {
       </Link>
 
       <div className="mt-3 flex flex-1 flex-col px-0.5">
-        <Link href={href}>
+        <Link
+          href={href}
+          onClick={() =>
+            trackTiendaClick({
+              button: "ver_producto",
+              location: "catalog_card_title",
+              product_id: producto.id,
+              product_name: producto.nombre,
+            })
+          }
+        >
           <h3 className="line-clamp-2 text-[13px] leading-snug text-[#333] transition-colors group-hover:text-[#2d4a22] sm:text-sm">
             {producto.nombre}
           </h3>
@@ -50,7 +72,14 @@ export function TiendaProductCard({ producto }: TiendaProductCardProps) {
         ) : null}
         <button
           type="button"
-          onClick={() => addProduct(producto)}
+          onClick={() => {
+            addProduct(producto);
+            trackAddToCart({
+              location: "catalog_card",
+              producto,
+              quantity: 1,
+            });
+          }}
           className="mt-3 w-full cursor-pointer rounded-md border border-[#2d4a22] bg-white py-2 text-xs font-semibold text-[#2d4a22] transition-colors hover:bg-[#f0f5ea] sm:text-sm"
         >
           Agregar al carrito

@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { trackTiendaClick } from "@/lib/tienda/analytics";
 import { RUTA_TIENDA } from "@/lib/tienda-routes";
 import type { TiendaCategoria } from "@/lib/tienda/types";
 
@@ -6,6 +9,14 @@ type TiendaSidebarProps = {
   categoriaActiva?: string | null;
   categorias: TiendaCategoria[];
 };
+
+function trackCategoria(slug: string | "todas", location: string) {
+  trackTiendaClick({
+    button: "filtrar_categoria",
+    location,
+    product_name: slug,
+  });
+}
 
 export function TiendaSidebar({ categoriaActiva, categorias }: TiendaSidebarProps) {
   return (
@@ -20,6 +31,7 @@ export function TiendaSidebar({ categoriaActiva, categorias }: TiendaSidebarProp
           <li>
             <Link
               href={RUTA_TIENDA}
+              onClick={() => trackCategoria("todas", "sidebar")}
               className={`text-sm transition-colors hover:text-[#2d4a22] ${
                 !categoriaActiva ? "font-semibold text-[#2d4a22]" : "text-[#444]"
               }`}
@@ -31,6 +43,7 @@ export function TiendaSidebar({ categoriaActiva, categorias }: TiendaSidebarProp
             <li key={cat.id}>
               <Link
                 href={`${RUTA_TIENDA}?categoria=${cat.slug}`}
+                onClick={() => trackCategoria(cat.slug, "sidebar")}
                 className={`text-sm transition-colors hover:text-[#2d4a22] ${
                   categoriaActiva === cat.slug
                     ? "font-semibold text-[#2d4a22]"
@@ -52,6 +65,7 @@ export function TiendaCategoryPills({ categoriaActiva, categorias }: TiendaSideb
     <div className="mt-5 mb-2 flex gap-2 overflow-x-auto pb-3 lg:hidden">
       <Link
         href={RUTA_TIENDA}
+        onClick={() => trackCategoria("todas", "pills")}
         className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold ${
           !categoriaActiva
             ? "bg-[#2d4a22] text-white"
@@ -64,6 +78,7 @@ export function TiendaCategoryPills({ categoriaActiva, categorias }: TiendaSideb
         <Link
           key={cat.id}
           href={`${RUTA_TIENDA}?categoria=${cat.slug}`}
+          onClick={() => trackCategoria(cat.slug, "pills")}
           className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold ${
             categoriaActiva === cat.slug
               ? "bg-[#2d4a22] text-white"

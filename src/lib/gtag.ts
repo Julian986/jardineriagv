@@ -34,11 +34,8 @@ export function pageview(url: string) {
   });
 }
 
-/** Evento personalizado GA4. */
-export function event(
-  action: string,
-  params?: Record<string, string | number | boolean | undefined>,
-) {
+/** Evento personalizado GA4 (incluye ecommerce con `items`). */
+export function event(action: string, params?: Record<string, unknown>) {
   if (!isGAEnabled) return;
   gtag("event", action, params);
 }

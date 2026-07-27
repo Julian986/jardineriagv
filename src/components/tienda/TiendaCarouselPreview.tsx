@@ -11,6 +11,7 @@ import {
 } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { TiendaHeroCarousel } from "@/components/tienda/TiendaHeroCarousel";
+import { trackTiendaClick } from "@/lib/tienda/analytics";
 
 const STORAGE_KEY = "jardineriagv-tienda-carousel-visible";
 
@@ -53,6 +54,10 @@ export function TiendaCarouselPreviewProvider({ children }: { children: ReactNod
       } catch {
         /* ignore */
       }
+      trackTiendaClick({
+        button: next ? "mostrar_carrusel" : "ocultar_carrusel",
+        location: "catalog",
+      });
       return next;
     });
   }, []);

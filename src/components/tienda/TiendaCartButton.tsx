@@ -2,16 +2,24 @@
 
 import { ShoppingBag } from "lucide-react";
 import { formatArs } from "@/lib/madera/pricing";
+import { trackViewCart } from "@/lib/tienda/analytics";
 import { useTiendaCart } from "@/components/tienda/TiendaCartContext";
 
 export function TiendaCartButton() {
-  const { itemCount, subtotalArs, openCart } = useTiendaCart();
+  const { items, itemCount, subtotalArs, openCart } = useTiendaCart();
   const hasItems = itemCount > 0;
 
   return (
     <button
       type="button"
-      onClick={openCart}
+      onClick={() => {
+        openCart();
+        trackViewCart({
+          items,
+          value: subtotalArs,
+          location: "header",
+        });
+      }}
       className={`relative inline-flex cursor-pointer items-center gap-2 rounded-full px-2.5 py-2 text-xs font-semibold transition-colors sm:px-3.5 sm:text-sm ${
         hasItems
           ? "bg-[#2d4a22] text-white hover:bg-[#243c1c]"
