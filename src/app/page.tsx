@@ -10,8 +10,8 @@ import { RedesignFooter } from "@/components/redesign/RedesignFooter";
 import { RedesignHeader } from "@/components/redesign/RedesignHeader";
 import { NavMenuProvider, useNavMenuOptional } from "@/components/redesign/NavMenuContext";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
-import { TITULO_BIODIVERSIDAD, TITULO_PROYECTO_NAPOSTA } from "@/lib/biodiversidad-titulos";
-import { RUTA_PROYECTO } from "@/lib/biodiversidad-rutas";
+// import { TITULO_BIODIVERSIDAD, TITULO_PROYECTO_NAPOSTA } from "@/lib/biodiversidad-titulos";
+// import { RUTA_PROYECTO } from "@/lib/biodiversidad-rutas";
 import { TerekuaMvpBlock } from "@/components/TerekuaMvpBlock";
 
 // ── Constantes ────────────────────────────────────────────────────────────────
@@ -159,14 +159,14 @@ const PARQUIZACION_PRODUCTO = {
   img: "/madera.webp",
 }; */
 
-const BIODIVERSIDAD_PRODUCTO = {
+/* const BIODIVERSIDAD_PRODUCTO = {
   id: "biodiversidad",
   detailHref: RUTA_PROYECTO,
   icon: "🌿",
   titulo: TITULO_BIODIVERSIDAD,
   resumen: TITULO_PROYECTO_NAPOSTA,
   img: "/biodiversidad.webp",
-};
+}; */
 
 const HOME_SCHEMA = {
   "@context": "https://schema.org",
@@ -501,6 +501,7 @@ export default function Home() {
               <TerekuaMvpBlock location="home_mvp" page="home" />
             </div>
 
+            {/* Pedido cliente: ocultar sección biodiversidad en home.
             <article
               id={BIODIVERSIDAD_PRODUCTO.id}
               className="flex flex-col gap-6 rounded-2xl border border-[#e4ead8] bg-white p-6 shadow-sm md:flex-row-reverse md:items-center md:gap-10 md:p-8"
@@ -536,6 +537,7 @@ export default function Home() {
                 </div>
               </div>
             </article>
+            */}
           </div>
         </section>
 
