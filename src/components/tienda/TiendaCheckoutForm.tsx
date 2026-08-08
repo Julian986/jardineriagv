@@ -22,6 +22,10 @@ import {
   trackContinueToPayment,
   trackTiendaClick,
 } from "@/lib/tienda/analytics";
+import {
+  formatTiendaCartItemNombre,
+  tiendaCartLineKey,
+} from "@/lib/tienda-cart";
 import { RUTA_TIENDA, rutaProductoTienda } from "@/lib/tienda-routes";
 
 const FIELD_ERROR = "mt-1.5 text-[13px] leading-snug font-medium text-[#b91c1c]";
@@ -41,7 +45,13 @@ export function TiendaCheckoutForm() {
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [serverLines, setServerLines] = useState<
-    { productoId: string; nombre: string; precioUnitarioArs: number; cantidad: number }[] | null
+    {
+      productoId: string;
+      nombre: string;
+      precioUnitarioArs: number;
+      cantidad: number;
+      colorId?: string;
+    }[] | null
   >(null);
 
   const empty = items.length === 0;
@@ -110,6 +120,7 @@ export function TiendaCheckoutForm() {
           items: items.map((item) => ({
             productoId: item.productoId,
             cantidad: item.cantidad,
+            ...(item.colorId ? { colorId: item.colorId } : {}),
           })),
         }),
       });
@@ -122,6 +133,7 @@ export function TiendaCheckoutForm() {
           nombre: string;
           precioUnitarioArs: number;
           cantidad: number;
+          colorId?: string;
         }[];
         amounts?: { montoTotalCobroArs: number };
       };
@@ -312,10 +324,14 @@ export function TiendaCheckoutForm() {
 
         <ul className="mt-4 max-h-64 space-y-3 overflow-y-auto border-b border-[#eee] pb-4">
           {items.map((item) => {
-            const server = serverLines?.find((line) => line.productoId === item.productoId);
+            const server = serverLines?.find(
+              (line) =>
+                line.productoId === item.productoId &&
+                (line.colorId ?? undefined) === (item.colorId ?? undefined),
+            );
             const unit = server?.precioUnitarioArs ?? item.precioArs;
             return (
-              <li key={item.productoId} className="flex gap-3">
+              <li key={tiendaCartLineKey(item)} className="flex gap-3">
                 <Link
                   href={rutaProductoTienda(item.slug)}
                   className="relative h-14 w-14 shrink-0 overflow-hidden rounded border border-[#eee] bg-[#fafafa]"
@@ -327,7 +343,7 @@ export function TiendaCheckoutForm() {
                     href={rutaProductoTienda(item.slug)}
                     className="line-clamp-2 text-sm leading-snug text-[#333] hover:text-[#2d4a22]"
                   >
-                    {item.nombre}
+                    {formatTiendaCartItemNombre(item)}
                   </Link>
                   <div className="mt-1 flex items-center justify-between gap-2 text-xs text-[#666]">
                     <span>× {item.cantidad}</span>

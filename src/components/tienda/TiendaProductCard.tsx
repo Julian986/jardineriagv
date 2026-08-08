@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatArs } from "@/lib/madera/pricing";
+import { buildTiendaColorOptions } from "@/lib/tienda/product-colors";
 import { getTiendaCuotaArs, type TiendaProducto } from "@/lib/tienda/types";
 import { trackAddToCart, trackTiendaClick } from "@/lib/tienda/analytics";
 import { rutaProductoTienda } from "@/lib/tienda-routes";
@@ -16,6 +17,7 @@ export function TiendaProductCard({ producto }: TiendaProductCardProps) {
   const { addProduct } = useTiendaCart();
   const cuota = getTiendaCuotaArs(producto);
   const href = rutaProductoTienda(producto.slug);
+  const necesitaColor = buildTiendaColorOptions(producto).length > 1;
 
   return (
     <article className="group flex flex-col">
@@ -70,20 +72,37 @@ export function TiendaProductCard({ producto }: TiendaProductCardProps) {
             {producto.cuotas} x {formatArs(cuota)} sin interés
           </p>
         ) : null}
-        <button
-          type="button"
-          onClick={() => {
-            addProduct(producto);
-            trackAddToCart({
-              location: "catalog_card",
-              producto,
-              quantity: 1,
-            });
-          }}
-          className="mt-3 w-full cursor-pointer rounded-md border border-[#2d4a22] bg-white py-2 text-xs font-semibold text-[#2d4a22] transition-colors hover:bg-[#f0f5ea] sm:text-sm"
-        >
-          Agregar al carrito
-        </button>
+        {necesitaColor ? (
+          <Link
+            href={href}
+            onClick={() =>
+              trackTiendaClick({
+                button: "elegir_color",
+                location: "catalog_card",
+                product_id: producto.id,
+                product_name: producto.nombre,
+              })
+            }
+            className="mt-3 block w-full rounded-md border border-[#2d4a22] bg-white py-2 text-center text-xs font-semibold text-[#2d4a22] transition-colors hover:bg-[#f0f5ea] sm:text-sm"
+          >
+            Elegir color
+          </Link>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              addProduct(producto);
+              trackAddToCart({
+                location: "catalog_card",
+                producto,
+                quantity: 1,
+              });
+            }}
+            className="mt-3 w-full cursor-pointer rounded-md border border-[#2d4a22] bg-white py-2 text-xs font-semibold text-[#2d4a22] transition-colors hover:bg-[#f0f5ea] sm:text-sm"
+          >
+            Agregar al carrito
+          </button>
+        )}
       </div>
     </article>
   );

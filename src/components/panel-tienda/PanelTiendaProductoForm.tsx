@@ -3,12 +3,19 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, ChevronDown, Save } from "lucide-react";
+import { ArrowLeft, ChevronDown, Plus, Save, Trash2 } from "lucide-react";
 import { PanelImageField } from "@/components/panel-tienda/PanelImageField";
 import { PanelImageGalleryField } from "@/components/panel-tienda/PanelImageGalleryField";
 import { PanelTiendaShell } from "@/components/panel-tienda/PanelTiendaShell";
 import { slugifyTienda } from "@/lib/tienda/slugify";
 import type { TiendaCategoria, TiendaProducto } from "@/lib/tienda/types";
+
+type ColorDraft = {
+  id?: string;
+  nombre: string;
+  hex: string;
+  imagen: string;
+};
 
 const INPUT =
   "mt-1.5 h-12 w-full rounded-xl border border-[#dce1da] bg-white px-3.5 text-base text-[#20231f] outline-none placeholder:text-[#a2a79f] focus:border-[#6f8b68] focus:ring-2 focus:ring-[#dce8d8] sm:text-sm";
@@ -41,6 +48,7 @@ export function PanelTiendaProductoForm({ mode, productoId }: Props) {
   const [descuento, setDescuento] = useState("10");
   const [highlightsText, setHighlightsText] = useState("");
   const [medidasText, setMedidasText] = useState("");
+  const [colores, setColores] = useState<ColorDraft[]>([]);
   const [stock, setStock] = useState("");
   const [activo, setActivo] = useState(true);
 
@@ -101,6 +109,14 @@ export function PanelTiendaProductoForm({ mode, productoId }: Props) {
           setMedidasText(
             (p.medidas ?? []).map((m) => `${m.label}|${m.valor}`).join("\n"),
           );
+          setColores(
+            (p.colores ?? []).map((c) => ({
+              id: c.id,
+              nombre: c.nombre,
+              hex: c.hex ?? "",
+              imagen: c.imagen ?? "",
+            })),
+          );
           setStock(p.stock === null || p.stock === undefined ? "" : String(p.stock));
           setActivo(p.activo);
         }
@@ -139,6 +155,14 @@ export function PanelTiendaProductoForm({ mode, productoId }: Props) {
       .filter((m) => m.label && m.valor);
 
     const gallery = [imagen, ...imagenes.filter((url) => url !== imagen)];
+    const coloresPayload = colores
+      .map((c) => ({
+        id: c.id,
+        nombre: c.nombre.trim(),
+        hex: c.hex.trim(),
+        imagen: c.imagen.trim(),
+      }))
+      .filter((c) => c.nombre);
 
     const body = {
       nombre,
@@ -153,6 +177,7 @@ export function PanelTiendaProductoForm({ mode, productoId }: Props) {
       descuentoTransferenciaPct: descuento === "" ? null : Number(descuento),
       highlights: highlights.length ? highlights : undefined,
       medidas: medidas.length ? medidas : undefined,
+      colores: coloresPayload.length ? coloresPayload : null,
       stock: stock === "" ? null : Number(stock),
       activo,
     };
@@ -283,6 +308,128 @@ export function PanelTiendaProductoForm({ mode, productoId }: Props) {
                 placeholder="Características, usos y beneficios…"
               />
             </div>
+          </section>
+
+          <section className={SECTION}>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="text-base font-bold">Colores</h2>
+                <p className="mt-1 text-xs text-[#777d74]">
+                  Si cargás 2 o más, en la ficha aparece el selector de color.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() =>
+                  setColores((prev) => [...prev, { nombre: "", hex: "", imagen: "" }])
+                }
+                className="inline-flex h-10 shrink-0 items-center gap-1.5 rounded-xl border border-[#dce1da] bg-[#f7f9f5] px-3 text-xs font-bold text-[#35532f] hover:bg-[#eef4eb]"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                Agregar color
+              </button>
+            </div>
+
+            {colores.length === 0 ? (
+              <p className="mt-4 rounded-xl bg-[#f4f6f2] px-3 py-2.5 text-xs text-[#6a7168]">
+                Sin colores cargados. El producto se vende sin selector.
+              </p>
+            ) : (
+              <ul className="mt-4 space-y-3">
+                {colores.map((color, index) => (
+                  <li
+                    key={color.id ?? `nuevo-${index}`}
+                    className="rounded-xl border border-[#e4e7e1] bg-[#fafbf9] p-3"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#6a7168]">
+                        Color {index + 1}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setColores((prev) => prev.filter((_, i) => i !== index))
+                        }
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-[#8a9190] hover:bg-[#f8ecec] hover:text-[#b42318]"
+                        aria-label={`Eliminar color ${index + 1}`}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                    <div className="mt-2 grid gap-3 sm:grid-cols-[1fr_120px]">
+                      <div>
+                        <label className={LABEL} htmlFor={`color-nombre-${index}`}>
+                          Nombre
+                        </label>
+                        <input
+                          id={`color-nombre-${index}`}
+                          value={color.nombre}
+                          onChange={(e) =>
+                            setColores((prev) =>
+                              prev.map((c, i) =>
+                                i === index ? { ...c, nombre: e.target.value } : c,
+                              ),
+                            )
+                          }
+                          className={INPUT}
+                          placeholder="Ej. Terracota"
+                        />
+                      </div>
+                      <div>
+                        <label className={LABEL} htmlFor={`color-hex-${index}`}>
+                          Muestra
+                        </label>
+                        <div className="mt-1.5 flex items-center gap-2">
+                          <input
+                            id={`color-hex-${index}`}
+                            type="color"
+                            value={
+                              /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(color.hex)
+                                ? color.hex.length === 4
+                                  ? `#${color.hex[1]}${color.hex[1]}${color.hex[2]}${color.hex[2]}${color.hex[3]}${color.hex[3]}`
+                                  : color.hex
+                                : "#c4933f"
+                            }
+                            onChange={(e) =>
+                              setColores((prev) =>
+                                prev.map((c, i) =>
+                                  i === index ? { ...c, hex: e.target.value } : c,
+                                ),
+                              )
+                            }
+                            className="h-12 w-12 cursor-pointer rounded-lg border border-[#dce1da] bg-white p-1"
+                          />
+                          <input
+                            value={color.hex}
+                            onChange={(e) =>
+                              setColores((prev) =>
+                                prev.map((c, i) =>
+                                  i === index ? { ...c, hex: e.target.value } : c,
+                                ),
+                              )
+                            }
+                            className={`${INPUT} mt-0`}
+                            placeholder="#c4933f"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-3">
+                      <PanelImageField
+                        value={color.imagen}
+                        onChange={(url) =>
+                          setColores((prev) =>
+                            prev.map((c, i) => (i === index ? { ...c, imagen: url } : c)),
+                          )
+                        }
+                        label="Foto del color (opcional)"
+                        helper="Si la cargás, se usa en el carrito al elegir este color."
+                      />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
 
           <section className={SECTION}>

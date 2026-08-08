@@ -9,6 +9,10 @@ import {
   trackRemoveFromCart,
   trackTiendaClick,
 } from "@/lib/tienda/analytics";
+import {
+  formatTiendaCartItemNombre,
+  tiendaCartLineKey,
+} from "@/lib/tienda-cart";
 import { RUTA_CHECKOUT, RUTA_TIENDA } from "@/lib/tienda-routes";
 import { useTiendaCart } from "@/components/tienda/TiendaCartContext";
 
@@ -69,9 +73,12 @@ export function TiendaCartDrawer() {
         ) : (
           <>
             <ul className="flex-1 overflow-y-auto px-5 py-4">
-              {items.map((item) => (
+              {items.map((item) => {
+                const lineKey = tiendaCartLineKey(item);
+                const displayNombre = formatTiendaCartItemNombre(item);
+                return (
                 <li
-                  key={item.productoId}
+                  key={lineKey}
                   className="flex gap-3 border-b border-[#f0f0f0] py-4 last:border-b-0"
                 >
                   <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded border border-[#eee] bg-[#fafafa]">
@@ -85,15 +92,22 @@ export function TiendaCartDrawer() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
-                      <p className="line-clamp-2 text-sm leading-snug text-[#333]">{item.nombre}</p>
+                      <div className="min-w-0">
+                        <p className="line-clamp-2 text-sm leading-snug text-[#333]">
+                          {item.nombre}
+                        </p>
+                        {item.colorNombre ? (
+                          <p className="mt-0.5 text-xs text-[#666]">Color: {item.colorNombre}</p>
+                        ) : null}
+                      </div>
                       <button
                         type="button"
                         onClick={() => {
                           trackRemoveFromCart({ item, location: "cart_drawer" });
-                          removeItem(item.productoId);
+                          removeItem(lineKey);
                         }}
                         className="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-[#999] transition-colors hover:bg-[#f8ecec] hover:text-[#b42318]"
-                        aria-label={`Eliminar ${item.nombre}`}
+                        aria-label={`Eliminar ${displayNombre}`}
                       >
                         <Trash2 className="h-4 w-4" strokeWidth={2} />
                       </button>
@@ -104,8 +118,8 @@ export function TiendaCartDrawer() {
                           type="button"
                           onClick={() =>
                             item.cantidad <= 1
-                              ? removeItem(item.productoId)
-                              : setQuantity(item.productoId, item.cantidad - 1)
+                              ? removeItem(lineKey)
+                              : setQuantity(lineKey, item.cantidad - 1)
                           }
                           className="inline-flex h-8 w-8 cursor-pointer items-center justify-center text-[#444] hover:bg-[#f5f5f5]"
                           aria-label="Disminuir cantidad"
@@ -117,7 +131,7 @@ export function TiendaCartDrawer() {
                         </span>
                         <button
                           type="button"
-                          onClick={() => setQuantity(item.productoId, item.cantidad + 1)}
+                          onClick={() => setQuantity(lineKey, item.cantidad + 1)}
                           className="inline-flex h-8 w-8 cursor-pointer items-center justify-center text-[#444] hover:bg-[#f5f5f5]"
                           aria-label="Aumentar cantidad"
                         >
@@ -130,7 +144,8 @@ export function TiendaCartDrawer() {
                     </div>
                   </div>
                 </li>
-              ))}
+                );
+              })}
             </ul>
 
             <div className="border-t border-[#eee] bg-[#fafafa] px-5 py-5">

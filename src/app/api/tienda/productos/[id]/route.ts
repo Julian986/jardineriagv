@@ -10,7 +10,7 @@ import {
   getProductoById,
   updateProducto,
 } from "@/lib/tienda/productos";
-import type { TiendaMedida } from "@/lib/tienda/types";
+import type { TiendaColor, TiendaMedida } from "@/lib/tienda/types";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
@@ -78,6 +78,8 @@ export async function PATCH(request: Request, context: RouteContext) {
   else if (Array.isArray(data.highlights)) patch.highlights = data.highlights as string[];
   if (data.medidas === null) patch.medidas = null;
   else if (Array.isArray(data.medidas)) patch.medidas = data.medidas as TiendaMedida[];
+  if (data.colores === null) patch.colores = null;
+  else if (Array.isArray(data.colores)) patch.colores = data.colores as TiendaColor[];
   if (data.stock !== undefined) patch.stock = data.stock as number | null;
   if (typeof data.activo === "boolean") patch.activo = data.activo;
 

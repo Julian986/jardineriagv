@@ -6,6 +6,40 @@ const medidaSchema = z.object({
   valor: z.string().trim().min(1).max(120),
 });
 
+const colorSchema = z.object({
+  id: z.string().trim().max(80).optional(),
+  nombre: z.string().trim().min(1, "Ingresá el nombre del color.").max(60),
+  hex: z
+    .string()
+    .trim()
+    .regex(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/, "Usá un color hex válido (ej. #c4933f).")
+    .optional()
+    .or(z.literal("")),
+  imagen: z.string().trim().max(500).optional().or(z.literal("")),
+});
+
+function normalizeColores(
+  raw: z.infer<typeof colorSchema>[] | undefined | null,
+): { id: string; nombre: string; hex?: string; imagen?: string }[] | undefined {
+  if (raw === null) return undefined;
+  if (!raw || raw.length === 0) return undefined;
+  const used = new Set<string>();
+  return raw.map((c, index) => {
+    const nombre = c.nombre.trim();
+    let id = (c.id?.trim() || slugifyTienda(nombre) || `color-${index + 1}`).slice(0, 80);
+    if (used.has(id)) id = `${id}-${index + 1}`;
+    used.add(id);
+    const hex = c.hex?.trim() || undefined;
+    const imagen = c.imagen?.trim() || undefined;
+    return {
+      id,
+      nombre,
+      ...(hex ? { hex } : {}),
+      ...(imagen ? { imagen } : {}),
+    };
+  });
+}
+
 export const TiendaCategoriaWriteSchema = z.object({
   nombre: z.string().trim().min(2, "Ingresá un nombre.").max(80),
   slug: z.string().trim().max(80).optional(),
@@ -54,6 +88,7 @@ export const TiendaProductoWriteSchema = z
     descuentoTransferenciaPct: z.coerce.number().int().min(0).max(50).optional().nullable(),
     highlights: z.array(z.string().trim().min(1).max(120)).max(12).optional(),
     medidas: z.array(medidaSchema).max(12).optional(),
+    colores: z.array(colorSchema).max(24).optional().nullable(),
     stock: z.coerce.number().int().min(0).max(1_000_000).optional().nullable(),
     activo: z.boolean().optional(),
   })
@@ -78,6 +113,7 @@ export const TiendaProductoWriteSchema = z
       activo: data.activo ?? true,
       highlights: data.highlights?.filter(Boolean),
       medidas: data.medidas,
+      colores: normalizeColores(data.colores ?? undefined),
     };
   });
 
@@ -109,6 +145,7 @@ export const TiendaProductoPatchSchema = z
     descuentoTransferenciaPct: z.coerce.number().int().min(0).max(50).optional().nullable(),
     highlights: z.array(z.string().trim().min(1).max(120)).max(12).optional().nullable(),
     medidas: z.array(medidaSchema).max(12).optional().nullable(),
+    colores: z.array(colorSchema).max(24).optional().nullable(),
     stock: z.coerce.number().int().min(0).max(1_000_000).optional().nullable(),
     activo: z.boolean().optional(),
   })
@@ -123,6 +160,8 @@ export const TiendaProductoPatchSchema = z
       // slug only auto on create; patch keeps existing unless provided
     }
     if (data.descripcionTitulo === "") out.descripcionTitulo = null;
+    if (data.colores === null) out.colores = null;
+    else if (data.colores !== undefined) out.colores = normalizeColores(data.colores) ?? null;
     return out;
   });
 

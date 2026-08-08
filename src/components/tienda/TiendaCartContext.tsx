@@ -10,11 +10,13 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { TiendaProducto } from "@/lib/tienda/types";
+import { buildTiendaColorOptions } from "@/lib/tienda/product-colors";
+import { findProductoColor, type TiendaColor, type TiendaProducto } from "@/lib/tienda/types";
 import {
   TIENDA_CART_STORAGE_KEY,
   calcTiendaCartItemCount,
   calcTiendaCartSubtotal,
+  tiendaCartLineKey,
   type TiendaCartItem,
 } from "@/lib/tienda-cart";
 import { lockBodyScroll } from "@/lib/body-scroll-lock";
@@ -26,6 +28,11 @@ export type TiendaCartToastData = {
   cantidad: number;
 };
 
+export type AddProductOptions = {
+  cantidad?: number;
+  color?: TiendaColor | null;
+};
+
 type TiendaCartContextValue = {
   items: TiendaCartItem[];
   itemCount: number;
@@ -35,9 +42,9 @@ type TiendaCartContextValue = {
   openCart: () => void;
   closeCart: () => void;
   dismissToast: () => void;
-  addProduct: (producto: TiendaProducto, cantidad?: number) => void;
-  removeItem: (productoId: string) => void;
-  setQuantity: (productoId: string, cantidad: number) => void;
+  addProduct: (producto: TiendaProducto, options?: AddProductOptions) => boolean;
+  removeItem: (lineKey: string) => void;
+  setQuantity: (lineKey: string, cantidad: number) => void;
   clearCart: () => void;
 };
 
@@ -78,13 +85,45 @@ export function TiendaCartProvider({ children }: { children: ReactNode }) {
 
   const dismissToast = useCallback(() => setToast(null), []);
 
-  const addProduct = useCallback((producto: TiendaProducto, cantidad = 1) => {
-    const qty = Math.max(1, Math.floor(cantidad));
+  const addProduct = useCallback((producto: TiendaProducto, options?: AddProductOptions): boolean => {
+    const qty = Math.max(1, Math.floor(options?.cantidad ?? 1));
+    let color = options?.color ?? null;
+
+    const colorOptions = buildTiendaColorOptions(producto);
+    if (colorOptions.length > 1) {
+      if (!color) return false;
+      const selected = color;
+      const match =
+        findProductoColor(producto, selected.id) ||
+        colorOptions.find((o) => o.id === selected.id);
+      if (!match) return false;
+      color = {
+        id: match.id,
+        nombre: match.nombre,
+        ...("hex" in match && match.hex ? { hex: match.hex } : {}),
+        imagen: "imageSrc" in match ? match.imageSrc : match.imagen,
+      };
+    } else if (!color && colorOptions.length === 1) {
+      const only = colorOptions[0]!;
+      color = {
+        id: only.id,
+        nombre: only.nombre,
+        ...(only.hex ? { hex: only.hex } : {}),
+        imagen: only.imageSrc,
+      };
+    }
+
+    const colorId = color?.id;
+    const colorNombre = color?.nombre;
+    const imagen = color?.imagen?.trim() || producto.imagen;
+    const displayNombre = colorNombre ? `${producto.nombre} · ${colorNombre}` : producto.nombre;
+    const lineKey = tiendaCartLineKey({ productoId: producto.id, colorId });
+
     setItems((prev) => {
-      const existing = prev.find((item) => item.productoId === producto.id);
+      const existing = prev.find((item) => tiendaCartLineKey(item) === lineKey);
       if (existing) {
         return prev.map((item) =>
-          item.productoId === producto.id
+          tiendaCartLineKey(item) === lineKey
             ? { ...item, cantidad: item.cantidad + qty }
             : item,
         );
@@ -96,27 +135,31 @@ export function TiendaCartProvider({ children }: { children: ReactNode }) {
           slug: producto.slug,
           nombre: producto.nombre,
           precioArs: producto.precioArs,
-          imagen: producto.imagen,
+          imagen,
           cantidad: qty,
+          ...(colorId ? { colorId, colorNombre } : {}),
         },
       ];
     });
     setToast({
       id: Date.now(),
-      nombre: producto.nombre,
-      imagen: producto.imagen,
+      nombre: displayNombre,
+      imagen,
       cantidad: qty,
     });
+    return true;
   }, []);
 
-  const removeItem = useCallback((productoId: string) => {
-    setItems((prev) => prev.filter((item) => item.productoId !== productoId));
+  const removeItem = useCallback((lineKey: string) => {
+    setItems((prev) => prev.filter((item) => tiendaCartLineKey(item) !== lineKey));
   }, []);
 
-  const setQuantity = useCallback((productoId: string, cantidad: number) => {
+  const setQuantity = useCallback((lineKey: string, cantidad: number) => {
     const qty = Math.max(1, Math.floor(cantidad));
     setItems((prev) =>
-      prev.map((item) => (item.productoId === productoId ? { ...item, cantidad: qty } : item)),
+      prev.map((item) =>
+        tiendaCartLineKey(item) === lineKey ? { ...item, cantidad: qty } : item,
+      ),
     );
   }, []);
 

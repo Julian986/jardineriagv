@@ -1,7 +1,7 @@
 import { ObjectId, type WithId, type Document } from "mongodb";
 import { getDb } from "@/lib/mongodb";
 import { getCategoriaById, listCategorias } from "@/lib/tienda/categorias";
-import type { TiendaMedida, TiendaProducto } from "@/lib/tienda/types";
+import type { TiendaColor, TiendaMedida, TiendaProducto } from "@/lib/tienda/types";
 
 export const COL_PRODUCTOS = "tienda_productos";
 
@@ -18,6 +18,7 @@ export type TiendaProductoDoc = {
   descuentoTransferenciaPct?: number;
   highlights?: string[];
   medidas?: TiendaMedida[];
+  colores?: TiendaColor[];
   stock: number | null;
   activo: boolean;
   createdAt: Date;
@@ -46,6 +47,32 @@ function mapMedidas(raw: unknown): TiendaMedida[] | undefined {
       return { label, valor };
     })
     .filter((m): m is TiendaMedida => m !== null);
+}
+
+function mapColores(raw: unknown): TiendaColor[] | undefined {
+  if (!Array.isArray(raw) || raw.length === 0) return undefined;
+  const colores = raw
+    .map((c, index) => {
+      if (!c || typeof c !== "object") return null;
+      const obj = c as { id?: unknown; nombre?: unknown; hex?: unknown; imagen?: unknown };
+      const nombre = typeof obj.nombre === "string" ? obj.nombre.trim() : "";
+      if (!nombre) return null;
+      const id =
+        typeof obj.id === "string" && obj.id.trim()
+          ? obj.id.trim()
+          : `color-${index + 1}`;
+      const hex = typeof obj.hex === "string" && obj.hex.trim() ? obj.hex.trim() : undefined;
+      const imagen =
+        typeof obj.imagen === "string" && obj.imagen.trim() ? obj.imagen.trim() : undefined;
+      return {
+        id,
+        nombre,
+        ...(hex ? { hex } : {}),
+        ...(imagen ? { imagen } : {}),
+      };
+    })
+    .filter((c): c is TiendaColor => c !== null);
+  return colores.length > 0 ? colores : undefined;
 }
 
 export function mapProducto(
@@ -86,6 +113,7 @@ export function mapProducto(
       ? doc.highlights.map(String)
       : undefined,
     medidas: mapMedidas(doc.medidas),
+    colores: mapColores(doc.colores),
     stock: typeof doc.stock === "number" ? doc.stock : doc.stock === null ? null : null,
     activo: doc.activo !== false,
   };
@@ -209,6 +237,7 @@ export async function createProducto(input: {
   descuentoTransferenciaPct?: number;
   highlights?: string[];
   medidas?: TiendaMedida[];
+  colores?: TiendaColor[];
   stock: number | null;
   activo: boolean;
 }): Promise<TiendaProducto> {
@@ -241,6 +270,7 @@ export async function createProducto(input: {
   }
   if (input.highlights?.length) doc.highlights = input.highlights;
   if (input.medidas?.length) doc.medidas = input.medidas;
+  if (input.colores?.length) doc.colores = input.colores;
 
   const result = await db.collection(COL_PRODUCTOS).insertOne(doc);
   return mapProducto(
@@ -264,6 +294,7 @@ export async function updateProducto(
     descuentoTransferenciaPct: number | null;
     highlights: string[] | null;
     medidas: TiendaMedida[] | null;
+    colores: TiendaColor[] | null;
     stock: number | null;
     activo: boolean;
   }>,
@@ -297,6 +328,7 @@ export async function updateProducto(
     "descuentoTransferenciaPct",
     "highlights",
     "medidas",
+    "colores",
   ] as const;
 
   for (const key of optionalNullables) {

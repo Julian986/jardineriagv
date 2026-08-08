@@ -2,9 +2,8 @@ import Link from "next/link";
 import { Playfair_Display } from "next/font/google";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { TiendaProductBuyBox } from "@/components/tienda/TiendaProductBuyBox";
 import { TiendaProductCard } from "@/components/tienda/TiendaProductCard";
-import { TiendaProductGallery } from "@/components/tienda/TiendaProductGallery";
+import { TiendaProductDetailClient } from "@/components/tienda/TiendaProductDetailClient";
 import { TiendaShell } from "@/components/tienda/TiendaShell";
 import { getCategoriaBySlug } from "@/lib/tienda/categorias";
 import {
@@ -61,32 +60,15 @@ export default async function TiendaProductoPage({ params }: PageProps) {
     ? await getCategoriaBySlug(producto.categoriaSlug)
     : null;
   const relacionados = await getProductosRelacionados(producto);
-  const imagenes =
-    producto.imagenes?.length > 0 ? producto.imagenes : [producto.imagen];
 
   return (
     <div className={playfair.variable}>
       <TiendaShell>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
-            <TiendaProductGallery
-              nombre={producto.nombre}
-              imagenes={imagenes}
-              categoriaLabel={producto.categoriaLabel}
-            />
-
-            <div className="lg:pt-1">
-              <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#2d4a22]">
-                {categoria?.nombre ?? producto.categoriaLabel}
-              </p>
-              <h1 className="mt-2 font-display text-2xl font-bold leading-snug text-[#1a1a1a] sm:text-3xl lg:text-[2rem]">
-                {producto.nombre}
-              </h1>
-              <div className="mt-6">
-                <TiendaProductBuyBox producto={producto} />
-              </div>
-            </div>
-          </div>
+          <TiendaProductDetailClient
+            producto={producto}
+            categoriaNombre={categoria?.nombre}
+          />
 
           <section className="mt-14 border-t border-[#eee] pt-10 sm:mt-16" aria-labelledby="desc-heading">
             <h2

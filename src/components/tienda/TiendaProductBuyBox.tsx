@@ -1,11 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
 import { Minus, Plus, ShieldCheck, RefreshCw, Truck } from "lucide-react";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { useTiendaCart } from "@/components/tienda/TiendaCartContext";
 import { formatArs } from "@/lib/madera/pricing";
 import { trackAddToCart } from "@/lib/tienda/analytics";
+import {
+  buildTiendaColorOptions,
+  toCartColor,
+  type TiendaColorOption,
+} from "@/lib/tienda/product-colors";
 import {
   getTiendaCuotaArs,
   getTiendaPrecioTransferencia,
@@ -14,20 +20,79 @@ import {
 
 type TiendaProductBuyBoxProps = {
   producto: TiendaProducto;
+  colorOptions?: TiendaColorOption[];
+  onColorChange?: (colorId: string | null) => void;
 };
 
-export function TiendaProductBuyBox({ producto }: TiendaProductBuyBoxProps) {
+export function TiendaProductBuyBox({
+  producto,
+  colorOptions: colorOptionsProp,
+  onColorChange,
+}: TiendaProductBuyBoxProps) {
   const { addProduct } = useTiendaCart();
   const [cantidad, setCantidad] = useState(1);
+  const colorOptions = useMemo(
+    () => colorOptionsProp ?? buildTiendaColorOptions(producto),
+    [colorOptionsProp, producto],
+  );
+  const necesitaColor = colorOptions.length > 1;
+  const [colorId, setColorId] = useState<string | null>(
+    colorOptions[0]?.id ?? null,
+  );
+  const [colorError, setColorError] = useState("");
+
+  const colorSeleccionado = useMemo(
+    () => colorOptions.find((c) => c.id === colorId) ?? null,
+    [colorOptions, colorId],
+  );
+
+  const coloresKey = colorOptions.map((c) => c.id).join("|");
+
+  useEffect(() => {
+    if (!colorId && colorOptions[0]?.id) {
+      setColorId(colorOptions[0].id);
+      return;
+    }
+    if (!colorId) return;
+    onColorChange?.(colorId);
+  }, [colorId, coloresKey, onColorChange, colorOptions]);
 
   const precioTransferencia = getTiendaPrecioTransferencia(producto);
   const cuota = getTiendaCuotaArs(producto);
   const waText = encodeURIComponent(
-    `Hola Guillermo, quiero consultar por el producto: ${producto.nombre}`,
+    colorSeleccionado
+      ? `Hola Guillermo, quiero consultar por el producto: ${producto.nombre} (color ${colorSeleccionado.nombre})`
+      : `Hola Guillermo, quiero consultar por el producto: ${producto.nombre}`,
   );
 
   function bump(delta: number) {
     setCantidad((prev) => Math.max(1, Math.min(99, prev + delta)));
+  }
+
+  function selectColor(id: string) {
+    setColorId(id);
+    setColorError("");
+    onColorChange?.(id);
+  }
+
+  function handleAdd() {
+    if (necesitaColor && !colorSeleccionado) {
+      setColorError("Elegí un color para continuar.");
+      return;
+    }
+    const ok = addProduct(producto, {
+      cantidad,
+      color: colorSeleccionado ? toCartColor(colorSeleccionado) : null,
+    });
+    if (!ok) {
+      setColorError("Elegí un color para continuar.");
+      return;
+    }
+    trackAddToCart({
+      location: "product_detail",
+      producto,
+      quantity: cantidad,
+    });
   }
 
   return (
@@ -59,6 +124,50 @@ export function TiendaProductBuyBox({ producto }: TiendaProductBuyBoxProps) {
         <span>Envío o retiro a coordinar luego de la compra · Bahía Blanca y zona</span>
       </p>
 
+      {colorOptions.length > 0 ? (
+        <div className="mt-6">
+          <p className="text-sm font-semibold text-[#333]">
+            Color:{" "}
+            <span className="font-normal text-[#666]">
+              {colorSeleccionado?.nombre ?? (necesitaColor ? "Elegí una opción" : "—")}
+            </span>
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2" role="listbox" aria-label="Colores disponibles">
+            {colorOptions.map((color) => {
+              const selected = color.id === colorId;
+              return (
+                <button
+                  key={color.id}
+                  type="button"
+                  role="option"
+                  aria-selected={selected}
+                  onClick={() => selectColor(color.id)}
+                  className={`inline-flex items-center gap-2 rounded-full border py-1.5 pl-1.5 pr-3 text-sm font-medium transition-colors ${
+                    selected
+                      ? "border-[#2d4a22] bg-[#f3f5f0] text-[#2d4a22]"
+                      : "border-[#ddd] bg-white text-[#444] hover:border-[#2d4a22]/40"
+                  }`}
+                >
+                  <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full border border-black/10 bg-[#eee]">
+                    <Image
+                      src={color.imageSrc}
+                      alt=""
+                      fill
+                      className="object-cover"
+                      sizes="32px"
+                    />
+                  </span>
+                  {color.nombre}
+                </button>
+              );
+            })}
+          </div>
+          {colorError ? (
+            <p className="mt-2 text-[13px] font-medium text-[#b91c1c]">{colorError}</p>
+          ) : null}
+        </div>
+      ) : null}
+
       <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
         <div
           className="inline-flex h-14 w-full items-center justify-between rounded-md border border-[#ddd] bg-white px-1 sm:w-36 sm:shrink-0"
@@ -88,14 +197,7 @@ export function TiendaProductBuyBox({ producto }: TiendaProductBuyBoxProps) {
 
         <button
           type="button"
-          onClick={() => {
-            addProduct(producto, cantidad);
-            trackAddToCart({
-              location: "product_detail",
-              producto,
-              quantity: cantidad,
-            });
-          }}
+          onClick={handleAdd}
           className="flex h-14 w-full items-center justify-center rounded-md bg-[#2d4a22] px-6 text-sm font-bold text-white transition-all hover:bg-[#243c1c] active:scale-[0.99] sm:min-w-0 sm:flex-1"
         >
           Agregar al carrito

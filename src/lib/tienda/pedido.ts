@@ -10,6 +10,7 @@ export const TiendaPedidoPendingSchema = TiendaCheckoutSchema.extend({
       z.object({
         productoId: z.string().trim().min(1),
         cantidad: z.coerce.number().int().min(1).max(99),
+        colorId: z.string().trim().min(1).max(80).optional(),
       }),
     )
     .min(1, "El carrito está vacío.")
@@ -29,6 +30,8 @@ export type TiendaPedidoItemSnapshot = {
   cantidad: number;
   subtotalArs: number;
   imagen: string;
+  colorId?: string;
+  colorNombre?: string;
 };
 
 export function formatTiendaPedidoValidationError(error: ZodError): string {

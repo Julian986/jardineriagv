@@ -75,6 +75,7 @@ export async function POST(request: Request) {
       descuentoTransferenciaPct: data.descuentoTransferenciaPct,
       highlights: data.highlights,
       medidas: data.medidas,
+      colores: data.colores,
       stock: data.stock,
       activo: data.activo,
     });
